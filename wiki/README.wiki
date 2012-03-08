@@ -1,0 +1,7 @@
+#最初にお読みください
+
+= Google code 利用方法 =
+ * SubversionをEclipse上で使用するため、Eclipseの[http://subclipse.tigris.org/update_1.6.x Subclipseプラグイン]をインストール 
+ * GoogleCodeでCommitする際、[https://code.google.com/hosting/settings こちら]に表示されるパスワードが必要です。
+ * Commitするためには、Commit権限が必要です。ご利用できない場合はチューターに確認してください。
+ * http://shthon2012s.googlecode.com/svn/trunk/ --username <ユーザのGmailアカウント>
