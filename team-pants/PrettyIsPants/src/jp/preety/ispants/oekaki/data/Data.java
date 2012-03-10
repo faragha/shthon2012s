@@ -3,6 +3,8 @@ package jp.preety.ispants.oekaki.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.arnx.jsonic.JSON;
+
 import com.eaglesakura.lib.android.game.math.Vector2;
 
 /**
@@ -39,7 +41,7 @@ public class Data {
      */
     public static String toSendingData(Data data) {
         //JSON 変換
-        return null;
+        return JSON.encode(data);
     }
 
     /***
@@ -49,6 +51,6 @@ public class Data {
      */
     public static Data fromRececiveData(String data) {
         // JSONから変換
-        return null;
+        return JSON.decode(data, Data.class);
     }
 }
