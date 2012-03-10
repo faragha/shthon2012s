@@ -41,12 +41,17 @@ public class OekakiRender implements Callback {
     /**
      * GL用レンダラ
      */
-    AsyncHandler handler = AsyncHandler.createInstance();
+    AsyncHandler renderHandler = AsyncHandler.createInstance();
 
     /**
      * 描画用のレイアウト
      */
     FrameLayout layout;
+
+    /**
+     * 描画用ドキュメント
+     */
+    Document document = new Document(this);
 
     /**
      * 
@@ -83,7 +88,7 @@ public class OekakiRender implements Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // 実行待ちを行う。
-        (new ThreadSyncRunnerBase<Void>(handler) {
+        (new ThreadSyncRunnerBase<Void>(renderHandler) {
             @Override
             public Void onOtherThreadRun() throws Exception {
                 if (activity.isFinishing()) {
@@ -99,11 +104,12 @@ public class OekakiRender implements Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         glManager = glView.getGLManager();
-        handler.post(new Runnable() {
+        renderHandler.post(new Runnable() {
             @Override
             public void run() {
                 if (!glManager.isInitialized()) {
-                    glManager.initGL(handler);
+                    glManager.initGL(renderHandler);
+                    initializeDatas();
                 } else {
                     if (glView.isDestroyed()) {
                         glManager.onResume();
@@ -113,10 +119,58 @@ public class OekakiRender implements Callback {
         });
     }
 
+    void initializeDatas() {
+        try {
+            String uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_URI);
+            uri = "file:///sdcard/sample.jpg";
+
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * レンダリングを呼び出す。
+     * 複数がqueueに溜まらないように、１つだけ登録する。
+     */
+    private Runnable renderRunnable = new Runnable() {
+        @Override
+        public void run() {
+            rendering();
+        }
+    };
+
     /**
      * 描画を行う。
      * 呼び出しスレッドにかかわらず、必ずGLスレッドで描画が行われる。
      */
     public void rendering() {
+        if (!isRenderThread()) {
+            // 登録済みのレンダリングタスクを削除し、新規タスクとして登録する。
+            renderHandler.removeCallbacks(renderRunnable);
+            renderHandler.post(renderRunnable);
+            return;
+        }
+
+        glManager.clearColorRGBA(1, 1, 1, 1);
+        glManager.clear();
+
+        glManager.swapBuffers();
+    }
+
+    /**
+     * レンダリング用のハンドラを取得する。
+     * @return
+     */
+    public AsyncHandler getRenderHandler() {
+        return renderHandler;
+    }
+
+    /**
+     * レンダリング用のスレッドで呼び出されている場合、trueを返す。
+     * @return
+     */
+    public boolean isRenderThread() {
+        return renderHandler.isHandlerThread();
     }
 }
