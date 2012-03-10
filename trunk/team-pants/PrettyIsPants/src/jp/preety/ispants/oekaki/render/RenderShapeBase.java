@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 
 import jp.preety.ispants.oekaki.OekakiRender;
 import jp.preety.ispants.oekaki.data.Data;
+import jp.preety.ispants.oekaki.data.Pen.Type;
 
 import com.eaglesakura.lib.android.game.graphics.DisposableResource;
 import com.eaglesakura.lib.android.game.math.Vector2;
@@ -142,10 +143,16 @@ public abstract class RenderShapeBase extends DisposableResource {
     }
 
     public static RenderShapeBase createInstance(OekakiRender render) {
+        if (render.getDocument().getPen().type == Type.Stamp) {
+            return new StampRender(render);
+        }
         return new TegakiLineRender(render);
     }
 
     public static RenderShapeBase createInstance(OekakiRender render, Data data) {
+        if (data.pen.type == Type.Stamp) {
+            return new StampRender(render, data);
+        }
         return new TegakiLineRender(render, data);
     }
 

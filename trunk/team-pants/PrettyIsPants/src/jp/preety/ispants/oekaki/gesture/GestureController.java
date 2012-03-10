@@ -9,7 +9,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.eaglesakura.lib.android.game.graphics.ImageCorrector;
-import com.eaglesakura.lib.android.game.util.LogUtil;
+import com.eaglesakura.lib.android.game.math.Vector2;
 
 /**
  * 
@@ -55,8 +55,18 @@ public class GestureController implements android.view.GestureDetector.OnGesture
         return false;
     }
 
+    Vector2 toUV(MotionEvent event) {
+        ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
+        final float u = baseImageCorrector.pixToImageU(event.getX());
+        final float v = baseImageCorrector.pixToImageV(event.getY());
+
+        return new Vector2(u, v);
+    }
+
     @Override
     public void onShowPress(MotionEvent e) {
+        if (isStamp()) {
+        }
     }
 
     @Override
@@ -65,13 +75,25 @@ public class GestureController implements android.view.GestureDetector.OnGesture
     }
 
     public void onTouchBegin(MotionEvent e) {
+        if (isStamp()) {
+            return;
+        }
         currentShape = TegakiLineRender.createInstance(render);
     }
 
     public void onTouchEnd(MotionEvent e) {
-        render.getDocument().addShape(currentShape);
-        //        render.getDocument().getServer().add(Data.toSendingData(currentShape.getData()));
-        currentShape = null;
+        if (isStamp()) {
+            RenderShapeBase shape = TegakiLineRender.createInstance(render);
+            Vector2 uv = toUV(e);
+            shape.put(uv.x, uv.y);
+            render.getDocument().addShape(shape);
+            return;
+        }
+
+        if (currentShape != null) {
+            render.getDocument().addShape(currentShape);
+            currentShape = null;
+        }
     }
 
     public boolean isTegaki() {
@@ -83,7 +105,7 @@ public class GestureController implements android.view.GestureDetector.OnGesture
     }
 
     Pen getPen() {
-        return currentShape.getData().pen;
+        return render.getDocument().getPen();
     }
 
     /**
@@ -104,14 +126,8 @@ public class GestureController implements android.view.GestureDetector.OnGesture
 
             // 手書きだったらライン書く
             if (isTegaki()) {
-                ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
-                final float u = baseImageCorrector.pixToImageU(event.getX());
-                final float v = baseImageCorrector.pixToImageV(event.getY());
-
-                LogUtil.log("u :: " + u);
-                LogUtil.log("v :: " + v);
-
-                currentShape.put(u, v);
+                Vector2 uv = toUV(event);
+                currentShape.put(uv.x, uv.y);
                 render.rendering();
             }
         }
