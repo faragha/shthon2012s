@@ -2,6 +2,7 @@ package jp.sonicstudio.sutami.activity;
 
 import jp.sonicstudio.sutami.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,16 +28,27 @@ public class SutamiActivity extends Activity {
 				.setOnClickListener(mPickAPictureFromGarallyOnClickListener);
 	}
 
+	private Uri mCameraImageUri;
 	private View.OnClickListener mTakeAPictureOnClickListener = new View.OnClickListener() {
 	    
 		@Override
 		public void onClick(View v) {
-		    	// インテントのインスタンス生成
-		    	Intent intent = new Intent();
-		    	// インテントにアクションをセット
-		    	intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-		    	// カメラアプリ起動
-		    	startActivityForResult(intent, REQUEST_GET_CAMERA_IMAGE);
+		   
+        	    ContentValues values = new ContentValues();
+        
+        	    String filename = System.currentTimeMillis() + ".jpg";
+        	    values.put(MediaStore.Images.Media.TITLE, filename);
+        	    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+ 
+        	    // 保存先
+        	    mCameraImageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        
+        	    Intent intent = new Intent();
+        	    // インテントにアクションをセット
+        	    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        	    intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraImageUri);
+        	    // カメラアプリ起動
+        	    startActivityForResult(intent, REQUEST_GET_CAMERA_IMAGE);
 		}
 	};
 
@@ -67,7 +79,17 @@ public class SutamiActivity extends Activity {
 				}
 				break;
 			case REQUEST_GET_CAMERA_IMAGE:
-				Uri uri = data.getData();
+			    
+                		Uri uri = null;
+                		if (data != null) {
+                		    uri = data.getData();
+                		}
+				
+				// URIを取得できない場合、Intent生成時のURIを参照先に設定
+				if(uri == null){
+				    uri = mCameraImageUri;
+				}
+				
 				Intent intent = new Intent(this, PreviewActivity.class);
 				intent.putExtra(PreviewActivity.IMAGE_URI, uri);
 				startActivity(intent);
