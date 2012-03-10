@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -16,20 +16,20 @@ import android.widget.Toast;
 public class TopActivity extends Activity implements View.OnClickListener {
     private static final int REQUEST_TAKE_PHOTO = 0x0100;
     private static final int REQUEST_PICK_PHOTO = 0x0200;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        final ImageView takePhotoButton = (ImageView)findViewById(R.id.btn_take_photo);
-        final ImageView pickPhotoButton = (ImageView)findViewById(R.id.btn_pick_photo);
-        final ImageView joinButton = (ImageView)findViewById(R.id.btn_join);
+
+        final Button takePhotoButton = (Button)findViewById(R.id.btn_take_photo);
+        final Button pickPhotoButton = (Button)findViewById(R.id.btn_pick_photo);
+        final Button joinButton = (Button)findViewById(R.id.btn_join);
         takePhotoButton.setOnClickListener(this);
         pickPhotoButton.setOnClickListener(this);
         joinButton.setOnClickListener(this);
     }
-    
+
     /**
      * Event Handler: on receive activity result
      */
@@ -49,7 +49,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
             }
         }
     }
-    
+
     /**
      * Event Hanlder: on click view
      */
@@ -61,7 +61,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
             case R.id.btn_join: join(); break;
         }
     }
-    
+
     /**
      * start take photo intent
      */
@@ -69,7 +69,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
-    
+
     /**
      * start pick photo intent
      */
@@ -77,7 +77,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
         final Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
         startActivityForResult(intent, REQUEST_PICK_PHOTO);
     }
-    
+
     /**
      * start join intent
      */
