@@ -3,13 +3,15 @@ package jp.sonicstudio.sutami.activity;
 import jp.sonicstudio.sutami.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 public class SutamiActivity extends Activity {
 
-	private final static int REQUEST_GET_CONTENT = 0;
+	private static final int REQUEST_GET_CONTENT = 0;
+	private static final String TAG = "SutamiActivity";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,20 +48,14 @@ public class SutamiActivity extends Activity {
 		if (resultCode == RESULT_OK)
 			switch (requestCode) {
 			case REQUEST_GET_CONTENT:
-				// try {
-				// // TOOD:一定以上大きな画像は縮小する？
-				// Uri uri = data.getData();
-				//
-				// InputStream inputStream = getContentResolver()
-				// .openInputStream(data.getData());
-				// Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-				// inputStream.close();
-				// Intent intent = new Intent(this, PreviewActivity.class);
-				// intent.putExtra(PreviewActivity.BITMAP, bitmap);
-				// startActivity(intent);
-				// handeled = true;
-				// } catch (Exception e) {
-				// }
+				try {
+					Uri uri = data.getData();
+					Intent intent = new Intent(this, PreviewActivity.class);
+					intent.putExtra(PreviewActivity.IMAGE_URI, uri);
+					startActivity(intent);
+					handeled = true;
+				} catch (Exception e) {
+				}
 				break;
 			}
 		if (!handeled) {
