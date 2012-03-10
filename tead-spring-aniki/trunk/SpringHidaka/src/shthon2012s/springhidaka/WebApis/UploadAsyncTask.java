@@ -64,7 +64,7 @@ public class UploadAsyncTask extends AsyncTask<String, String, String> {
 			callback.onFailedUploadImage(-1);// TODO:手抜きを直すorz
 		} else {
 			// アップロードしたIDをコールバックでを返す(Getメソッドで呼ぶだけ)
-			String downloadUrl = url + "?" + result;
+			String downloadUrl = url + "?content=" + result;
 			callback.onSuccessUploadImage(downloadUrl);
 		}
 	}
