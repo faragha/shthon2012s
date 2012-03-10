@@ -7,6 +7,7 @@ import shthon2012s.springhidaka.Utils.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,8 @@ public class ActCallList extends Activity {
 	// call list
 	private Context ctx;
 	private ArrayList<DialNumber> alldata;
+
+	private String phoneNumber;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,8 +52,16 @@ public class ActCallList extends Activity {
 
 	protected void SendTo(String pn) {
 		DBG.LogOut(3, "To", ":" + pn);
-
+		phoneNumber=pn;
 		//ここからAPI
 
+	}
+	private void SendSMS(){
+		SmsManager smsManager = SmsManager.getDefault();
+		String destinationAddress = phoneNumber;
+
+		String text = "写真が届きました。リンクとかなんかそんなんいろいろ。";
+
+		smsManager.sendTextMessage(destinationAddress, null, text, null, null);
 	}
 }
