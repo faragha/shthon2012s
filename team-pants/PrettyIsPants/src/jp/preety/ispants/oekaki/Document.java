@@ -2,13 +2,16 @@ package jp.preety.ispants.oekaki;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jp.preety.ispants.R;
 import jp.preety.ispants.oekaki.data.Data;
 import jp.preety.ispants.oekaki.data.DataServer;
 import jp.preety.ispants.oekaki.data.DataServer.OnDataUpdateListener;
 import jp.preety.ispants.oekaki.data.Pen;
+import jp.preety.ispants.oekaki.data.Pen.Type;
 import jp.preety.ispants.oekaki.render.RenderShapeBase;
 import android.content.Context;
 import android.content.res.Resources;
@@ -38,7 +41,15 @@ public class Document implements OnDataUpdateListener {
     ImageCorrector baseImageCorrector = new ImageCorrector();
     DataServer server = null;
 
+    /**
+     * 手書き用ペンのテクスチャ
+     */
     List<TextureImageBase> penTextures = new ArrayList<TextureImageBase>();
+
+    /**
+     * スタンプ用のテクスチャ
+     */
+    Map<Object, TextureImageBase> stampTextures = new HashMap<Object, TextureImageBase>();
 
     /**
      * 追加済みの落書きシェイプデータ
@@ -84,6 +95,11 @@ public class Document implements OnDataUpdateListener {
 
     public void loadPenTextuers(Context context) {
         penTextures.add(loadImage(context.getResources(), R.drawable.pen, render.getGLManager()));
+
+        {
+            stampTextures.put(R.drawable.ic_launcher,
+                    loadImage(context.getResources(), R.drawable.ic_launcher, render.getGLManager()));
+        }
     }
 
     /**
@@ -92,6 +108,10 @@ public class Document implements OnDataUpdateListener {
      * @return
      */
     public TextureImageBase getPenTexture(Pen pen) {
+        if (pen.type == Type.Stamp) {
+            return stampTextures.get(R.drawable.ic_launcher);
+        }
+
         return penTextures.get(0);
     }
 
@@ -186,6 +206,7 @@ public class Document implements OnDataUpdateListener {
             return;
         }
 
+        //  
         {
             RenderShapeBase shape = RenderShapeBase.createInstance(render, data);
             shapeDatas.add(shape);

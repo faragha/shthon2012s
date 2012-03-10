@@ -1,6 +1,8 @@
 package jp.preety.ispants.oekaki.gesture;
 
 import jp.preety.ispants.oekaki.OekakiRender;
+import jp.preety.ispants.oekaki.data.Pen;
+import jp.preety.ispants.oekaki.data.Pen.Type;
 import jp.preety.ispants.oekaki.render.RenderShapeBase;
 import jp.preety.ispants.oekaki.render.TegakiLineRender;
 import android.view.GestureDetector;
@@ -72,6 +74,18 @@ public class GestureController implements android.view.GestureDetector.OnGesture
         currentShape = null;
     }
 
+    public boolean isTegaki() {
+        return getPen().type == Type.Tegaki;
+    }
+
+    public boolean isStamp() {
+        return getPen().type == Type.Stamp;
+    }
+
+    Pen getPen() {
+        return currentShape.getData().pen;
+    }
+
     /**
      * タッチイベントを受け取る
      * @param event
@@ -87,15 +101,19 @@ public class GestureController implements android.view.GestureDetector.OnGesture
         } else if (action == MotionEvent.ACTION_DOWN) {
             onTouchBegin(event);
         } else if (action == MotionEvent.ACTION_MOVE) {
-            ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
-            final float u = baseImageCorrector.pixToImageU(event.getX());
-            final float v = baseImageCorrector.pixToImageV(event.getY());
 
-            LogUtil.log("u :: " + u);
-            LogUtil.log("v :: " + v);
+            // 手書きだったらライン書く
+            if (isTegaki()) {
+                ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
+                final float u = baseImageCorrector.pixToImageU(event.getX());
+                final float v = baseImageCorrector.pixToImageV(event.getY());
 
-            currentShape.put(u, v);
-            render.rendering();
+                LogUtil.log("u :: " + u);
+                LogUtil.log("v :: " + v);
+
+                currentShape.put(u, v);
+                render.rendering();
+            }
         }
     }
 
