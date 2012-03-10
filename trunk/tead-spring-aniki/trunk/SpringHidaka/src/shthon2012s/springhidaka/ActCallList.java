@@ -63,5 +63,8 @@ public class ActCallList extends Activity {
 		String text = "写真が届きました。リンクとかなんかそんなんいろいろ。";
 
 		smsManager.sendTextMessage(destinationAddress, null, text, null, null);
+
+
+		//終わったらダイアログとかだしてTOP戻るとか？
 	}
 }
