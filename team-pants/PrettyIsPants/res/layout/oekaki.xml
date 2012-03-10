@@ -1,25 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="25dp" android:background="#0000FF">
+        android:layout_height="40dp"
+        android:background="#0000FF">
+        <View
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <!-- 完了 -->
+        <Button
+            android:id="@+id/oekaki_finish_btn"
+            android:background="@drawable/base_btn_bk"
+            android:drawableLeft="@android:drawable/ic_menu_info_details"
+            android:text="@string/oekaki_btn_finish"
+            android:textSize="16dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/oekaki_area"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent" android:layout_weight="1">
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
     </FrameLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="30dp" android:background="#00FF00">
+        android:layout_height="60dp"
+        android:background="#00FF00">
+        <!-- ペン -->
+        <Button
+            android:id="@+id/oekaki_pen_btn"
+            android:background="@drawable/base_btn_bk"
+            android:drawableTop="@drawable/pen_icon"
+            android:text="@string/oekaki_btn_pen"
+            android:textSize="12dp"
+            android:layout_gravity="center"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <!-- スタンプ -->
+        <Button
+            android:id="@+id/oekaki_stamp_btn"
+            android:background="@drawable/base_btn_bk"
+            android:drawableTop="@drawable/stamp_icon"
+            android:text="@string/oekaki_btn_stamp"
+            android:textSize="12dp"
+            android:layout_gravity="center"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <!-- フレーム -->
+        <Button
+            android:id="@+id/oekaki_frame_btn"
+            android:background="@drawable/base_btn_bk"
+            android:drawableTop="@drawable/frame_icon"
+            android:text="@string/oekaki_btn_frame"
+            android:textSize="12dp"
+            android:layout_gravity="center"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <!-- 美白 -->
+        <Button
+            android:id="@+id/oekaki_white_btn"
+            android:background="@drawable/base_btn_bk"
+            android:drawableTop="@drawable/white_icon"
+            android:text="@string/oekaki_btn_white"
+            android:textSize="12dp"
+            android:layout_gravity="center"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>
