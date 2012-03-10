@@ -23,7 +23,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 /**
@@ -52,18 +54,32 @@ public class PreviewActivity extends Activity {
     /** スタンプ画像最大高さ */
     private static final int MAX_HEIGHT = 320;
 
+    private static final int MAX_LEVEL = 4; // index0ベース
+    private static final int DEFAULT_LEVEL = 2; // index0ベース
+
+    /** プレビュービュー */
     private PreviewView mPreviewView;
+
     /** 入力画像（ただし、最大サイズを超えないサイズで縮小して読み込む） */
     private Bitmap mSrcBitmap;
     /** 出力画像（スタンプ画像はテンポラリ画像として保存する） */
     private Bitmap mDstBitmap;
 
+    private int mThreshold = StampMaker.THRESHOLD_LEVEL_3;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // タイトルバー右上の不確定プログレスバーを使用
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.preview);
         // プレビュービュー初期化
         mPreviewView = (PreviewView) findViewById(R.id.previewview);
+        // シークバー初期化
+        SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
+        seekBar.setMax(MAX_LEVEL);
+        seekBar.setProgress(DEFAULT_LEVEL);
+        seekBar.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         // 戻るボタン初期化
         Button buttonBack = (Button) findViewById(R.id.button_back);
         buttonBack.setOnClickListener(mBackOnClickListener);
@@ -78,10 +94,48 @@ public class PreviewActivity extends Activity {
         Uri uri = (Uri) intent.getParcelableExtra(IMAGE_URI);
         if (uri != null) {
             // スタンプ画像作成（非同期処理）
-            MakeStampImageTask makeStampImageTask = new MakeStampImageTask();
-            makeStampImageTask.execute(uri);
+            LoadImageTask loadImageTask = new LoadImageTask();
+            loadImageTask.execute(uri);
         }
     }
+
+    /**
+     * シークバー変更リスナー
+     */
+    private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            int progress = seekBar.getProgress();
+            switch (progress) {
+                case 0:
+                    mThreshold = StampMaker.THRESHOLD_LEVEL_1;
+                    break;
+                case 1:
+                    mThreshold = StampMaker.THRESHOLD_LEVEL_2;
+                    break;
+                case 2:
+                    mThreshold = StampMaker.THRESHOLD_LEVEL_3;
+                    break;
+                case 3:
+                    mThreshold = StampMaker.THRESHOLD_LEVEL_4;
+                    break;
+                case 4:
+                    mThreshold = StampMaker.THRESHOLD_LEVEL_5;
+                    break;
+                default:
+                    mThreshold = StampMaker.DEFAULT_THRESHOLD;
+            }
+            updateView();
+        }
+    };
 
     /**
      * 戻るボタンクリックリスナー
@@ -160,9 +214,17 @@ public class PreviewActivity extends Activity {
     }
 
     /**
-     * スタンプ画像作成クラス（非同期処理）
+     * ビュー更新（）
      */
-    class MakeStampImageTask extends AsyncTask<Uri, Void, Boolean> {
+    private void updateView() {
+        MakeStampImageTask makeStampImageTask = new MakeStampImageTask();
+        makeStampImageTask.execute(mSrcBitmap);
+    }
+
+    /**
+     * 画像読み込みクラス（非同期処理）
+     */
+    class LoadImageTask extends AsyncTask<Uri, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Uri... params) {
@@ -171,38 +233,33 @@ public class PreviewActivity extends Activity {
                 if (params[0] != null) {
                     if (params[0] instanceof Uri) {
                         try {
-                            Uri uri = (Uri) params[0];
-                            // 画像のサイズを取得（実際には画像を展開しない）
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            options.inJustDecodeBounds = true;
-                            InputStream inputStream = getContentResolver()
-                                    .openInputStream(uri);
-                            BitmapFactory.decodeStream(inputStream, null,
-                                    options);
-                            inputStream.close();
-                            // 画像を縮小して展開する
-                            int scaleWidth = 1;
-                            int scaleHeight = 1;
-                            if ((options.outWidth > MAX_WIDTH)
-                                    || (options.outHeight > MAX_HEIGHT)) {
-                                scaleWidth = options.outWidth / MAX_WIDTH + 1;
-                                scaleHeight = options.outHeight / MAX_HEIGHT
-                                        + 1;
-                            }
-                            int scale = Math.max(scaleWidth, scaleHeight);
-                            options.inJustDecodeBounds = false;
-                            options.inSampleSize = scale;
-                            inputStream = getContentResolver().openInputStream(
-                                    uri);
-                            mSrcBitmap = BitmapFactory.decodeStream(
-                                    inputStream, null, options);
-                            inputStream.close();
-                            // スタンプ画像作成処理を呼び出す
-                            StampMaker stampMaker = new StampMaker();
-                            stampMaker.initialize(mSrcBitmap);
-                            mDstBitmap = stampMaker.process(StampMaker.DEFAULT_THRESHHOLD); // 閾値
-                            if (mDstBitmap != null) {
-                                success = true;
+                            if (mSrcBitmap == null) {
+                                Uri uri = (Uri) params[0];
+                                // 画像のサイズを取得（実際には画像を展開しない）
+                                BitmapFactory.Options options = new BitmapFactory.Options();
+                                options.inJustDecodeBounds = true;
+                                InputStream inputStream = getContentResolver()
+                                        .openInputStream(uri);
+                                BitmapFactory.decodeStream(inputStream, null,
+                                        options);
+                                inputStream.close();
+                                // 画像を縮小して展開する
+                                int scaleWidth = 1;
+                                int scaleHeight = 1;
+                                if ((options.outWidth > MAX_WIDTH)
+                                        || (options.outHeight > MAX_HEIGHT)) {
+                                    scaleWidth = options.outWidth / MAX_WIDTH + 1;
+                                    scaleHeight = options.outHeight / MAX_HEIGHT
+                                            + 1;
+                                }
+                                int scale = Math.max(scaleWidth, scaleHeight);
+                                options.inJustDecodeBounds = false;
+                                options.inSampleSize = scale;
+                                inputStream = getContentResolver().openInputStream(
+                                        uri);
+                                mSrcBitmap = BitmapFactory.decodeStream(
+                                        inputStream, null, options);
+                                inputStream.close();
                             }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -218,9 +275,46 @@ public class PreviewActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            if (result) {
-                mPreviewView.setBitmap(mDstBitmap);
+            updateView();
+        }
+
+    }
+
+    /**
+     * スタンプ画像作成クラス（非同期処理）
+     */
+    class MakeStampImageTask extends AsyncTask<Bitmap, Void, Bitmap> {
+
+        @Override
+        protected void onPreExecute() {
+            // タイトルバー右上の不確定プログレスバーを表示
+            setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
+        protected Bitmap doInBackground(Bitmap... params) {
+            Bitmap bitmap = null;
+            if (params.length > 0) {
+                if (params[0] != null) {
+                    if (params[0] instanceof Bitmap) {
+                        Bitmap srcBitmap = (Bitmap) params[0];
+                        // スタンプ画像作成処理を呼び出す
+                        StampMaker stampMaker = new StampMaker();
+                        stampMaker.initialize(srcBitmap);
+                        bitmap = stampMaker.process(mThreshold); // 閾値
+                    }
+                }
             }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            mDstBitmap = result;
+            mPreviewView.setBitmap(mDstBitmap);
+            // タイトルバー右上の不確定プログレスバーを非表示
+            setProgressBarIndeterminateVisibility(false);
         }
 
     }
