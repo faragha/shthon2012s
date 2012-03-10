@@ -86,6 +86,14 @@ public abstract class TegakiStackBase extends DisposableResource {
     }
 
     /**
+     * 共有用のデータを取得する。
+     * @return
+     */
+    public Data getData() {
+        return data;
+    }
+
+    /**
      * 描画ようのバッファを取得する。
      * @return
      */
