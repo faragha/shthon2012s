@@ -463,6 +463,7 @@ public class BluetoothService {
                         readAllBufferSize += bytes;
                         continue;
                     }
+                    readAllBufferSize += bytes;
 
                     // Send the obtained bytes to the UI Activity
                     int from = (isClient? FROM_SERVER : FROM_CLIENT);
