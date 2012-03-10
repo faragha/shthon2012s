@@ -48,6 +48,7 @@ public class BluetoothService {
     public static final int STATE_CONNECTED = 3; // now connected to a remote
                                                  // device
 
+    // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_AS_SERVER_CHANGE = 1;
     public static final int MESSAGE_STATE_AS_CLIENT_CHANGE = 2;
     public static final int MESSAGE_WRITE = 3;
