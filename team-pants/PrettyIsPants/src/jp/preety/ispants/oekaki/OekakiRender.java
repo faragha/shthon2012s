@@ -1,10 +1,12 @@
 package jp.preety.ispants.oekaki;
 
 import jp.preety.ispants.R;
+import android.net.Uri;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.widget.FrameLayout;
 
+import com.eaglesakura.lib.android.game.display.VirtualDisplay;
 import com.eaglesakura.lib.android.game.graphics.gl11.OpenGLManager;
 import com.eaglesakura.lib.android.game.graphics.gl11.SpriteManager;
 import com.eaglesakura.lib.android.game.thread.AsyncHandler;
@@ -103,13 +105,20 @@ public class OekakiRender implements Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        final VirtualDisplay display = new VirtualDisplay();
+        display.setRealDisplaySize(width, height);
+        display.setVirtualDisplaySize(width, height);
         glManager = glView.getGLManager();
         renderHandler.post(new Runnable() {
             @Override
             public void run() {
                 if (!glManager.isInitialized()) {
                     glManager.initGL(renderHandler);
+                    glManager.updateDrawArea(display);
+                    spriteManager = new SpriteManager(display, glManager);
                     initializeDatas();
+
+                    rendering();
                 } else {
                     if (glView.isDestroyed()) {
                         glManager.onResume();
@@ -124,6 +133,7 @@ public class OekakiRender implements Callback {
             String uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_URI);
             uri = "file:///sdcard/sample.jpg";
 
+            document.loadBaseImage(activity, Uri.parse(uri), spriteManager.getVirtualDisplay());
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -155,7 +165,21 @@ public class OekakiRender implements Callback {
         glManager.clearColorRGBA(1, 1, 1, 1);
         glManager.clear();
 
+        spriteManager.begin();
+        {
+            document.drawBaseImage(spriteManager);
+        }
+        spriteManager.end();
+
         glManager.swapBuffers();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public OpenGLManager getGLManager() {
+        return glManager;
     }
 
     /**
