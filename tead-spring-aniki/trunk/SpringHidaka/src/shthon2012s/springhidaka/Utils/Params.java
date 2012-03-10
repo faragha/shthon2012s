@@ -12,6 +12,6 @@ public class Params {
 	public static byte[] took;
 
 	public static String sdPath=Environment.getExternalStorageDirectory().toString();
-	public static String folder="/haruhidaka/";
-	public static String tmpfile="test2.jpg";
+	public static String folder="/.haruaniki/";
+	public static String tmpfile="tmp.jpg";
 }
