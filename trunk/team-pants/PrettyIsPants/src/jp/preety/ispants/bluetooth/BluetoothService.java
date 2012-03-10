@@ -189,6 +189,20 @@ public class BluetoothService {
         // Perform the write unsynchronized
         r.write(out);
     }
+    
+    public void writeAsClient(byte[] out) {
+        // Create temporary object
+        ConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (this) {
+            if (mStateAsClient != STATE_CONNECTED) {
+                return;
+            }
+            r = mConnectedAsClientThread;
+        }
+        // Perform the write unsynchronized
+        r.write(out);
+    }
 
     private void connectionAsClietnFailed() {
         // Send a failure message back to the Activity
