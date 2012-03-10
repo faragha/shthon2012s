@@ -2,4 +2,7 @@
 <resources>
     <string name="hello">Hello World, TopActivity!</string>
     <string name="app_name">PrettyIsPants</string>
+    <string name="unable_to_connect">接続できませんでした。</string>
+    <string name="connection_was_lost">接続が切断されました。</string>
+    <string name="connected">%1sに接続しました。</string>
 </resources>
