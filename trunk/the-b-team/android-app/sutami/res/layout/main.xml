@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"  android:gravity="center_vertical" >
 
     <Button
         android:id="@+id/button_taka_a_picture"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/taka_a_picture" />
+        android:text="@string/taka_a_picture" 
+        android:layout_margin="10dp" />
 
     <Button
         android:id="@+id/button_pick_a_picture"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pick_a_picture" />
+        android:text="@string/pick_a_picture"
+        android:layout_margin="10dp" />
 
 </LinearLayout>
