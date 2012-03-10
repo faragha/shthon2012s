@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="#ffffff">
+
+
+        <RelativeLayout
+            android:id="@+id/llcamera"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/llnavi" >
+
+            <RelativeLayout
+                android:id="@+id/rlpreview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true" >
+
+                <RelativeLayout
+                    android:id="@+id/rlpreviewInside"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#999999" >
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/finder_fix" android:scaleType="fitXY"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/bt_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="撮る" android:layout_centerVertical="true" android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+
+</RelativeLayout>
