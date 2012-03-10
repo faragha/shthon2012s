@@ -65,6 +65,7 @@ public class Document implements OnDataUpdateListener {
         {
             Pen pen = new Pen();
             pen.setTegakiData(5, 0, 0, 255);
+            //            pen.setStampData("test");
             setPen(pen);
         }
     }
@@ -97,7 +98,7 @@ public class Document implements OnDataUpdateListener {
         penTextures.add(loadImage(context.getResources(), R.drawable.pen, render.getGLManager()));
 
         {
-            stampTextures.put(R.drawable.ic_launcher,
+            stampTextures.put("" + R.drawable.ic_launcher,
                     loadImage(context.getResources(), R.drawable.ic_launcher, render.getGLManager()));
         }
     }
@@ -109,7 +110,7 @@ public class Document implements OnDataUpdateListener {
      */
     public TextureImageBase getPenTexture(Pen pen) {
         if (pen.type == Type.Stamp) {
-            return stampTextures.get(R.drawable.ic_launcher);
+            return stampTextures.get("" + R.drawable.ic_launcher);
         }
 
         return penTextures.get(0);

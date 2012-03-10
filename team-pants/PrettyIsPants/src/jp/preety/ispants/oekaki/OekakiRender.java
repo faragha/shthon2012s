@@ -155,6 +155,7 @@ public class OekakiRender implements Callback {
             }
             LogUtil.log("get uri :: " + uri);
             document.loadBaseImage(activity, Uri.parse(uri), spriteManager.getVirtualDisplay());
+            document.loadPenTextuers(activity);
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -215,6 +216,10 @@ public class OekakiRender implements Callback {
      */
     public Document getDocument() {
         return document;
+    }
+
+    public SpriteManager getSpriteManager() {
+        return spriteManager;
     }
 
     /**
