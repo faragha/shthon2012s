@@ -28,34 +28,37 @@
             android:src="@drawable/ic_launcher"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             />
         <!-- ボタン：写真を撮ってラクガキ -->
-        <ImageView
+        <Button
             android:id="@+id/btn_take_photo"
-            android:src="@drawable/ic_launcher"
+            android:background="@drawable/base_btn_bk"
+            android:text="@string/main_btn_take_photo"
             android:layout_below="@+id/img_logo"
             android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             />
         <!-- ボタン：写真を選んでラクガキ -->
-        <ImageView
+        <Button
             android:id="@+id/btn_pick_photo"
-            android:src="@drawable/ic_launcher"
+            android:background="@drawable/base_btn_bk"
+            android:text="@string/main_btn_pick_photo"
             android:layout_below="@+id/btn_take_photo"
             android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             />
         <!-- ボタン：トモダチのラクガキに参加 -->
-        <ImageView
+        <Button
             android:id="@+id/btn_join"
-            android:src="@drawable/ic_launcher"
+            android:background="@drawable/base_btn_bk"
+            android:text="@string/main_btn_join"
             android:layout_below="@+id/btn_pick_photo"
             android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             />
     </RelativeLayout>
