@@ -60,6 +60,9 @@ public class BluetoothService {
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
     
+    public static final int fromServer = 0;
+    public static final int fromClient = 1;
+    
     Context mContext;
 
     /**
@@ -125,6 +128,7 @@ public class BluetoothService {
         clearClientThread();
         // Start the thread to connect with the given device
         mConnectAsClientThread = new ConnectAsClientThread(device);
+        mConnectedAsServerThread.isClient = true;
         mConnectAsClientThread.start();
         setStateAsClient(STATE_CONNECTING);
     }
@@ -135,6 +139,7 @@ public class BluetoothService {
         clearServerThread();
         // Start the thread to manage the connection and perform transmissions
         mConnectedAsServerThread = new ConnectedThread(socket, true);
+        mConnectedAsServerThread.isClient = false;
         mConnectedAsServerThread.start();
 
         sendDeviceNameToast(device);
@@ -405,6 +410,8 @@ public class BluetoothService {
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
         private boolean mmServer;
+        
+        public boolean isClient = false;
 
         public ConnectedThread(BluetoothSocket socket, boolean server) {
             Log.d(TAG, "*ConnectedThread* create ConnectedThread");
@@ -438,7 +445,8 @@ public class BluetoothService {
                     bytes = mmInStream.read(buffer);
 
                     // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                    int from = (isClient? fromServer : fromClient);
+                    mHandler.obtainMessage(MESSAGE_READ, bytes, from, buffer).sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
                     connectionLost(mmServer);
