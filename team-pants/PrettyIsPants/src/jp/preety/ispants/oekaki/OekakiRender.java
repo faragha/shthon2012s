@@ -175,6 +175,14 @@ public class OekakiRender implements Callback {
     }
 
     /**
+     * ドキュメントを取得する。
+     * @return
+     */
+    public Document getDocument() {
+        return document;
+    }
+
+    /**
      * 
      * @return
      */
