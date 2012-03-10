@@ -13,6 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class PreviewActivity extends Activity {
 
@@ -31,6 +33,12 @@ public class PreviewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
 		mPreviewView = (PreviewView) findViewById(R.id.previewview);
+		Button buttonBack = (Button) findViewById(R.id.button_back);
+		buttonBack.setOnClickListener(mBackOnClickListener);
+		Button buttonSave = (Button) findViewById(R.id.button_save);
+		buttonSave.setOnClickListener(mSaveOnClickListener);
+		Button buttonShare = (Button) findViewById(R.id.button_share);
+		buttonShare.setOnClickListener(mShareOnClickListener);
 		Intent intent = getIntent();
 		Uri uri = (Uri) intent.getParcelableExtra(IMAGE_URI);
 		// Log.v(TAG, uri.toString());
@@ -69,5 +77,25 @@ public class PreviewActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+	private View.OnClickListener mBackOnClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			setResult(RESULT_CANCELED);
+			finish();
+		}
+	};
+
+	private View.OnClickListener mSaveOnClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+		}
+	};
+
+	private View.OnClickListener mShareOnClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+		}
+	};
 
 }
