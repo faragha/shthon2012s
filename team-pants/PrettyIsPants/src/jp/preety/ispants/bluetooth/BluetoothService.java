@@ -468,8 +468,13 @@ public class BluetoothService {
                         }
                     }
                     readAllBufferSize += bytes;
-                    if(bytes == BUFFER_MAX) {
-                        continue;
+                    
+                    // 終端判定
+                    for(int i = readAllBufferSize - 1; i > readAllBufferSize - 5; i--) {
+                        if(readAllBuffer[i] != 0x0) {
+                            // 終端4byteのうち1つでも0でない場合は終端ではない
+                            continue;
+                        }
                     }
 
                     // Send the obtained bytes to the UI Activity
@@ -494,16 +499,12 @@ public class BluetoothService {
          */
         public void write(byte[] buffer) {
             try {
-                byte[] sendBuffer = buffer;
-                if(buffer.length % BUFFER_MAX == 0) {
-                    byte[] space = " ".getBytes();
-                    sendBuffer = new byte[buffer.length + space.length];
-                    for(int i = 0; i < buffer.length; i++) {
-                        sendBuffer[i] = buffer[i];
-                    }
-                    for(int i = 0; i < space.length; i++) {
-                        sendBuffer[buffer.length + i] = space[i];
-                    }
+                byte[] sendBuffer = new byte[buffer.length + 4];
+                for(int i = 0; i < buffer.length; i++) {
+                    sendBuffer[i] = buffer[i];
+                }
+                for(int i = 0; i < 4; i++) {
+                    sendBuffer[buffer.length + i] = 0x0;
                 }
                 mmOutStream.write(sendBuffer);
 
