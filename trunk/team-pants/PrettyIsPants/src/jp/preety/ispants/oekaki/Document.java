@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.preety.ispants.R;
+import jp.preety.ispants.oekaki.data.Data;
 import jp.preety.ispants.oekaki.data.DataServer;
+import jp.preety.ispants.oekaki.data.DataServer.OnDataUpdateListener;
 import jp.preety.ispants.oekaki.data.Pen;
 import jp.preety.ispants.oekaki.render.RenderShapeBase;
 import android.content.Context;
@@ -29,7 +31,7 @@ import com.eaglesakura.lib.android.game.math.Vector2;
  * @author TAKESHI YAMASHITA
  *
  */
-public class Document {
+public class Document implements OnDataUpdateListener {
     Pen pen;
     OekakiRender render;
     TextureImageBase baseImage = null;
@@ -164,5 +166,29 @@ public class Document {
      */
     public ImageCorrector getBaseImageCorrector() {
         return baseImageCorrector;
+    }
+
+    @Override
+    public void onDataAdded(DataServer server, Data data, String json) {
+        render.rendering();
+    }
+
+    @Override
+    public void onDataReceve(final DataServer server, final Data data) {
+        if (!render.isRenderThread()) {
+            render.getRenderHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    onDataReceve(server, data);
+                }
+            });
+            return;
+        }
+
+        {
+            //            RenderShapeBase shape = RenderShapeBase.createInstance(render, data);
+        }
+
+        render.rendering();
     }
 }

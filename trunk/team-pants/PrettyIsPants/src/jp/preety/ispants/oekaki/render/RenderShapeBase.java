@@ -144,4 +144,9 @@ public abstract class RenderShapeBase extends DisposableResource {
     public static RenderShapeBase createInstance(OekakiRender render) {
         return new TegakiLineRender(render);
     }
+
+    public static RenderShapeBase createInstance(OekakiRender render, Data data) {
+        return new TegakiLineRender(render, data);
+    }
+
 }
