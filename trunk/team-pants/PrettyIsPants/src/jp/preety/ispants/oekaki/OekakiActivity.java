@@ -4,6 +4,8 @@ import jp.preety.ispants.R;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.eaglesakura.lib.android.game.util.LogUtil;
+
 /**
  * お絵かき用のActivity
  * @author TAKESHI YAMASHITA
@@ -25,6 +27,8 @@ public class OekakiActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oekaki);
+
+        LogUtil.setOutput(true);
         render = new OekakiRender(this);
     }
 

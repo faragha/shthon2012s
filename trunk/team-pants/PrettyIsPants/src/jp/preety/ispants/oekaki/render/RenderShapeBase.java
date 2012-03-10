@@ -79,7 +79,7 @@ public abstract class RenderShapeBase extends DisposableResource {
         data.beginTime = System.currentTimeMillis();
 
         final float x = u * 2 - 1.0f;
-        final float y = u * 2 - 1.0f;
+        final float y = -(v * 2 - 1.0f);
         buffer.put(pointer++, x);
         buffer.put(pointer++, y);
         buffer.position(0);
@@ -140,4 +140,7 @@ public abstract class RenderShapeBase extends DisposableResource {
         return pointer;
     }
 
+    public static RenderShapeBase createInstance(OekakiRender render) {
+        return new TegakiLineRender(render);
+    }
 }
