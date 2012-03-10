@@ -15,6 +15,9 @@ public class OekakiActivity extends Activity {
      */
     public static final String INTENT_IMAGE_URI = "INTENT_IMAGE_URI";
 
+    /**
+     * お絵かき用のレンダリングオブジェクト
+     */
     OekakiRender render = null;
 
     @Override
