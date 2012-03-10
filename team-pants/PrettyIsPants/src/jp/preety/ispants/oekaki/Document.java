@@ -48,6 +48,7 @@ public class Document implements OnDataUpdateListener {
     public Document(OekakiRender render) {
         this.render = render;
         server = new DataServer(render);
+        server.addListener(this);
 
         //! 適当なペンを作成する
         {
@@ -186,7 +187,8 @@ public class Document implements OnDataUpdateListener {
         }
 
         {
-            //            RenderShapeBase shape = RenderShapeBase.createInstance(render, data);
+            RenderShapeBase shape = RenderShapeBase.createInstance(render, data);
+            shapeDatas.add(shape);
         }
 
         render.rendering();

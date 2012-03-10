@@ -1,7 +1,7 @@
 package jp.preety.ispants.oekaki;
 
 import jp.preety.ispants.R;
-import android.app.Activity;
+import jp.preety.ispants.bluetooth.BluetoothActivity;
 import android.os.Bundle;
 
 import com.eaglesakura.lib.android.game.util.LogUtil;
@@ -11,7 +11,7 @@ import com.eaglesakura.lib.android.game.util.LogUtil;
  * @author TAKESHI YAMASHITA
  *
  */
-public class OekakiActivity extends Activity {
+public class OekakiActivity extends BluetoothActivity {
 
     /**
      * 画像の保存先を伝える
@@ -24,7 +24,7 @@ public class OekakiActivity extends Activity {
     OekakiRender render = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oekaki);
 
@@ -42,5 +42,13 @@ public class OekakiActivity extends Activity {
     protected void onResume() {
         super.onResume();
         render.onResume();
+    }
+
+    /**
+     * 他の端末からデータを受け取った
+     */
+    @Override
+    protected void onMessageRead(String message) {
+        render.getDocument().getServer().add(message);
     }
 }
