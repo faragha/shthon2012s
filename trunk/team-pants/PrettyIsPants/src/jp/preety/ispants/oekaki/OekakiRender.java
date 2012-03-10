@@ -1,10 +1,16 @@
 package jp.preety.ispants.oekaki;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import jp.preety.ispants.R;
 import jp.preety.ispants.oekaki.gesture.GestureController;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -171,6 +177,23 @@ public class OekakiRender implements Callback {
             rendering();
         }
     };
+
+    public void capture(final File output) {
+        if (!isRenderThread()) {
+            throw new IllegalStateException("this is not render thread!!");
+        }
+
+        rendering();
+        Rect imageArea = document.getBaseImageCorrector().getImageArea(new Rect());
+        Bitmap data = getGLManager().captureSurfaceRGB888(imageArea);
+        try {
+            FileOutputStream os = new FileOutputStream(output);
+            data.compress(CompressFormat.PNG, 100, os);
+            os.close();
+        } catch (Exception e) {
+            LogUtil.log(e);
+        }
+    }
 
     /**
      * 描画を行う。

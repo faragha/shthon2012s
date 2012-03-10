@@ -119,11 +119,9 @@ public class GestureController implements android.view.GestureDetector.OnGesture
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL
                 || action == MotionEvent.ACTION_OUTSIDE) {
             onTouchEnd(event);
-            render.rendering();
         } else if (action == MotionEvent.ACTION_DOWN) {
             onTouchBegin(event);
         } else if (action == MotionEvent.ACTION_MOVE) {
-
             // 手書きだったらライン書く
             if (isTegaki()) {
                 Vector2 uv = toUV(event);
