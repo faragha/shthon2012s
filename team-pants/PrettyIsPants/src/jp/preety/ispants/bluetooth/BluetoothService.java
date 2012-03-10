@@ -65,6 +65,8 @@ public class BluetoothService {
     
     private static final int BUFFER_MAX = 1024;
     
+    private static final String EOD = "          ";
+    
     Context mContext;
 
     /**
@@ -443,63 +445,25 @@ public class BluetoothService {
 
             // Keep listening to the InputStream while connected
             StringBuffer sb = new StringBuffer();
-            //int readAllBufferSize = 0;
-            //byte[] readAllBuffer = new byte[1];
             while (true) {
                 try {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
-                    /*
-                    if(readAllBufferSize != 0) {
-                        byte[] tempBuffer = new byte[readAllBufferSize];
-                        for(int i = 0; i < readAllBufferSize; i++) {
-                            tempBuffer[i] = readAllBuffer[i];
-                        }
-                        readAllBuffer = new byte[readAllBufferSize + bytes];
-                        for(int i = 0; i < readAllBufferSize; i++) {
-                            readAllBuffer[i] = tempBuffer[i];
-                        }
-                        for(int i = 0; i < bytes; i++) {
-                            readAllBuffer[readAllBufferSize + i] = buffer[i];
-                        }
-                    } else {
-                        readAllBuffer = new byte[bytes];
-                        for(int i = 0; i < bytes; i++) {
-                            readAllBuffer[i] = buffer[i];
-                        }
-                    }
-                    readAllBufferSize += bytes;
-                    */
                     String str = new String(buffer, 0, bytes);
                     sb.append(str);
                     // 終端判定
                     String allStr = sb.toString();
-                    int index = allStr.lastIndexOf("    ");
+                    int index = allStr.lastIndexOf(EOD);
                     if(index == -1 || index != allStr.length() - 4) {
                         continue;
                     }
                     allStr = allStr.substring(0, index);
                     byte[] readAllBuffer = allStr.getBytes();
-                    /*
-                    if(readAllBufferSize < 4) {
-                        continue;
-                    }
-                    for(int i = readAllBufferSize - 1; i > readAllBufferSize - 5; i--) {
-                        if(readAllBuffer[i] != 0x0) {
-                            // 終端4byteのうち1つでも0でない場合は終端ではない
-                            continue;
-                        }
-                    }
-                    */
 
                     // Send the obtained bytes to the UI Activity
                     int from = (isClient? FROM_SERVER : FROM_CLIENT);
                     Log.d(TAG, String.valueOf(readAllBuffer.length));
                     mHandler.obtainMessage(MESSAGE_READ, readAllBuffer.length, from, readAllBuffer).sendToTarget();
-                    /*
-                    readAllBufferSize = 0;
-                    readAllBuffer = new byte[1];
-                    */
                     sb = new StringBuffer();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
@@ -517,7 +481,7 @@ public class BluetoothService {
          */
         public void write(byte[] buffer) {
             try {
-                byte[] space = "    ".getBytes();
+                byte[] space = EOD.getBytes();
                 byte[] sendBuffer = new byte[buffer.length + space.length];
                 for(int i = 0; i < buffer.length; i++) {
                     sendBuffer[i] = buffer[i];
