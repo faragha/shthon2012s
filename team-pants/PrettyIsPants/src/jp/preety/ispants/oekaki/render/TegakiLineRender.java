@@ -39,8 +39,14 @@ public class TegakiLineRender extends RenderShapeBase {
             ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
             float imageAspect = baseImageCorrector.getImageAspect();
             if (imageAspect > 1) {
+                float over = imageAspect - 1.0f;
+                imageAspect = baseImageCorrector.getImageAspect() - (over / 2);
+
                 gl.glScalef(1.0f, 1.0f / imageAspect, 1);
             } else {
+                float over = 1.0f - imageAspect;
+                imageAspect = baseImageCorrector.getImageAspect() + (over / 2);
+
                 gl.glScalef(imageAspect, 1.0f, 1);
             }
         }
