@@ -1,5 +1,6 @@
 package jp.preety.ispants.oekaki;
 
+import jp.preety.ispants.R;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ public class OekakiActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.oekaki);
         render = new OekakiRender(this);
     }
 
