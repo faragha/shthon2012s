@@ -2,6 +2,7 @@ package jp.preety.ispants.oekaki;
 
 import java.io.IOException;
 
+import jp.preety.ispants.oekaki.data.Pen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -21,6 +22,7 @@ import com.eaglesakura.lib.android.game.math.Vector2;
  *
  */
 public class Document {
+    Pen pen;
     OekakiRender render;
     TextureImageBase baseImage = null;
     ImageCorrector baseImageCorrector = new ImageCorrector();
@@ -48,5 +50,22 @@ public class Document {
         Rect area = baseImageCorrector.getImageArea(new Rect());
         spriteManager.drawImage(baseImage, 0, 0, baseImage.getWidth(), baseImage.getHeight(), area.left, area.top,
                 area.width(), area.height(), 0, 0xffffffff);
+    }
+
+    /**
+     * 描画用のペンを取得する。
+     * @return
+     */
+    public Pen getPen() {
+        return pen;
+    }
+
+    /**
+     * 描画用のペンを設定する。
+     * 設定後、このPenはRead-Onlyにしておくこと。
+     * @param pen
+     */
+    public void setPen(Pen pen) {
+        this.pen = pen;
     }
 }
