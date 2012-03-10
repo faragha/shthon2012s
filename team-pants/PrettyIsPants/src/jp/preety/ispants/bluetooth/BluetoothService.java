@@ -447,6 +447,7 @@ public class BluetoothService {
             while (true) {
                 try {
                     // Read from the InputStream
+                    readAllBufferSize = 0;
                     bytes = mmInStream.read(buffer);
                     if(readAllBufferSize != 0) {
                         byte[] tempBuffer = new byte[readAllBufferSize];
@@ -475,6 +476,8 @@ public class BluetoothService {
                     int from = (isClient? FROM_SERVER : FROM_CLIENT);
                     Log.d(TAG, String.valueOf(readAllBufferSize));
                     mHandler.obtainMessage(MESSAGE_READ, readAllBufferSize, from, readAllBuffer).sendToTarget();
+                    readAllBufferSize = 0;
+                    readAllBuffer = new byte[1];
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
                     connectionLost(mmServer);
