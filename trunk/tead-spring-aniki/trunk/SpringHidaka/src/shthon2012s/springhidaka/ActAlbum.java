@@ -25,7 +25,7 @@ public class ActAlbum extends Activity {
 
 		ctx = this.getApplicationContext();
 
-		//ためしにかさねてみたよ
+		// ためしにかさねてみたよ
 		testOverlay();
 	}
 
@@ -43,21 +43,18 @@ public class ActAlbum extends Activity {
 
 			is = getResources().getAssets().open("copy1_01.png");
 			bmo = BitmapFactory.decodeStream(is);
-			mCanvas.drawBitmap(bmo ,0,0, null);
+			mCanvas.drawBitmap(bmo, 0, 0, null);
 			is = getResources().getAssets().open("copy2_01.png");
 			bmo = BitmapFactory.decodeStream(is);
-			mCanvas.drawBitmap(bmo ,0,0, null);
+			mCanvas.drawBitmap(bmo, 0, 0, null);
 			is = getResources().getAssets().open("copy3_01.png");
 			bmo = BitmapFactory.decodeStream(is);
-			mCanvas.drawBitmap(bmo ,0,0, null);
+			mCanvas.drawBitmap(bmo, 0, 0, null);
 
-			        ImageView image = (ImageView)findViewById(R.id.imageView1);
-			        image.setImageBitmap(bm);
-
-
+			ImageView image = (ImageView) findViewById(R.id.imageView1);
+			image.setImageBitmap(bm);
 
 		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
