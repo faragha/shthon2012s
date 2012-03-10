@@ -55,6 +55,8 @@ public class ActCallList extends Activity {
 		phoneNumber=pn;
 		//ここからAPI
 
+		//おわったらSMS
+
 	}
 	private void SendSMS(){
 		SmsManager smsManager = SmsManager.getDefault();

@@ -13,14 +13,14 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="49dp"
-        android:layout_toLeftOf="@+id/linearLayout1"
-        android:text="あるばむ" />
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="94dp"
+        android:src="@drawable/ic_launcher" />
 
 </RelativeLayout>
