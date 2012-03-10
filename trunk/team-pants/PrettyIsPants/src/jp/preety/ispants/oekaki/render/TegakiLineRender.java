@@ -32,11 +32,9 @@ public class TegakiLineRender extends RenderShapeBase {
             return;
         }
         final GL11 gl = render.getGLManager().getGL();
-        gl.glLoadIdentity();
         gl.glColor4f(data.pen.color.r, data.pen.color.g, data.pen.color.b, data.pen.color.a);
         gl.glVertexPointer(2, GL10.GL_FLOAT, 0, getBuffer());
         gl.glLineWidth(data.pen.width);
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glDrawArrays(GL10.GL_LINE_STRIP, 0, num);
     }
 

@@ -67,6 +67,7 @@ public class GestureController implements android.view.GestureDetector.OnGesture
     }
 
     public void onTouchEnd(MotionEvent e) {
+        render.getDocument().addShape(currentShape);
         currentShape = null;
     }
 
