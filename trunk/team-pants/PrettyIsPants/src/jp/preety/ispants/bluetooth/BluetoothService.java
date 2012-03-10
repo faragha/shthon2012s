@@ -466,7 +466,7 @@ public class BluetoothService {
 
                     // Send the obtained bytes to the UI Activity
                     int from = (isClient? FROM_SERVER : FROM_CLIENT);
-                    mHandler.obtainMessage(MESSAGE_READ, bytes, from, readAllBuffer).sendToTarget();
+                    mHandler.obtainMessage(MESSAGE_READ, readAllBufferSize, from, readAllBuffer).sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
                     connectionLost(mmServer);
