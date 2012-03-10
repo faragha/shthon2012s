@@ -2,6 +2,8 @@ package shthon2012s.springhidaka.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
+import java.lang.reflect.Field;
 
 import shthon2012s.springhidaka.DialNumber;
 
@@ -78,5 +80,66 @@ public class Utils {
 		c.close();
 
 		return datas;
+	}
+
+
+	private ArrayList<Integer> frameList;
+	private ArrayList<Integer> copy1List;
+	private ArrayList<Integer> copy2List;
+	private ArrayList<Integer> copy3List;
+
+	public void createDrawbleCollection() {
+		// Rクラスの全ての内部クラスを取得
+		Class<?>[] classes = shthon2012s.springhidaka.R.class.getClasses();
+		for (Class<?> cls : classes) {
+			// 内部クラスがdrawbleならコレクションを作る
+			if (cls.getSimpleName().equals("drawable")) {
+				Field[] fields = cls.getFields();
+				String name;
+				for (Field field : fields) {
+					try {
+						name = field.getName();
+						if(name.startsWith("frame")){	//frame前方一致
+							//コレクションに格納
+							this.frameList.add((Integer) field.get(name));
+						}
+						if(name.startsWith("copy1")){
+							//コレクションに格納
+							this.copy1List.add((Integer) field.get(name));
+						}
+						if(name.startsWith("copy2")){
+							//コレクションに格納
+							this.copy2List.add((Integer) field.get(name));
+						}
+
+						if(name.startsWith("copy3")){
+							//コレクションに格納
+							this.copy3List.add((Integer) field.get(name));
+						}
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	public int getDrawableFrameId(){
+		Random rand = new Random();
+		return frameList.get(rand.nextInt(frameList.size()));
+	}
+	public int getDrawableCopy1Id(){
+		Random rand = new Random();
+		return copy1List.get(rand.nextInt(frameList.size()));
+	}
+	public int getDrawableCopy2Id(){
+		Random rand = new Random();
+		return copy2List.get(rand.nextInt(frameList.size()));
+	}
+	public int getDrawableCopy3Id(){
+		Random rand = new Random();
+		return copy3List.get(rand.nextInt(frameList.size()));
 	}
 }
