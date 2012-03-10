@@ -21,13 +21,14 @@ public class BluetoothActivity extends Activity {
     private BluetoothAdapter mBluetoothAdapter = null;
     // Member object for the chat services
     private BluetoothService mService = null;
+    private int mServerFlag = 0;
     
     String mConnectedDeviceName;
     
     public static final String EXTRA_SERVER = "EXTRA_SERVER";
     
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -51,9 +52,9 @@ public class BluetoothActivity extends Activity {
                 mService.start();
                 Intent i = getIntent();
                 if (i.hasExtra(EXTRA_SERVER)) {
-                    int serverFlag = i.getIntExtra(EXTRA_SERVER, 0);
+                    mServerFlag = i.getIntExtra(EXTRA_SERVER, 0);
                     i.removeExtra(EXTRA_SERVER);
-                    if (serverFlag == 1) {
+                    if (mServerFlag == 1) {
                     } else {
                         pickBluetooth();
                     }
@@ -82,6 +83,7 @@ public class BluetoothActivity extends Activity {
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf, 0, msg.arg1);
                 Log.d(TAG, readMessage);
+                sendToOtherDevice(readMessage, msg.arg2);
                 onMessageRead(readMessage);
                 break;
             case BluetoothService.MESSAGE_DEVICE_NAME:
@@ -107,6 +109,31 @@ public class BluetoothActivity extends Activity {
     private void pickBluetooth() {
         Intent intent = new Intent(this, BluetoothListPickerActivity.class);
         this.startActivityForResult(intent, REQUEST_PICK_BLUETOOTH_DEVICE);
+    }
+    
+    private void sendToOtherDevice(String sendData, int from) {
+        if(mService != null) {
+            switch(from) {
+            case BluetoothService.fromClient:
+                if(mServerFlag == 0) {
+                    mService.writeAsClient(sendData.getBytes());
+                }
+                break;
+            case BluetoothService.fromServer:
+                mService.writeAsServer(sendData.getBytes());
+                break;
+            default:
+                mService.writeAsServer(sendData.getBytes());
+                if(mServerFlag == 0) {
+                    mService.writeAsClient(sendData.getBytes());
+                }
+                break;
+            }
+        }
+    }
+    
+    protected void sendToOtherDevice(String sendData) {
+        sendToOtherDevice(sendData, -1);
     }
     
     @Override
