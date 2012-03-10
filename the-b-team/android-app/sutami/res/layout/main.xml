@@ -1,21 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"  android:gravity="center_vertical" >
+    android:background="@drawable/background"
+    >
 
-    <Button
-        android:id="@+id/button_taka_a_picture"
+    <ImageView
+        android:id="@+id/image_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/taka_a_picture" 
-        android:layout_margin="10dp" />
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/title_top" android:adjustViewBounds="true"/>
 
-    <Button
-        android:id="@+id/button_pick_a_picture"
+    <ImageView
+        android:id="@+id/image_bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pick_a_picture"
-        android:layout_margin="10dp" />
+        android:layout_alignParentBottom="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/title_bottom" android:adjustViewBounds="true"/>
+    
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_centerInParent="true"
+	    android:orientation="vertical"
+	    android:gravity="center_horizontal"
+	    android:layout_below="@+id/image_top"
+        android:layout_above="@+id/image_bottom"
+        >
+        
+	    <Button
+	        android:id="@+id/button_taka_a_picture"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dip"
+	        android:layout_weight="1"
+	        android:background="@drawable/button_camera"
+            android:scaleType="centerInside"
+	        android:layout_margin="5dp" />
+	
+        <Button
+	        android:id="@+id/button_pick_a_picture"
+	        android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:background="@drawable/button_gallery"
+            android:scaleType="centerInside"
+	        android:layout_margin="5dp" />
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
