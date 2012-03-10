@@ -448,7 +448,7 @@ public class BluetoothService {
                 try {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
-                    if(bytes > 0) {
+                    if(bytes == BUFFER_MAX) {
                         byte[] tempBuffer = new byte[readAllBufferSize];
                         for(int i = 0; i < readAllBufferSize; i++) {
                             tempBuffer[i] = readAllBuffer[i];
@@ -483,7 +483,15 @@ public class BluetoothService {
          */
         public void write(byte[] buffer) {
             try {
-                mmOutStream.write(buffer);
+                byte[] sendBuffer = buffer;
+                if(buffer.length % BUFFER_MAX == 0) {
+                    sendBuffer = new byte[buffer.length + 1];
+                    for(int i = 0; i < sendBuffer.length; i++) {
+                        sendBuffer[i] = buffer[i];
+                    }
+                    sendBuffer[sendBuffer.length - 1] = 0x20;
+                }
+                mmOutStream.write(sendBuffer);
 
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
