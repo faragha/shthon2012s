@@ -128,7 +128,6 @@ public class BluetoothService {
         clearClientThread();
         // Start the thread to connect with the given device
         mConnectAsClientThread = new ConnectAsClientThread(device);
-        mConnectedAsServerThread.isClient = true;
         mConnectAsClientThread.start();
         setStateAsClient(STATE_CONNECTING);
     }
@@ -160,6 +159,7 @@ public class BluetoothService {
         clearClientThread();
         // Start the thread to manage the connection and perform transmissions
         mConnectedAsClientThread = new ConnectedThread(socket, false);
+        mConnectedAsClientThread.isClient = true;
         mConnectedAsClientThread.start();
 
         sendDeviceNameToast(device);
