@@ -6,6 +6,8 @@ import javax.microedition.khronos.opengles.GL11;
 import jp.preety.ispants.oekaki.OekakiRender;
 import jp.preety.ispants.oekaki.data.Data;
 
+import com.eaglesakura.lib.android.game.graphics.ImageCorrector;
+
 public class TegakiLineRender extends RenderShapeBase {
 
     /**
@@ -32,6 +34,16 @@ public class TegakiLineRender extends RenderShapeBase {
             return;
         }
         final GL11 gl = render.getGLManager().getGL();
+        gl.glLoadIdentity();
+        {
+            ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
+            float imageAspect = baseImageCorrector.getImageAspect();
+            if (imageAspect > 1) {
+                gl.glScalef(1.0f, 1.0f / imageAspect, 1);
+            } else {
+                gl.glScalef(imageAspect, 1.0f, 1);
+            }
+        }
         gl.glColor4f(data.pen.color.r, data.pen.color.g, data.pen.color.b, data.pen.color.a);
         gl.glVertexPointer(2, GL10.GL_FLOAT, 0, getBuffer());
         gl.glLineWidth(data.pen.width);

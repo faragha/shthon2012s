@@ -195,7 +195,6 @@ public class OekakiRender implements Callback {
 
         {
             GL11 gl = glManager.getGL();
-            gl.glLoadIdentity();
             gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 
             {
@@ -206,6 +205,8 @@ public class OekakiRender implements Callback {
             //! ジェスチャ範囲を描画する
             controller.draw();
         }
+
+        document.drawYohaku(spriteManager);
 
         glManager.swapBuffers();
     }
