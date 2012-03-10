@@ -37,7 +37,7 @@
                 android:id="@+id/bt_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="撮る" android:layout_centerVertical="true" android:layout_alignParentRight="true"/>
+                android:layout_centerVertical="true" android:layout_alignParentRight="true" android:background="@drawable/btn_shutter" android:layout_marginRight="50dp"/>
 
         </RelativeLayout>
 
