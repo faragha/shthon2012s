@@ -4,9 +4,16 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <Button
+        android:id="@+id/button_taka_a_picture"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:text="@string/taka_a_picture" />
+
+    <Button
+        android:id="@+id/button_pick_a_picture"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_a_picture" />
 
 </LinearLayout>
