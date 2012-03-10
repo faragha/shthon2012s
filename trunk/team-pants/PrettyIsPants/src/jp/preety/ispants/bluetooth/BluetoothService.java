@@ -470,6 +470,9 @@ public class BluetoothService {
                     readAllBufferSize += bytes;
                     
                     // 終端判定
+                    if(readAllBufferSize < 4) {
+                        continue;
+                    }
                     for(int i = readAllBufferSize - 1; i > readAllBufferSize - 5; i--) {
                         if(readAllBuffer[i] != 0x0) {
                             // 終端4byteのうち1つでも0でない場合は終端ではない
