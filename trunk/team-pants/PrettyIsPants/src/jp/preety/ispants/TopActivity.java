@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -108,7 +107,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
      */
     protected void onPhotoSelected(Uri uri) {
         final Intent intent = new Intent(this, OekakiActivity.class);
-        Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+        startActivity(intent);
     }
     
     /** ファイル名生成 */
