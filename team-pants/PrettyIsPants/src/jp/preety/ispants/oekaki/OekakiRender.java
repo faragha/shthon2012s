@@ -1,9 +1,13 @@
 package jp.preety.ispants.oekaki;
 
 import jp.preety.ispants.R;
+import jp.preety.ispants.oekaki.gesture.GestureController;
 import android.net.Uri;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 
 import com.eaglesakura.lib.android.game.display.VirtualDisplay;
@@ -57,6 +61,11 @@ public class OekakiRender implements Callback {
 
     /**
      * 
+     */
+    GestureController controller = new GestureController(this);
+
+    /**
+     * 
      * @param activity
      */
     public OekakiRender(OekakiActivity activity) {
@@ -66,7 +75,13 @@ public class OekakiRender implements Callback {
             layout = (FrameLayout) activity.findViewById(R.id.oekaki_area);
             glView = new OpenGLView(activity);
             glView.getHolder().addCallback(this);
-
+            glView.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    controller.onTouch(event);
+                    return true;
+                }
+            });
             layout.addView(glView);
         }
     }
@@ -171,6 +186,11 @@ public class OekakiRender implements Callback {
         }
         spriteManager.end();
 
+        {
+            //! ジェスチャ範囲を描画する
+            controller.draw();
+        }
+
         glManager.swapBuffers();
     }
 
@@ -204,5 +224,9 @@ public class OekakiRender implements Callback {
      */
     public boolean isRenderThread() {
         return renderHandler.isHandlerThread();
+    }
+
+    public GestureController getController() {
+        return controller;
     }
 }
