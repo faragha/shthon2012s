@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, SutamiActivity!</string>
     <string name="app_name">Sutami</string>
+    <string name="taka_a_picture">カメラを使って画像を用意する！</string>
+    <string name="pick_a_picture">ギャラリーから画像を選択する！</string>
 
 </resources>
