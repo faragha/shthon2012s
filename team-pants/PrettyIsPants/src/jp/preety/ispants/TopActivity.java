@@ -1,5 +1,10 @@
 package jp.preety.ispants;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import jp.preety.ispants.oekaki.OekakiActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,12 +14,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import jp.preety.ispants.oekaki.OekakiActivity;
-
 /**
  * Top Activity
  * @author pretty is pants
@@ -22,9 +21,7 @@ import jp.preety.ispants.oekaki.OekakiActivity;
 public class TopActivity extends Activity implements View.OnClickListener {
     private static final int REQUEST_TAKE_PHOTO = 0x0100;
     private static final int REQUEST_PICK_PHOTO = 0x0200;
-    private static final File PHOTO_DIR = new File(
-            Environment.getExternalStorageDirectory() + "/DCIM/Camera"
-        );
+    private static final File PHOTO_DIR = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera");
     protected File mCurrentPhotoFile;
 
     @Override
@@ -32,21 +29,21 @@ public class TopActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        final Button takePhotoButton = (Button)findViewById(R.id.btn_take_photo);
-        final Button pickPhotoButton = (Button)findViewById(R.id.btn_pick_photo);
-        final Button joinButton = (Button)findViewById(R.id.btn_join);
+        final Button takePhotoButton = (Button) findViewById(R.id.btn_take_photo);
+        final Button pickPhotoButton = (Button) findViewById(R.id.btn_pick_photo);
+        final Button joinButton = (Button) findViewById(R.id.btn_join);
         takePhotoButton.setOnClickListener(this);
         pickPhotoButton.setOnClickListener(this);
         joinButton.setOnClickListener(this);
     }
-    
+
     /**
      * Event Handler: on receive activity result
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            // 写真を撮ってラクガキ
+        // 写真を撮ってラクガキ
             case REQUEST_TAKE_PHOTO: {
                 if (resultCode == RESULT_OK) {
                     onPhotoSelected(Uri.fromFile(mCurrentPhotoFile));
@@ -69,9 +66,15 @@ public class TopActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_take_photo: takePhoto(); break;
-            case R.id.btn_pick_photo: pickPhoto(); break;
-            case R.id.btn_join: join(); break;
+            case R.id.btn_take_photo:
+                takePhoto();
+                break;
+            case R.id.btn_pick_photo:
+                pickPhoto();
+                break;
+            case R.id.btn_join:
+                join();
+                break;
         }
     }
 
@@ -81,9 +84,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
     private void takePhoto() {
         mCurrentPhotoFile = getTempFile(PHOTO_DIR, "IMG_", ".jpg");
         final Uri uri = Uri.fromFile(mCurrentPhotoFile);
-        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            .putExtra(MediaStore.EXTRA_OUTPUT, uri)
-        ;
+        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
@@ -101,15 +102,16 @@ public class TopActivity extends Activity implements View.OnClickListener {
     private void join() {
         // トモダチのラクガキに参加する
     }
-    
+
     /**
      * 写真選択時のイベント
      */
     protected void onPhotoSelected(Uri uri) {
         final Intent intent = new Intent(this, OekakiActivity.class);
+        intent.putExtra(OekakiActivity.INTENT_IMAGE_URI, uri.toString());
         startActivity(intent);
     }
-    
+
     /** ファイル名生成 */
     protected static File getTempFile(File dir, String prefix, String suffix) {
         final Date date = new Date(System.currentTimeMillis());
