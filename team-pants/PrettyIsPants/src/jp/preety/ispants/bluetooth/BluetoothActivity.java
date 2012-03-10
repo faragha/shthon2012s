@@ -114,12 +114,12 @@ public class BluetoothActivity extends Activity {
     private void sendToOtherDevice(String sendData, int from) {
         if(mService != null) {
             switch(from) {
-            case BluetoothService.fromClient:
+            case BluetoothService.FROM_CLIENT:
                 if(mServerFlag == 0) {
                     mService.writeAsClient(sendData.getBytes());
                 }
                 break;
-            case BluetoothService.fromServer:
+            case BluetoothService.FROM_SERVER:
                 mService.writeAsServer(sendData.getBytes());
                 break;
             default:

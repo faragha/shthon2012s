@@ -60,8 +60,10 @@ public class BluetoothService {
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
     
-    public static final int fromServer = 0;
-    public static final int fromClient = 1;
+    public static final int FROM_SERVER = 0;
+    public static final int FROM_CLIENT = 1;
+    
+    private static final int BUFFER_MAX = 1024;
     
     Context mContext;
 
@@ -435,18 +437,36 @@ public class BluetoothService {
         @Override
         public void run() {
             Log.i(TAG, "*ConnectedThread* BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BUFFER_MAX];
             int bytes;
+            
 
             // Keep listening to the InputStream while connected
+            int readAllBufferSize = 0;
+            byte[] readAllBuffer = new byte[1];
             while (true) {
                 try {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
+                    if(bytes > 0) {
+                        byte[] tempBuffer = new byte[readAllBufferSize];
+                        for(int i = 0; i < readAllBufferSize; i++) {
+                            tempBuffer[i] = readAllBuffer[i];
+                        }
+                        readAllBuffer = new byte[readAllBufferSize + bytes];
+                        for(int i = 0; i < readAllBufferSize; i++) {
+                            readAllBuffer[i] = tempBuffer[i];
+                        }
+                        for(int i = 0; i < bytes; i++) {
+                            readAllBuffer[readAllBufferSize + i] = buffer[i];
+                        }
+                        readAllBufferSize += bytes;
+                        continue;
+                    }
 
                     // Send the obtained bytes to the UI Activity
-                    int from = (isClient? fromServer : fromClient);
-                    mHandler.obtainMessage(MESSAGE_READ, bytes, from, buffer).sendToTarget();
+                    int from = (isClient? FROM_SERVER : FROM_CLIENT);
+                    mHandler.obtainMessage(MESSAGE_READ, bytes, from, readAllBuffer).sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
                     connectionLost(mmServer);
