@@ -51,4 +51,9 @@ public class OekakiActivity extends BluetoothActivity {
     protected void onMessageRead(String message) {
         render.getDocument().getServer().add(message);
     }
+
+    @Override
+    protected void sendToOtherDevice(String sendData) {
+        super.sendToOtherDevice(sendData);
+    }
 }
