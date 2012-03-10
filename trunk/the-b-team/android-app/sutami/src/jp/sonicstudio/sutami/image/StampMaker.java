@@ -10,12 +10,12 @@ public class StampMaker {
 
     private static final String TAG = "StampMaker";
 
-    public static final int THRESHHOLD_LEVEL_1 = 120;
-    public static final int THRESHHOLD_LEVEL_2 = 124;
-    public static final int THRESHHOLD_LEVEL_3 = 128;
-    public static final int THRESHHOLD_LEVEL_4 = 132;
-    public static final int THRESHHOLD_LEVEL_5 = 136;
-    public static final int DEFAULT_THRESHHOLD = THRESHHOLD_LEVEL_3;
+    public static final int THRESHOLD_LEVEL_1 = 90;
+    public static final int THRESHOLD_LEVEL_2 = 100;
+    public static final int THRESHOLD_LEVEL_3 = 110;
+    public static final int THRESHOLD_LEVEL_4 = 120;
+    public static final int THRESHOLD_LEVEL_5 = 130;
+    public static final int DEFAULT_THRESHOLD = THRESHOLD_LEVEL_3;
 
     private Bitmap mSrcBitmap;
     private Bitmap mDstBitmap;
@@ -35,7 +35,7 @@ public class StampMaker {
      * @param threshhold　閾値（0から255）
      * @return 作成したスタンプ画像ビットマップ
      */
-    public Bitmap process(int threshhold) {
+    public Bitmap process(int threshold) {
         if (mDstBitmap != null) {
             int width = mSrcBitmap.getWidth();
             int height = mSrcBitmap.getHeight();
@@ -61,7 +61,7 @@ public class StampMaker {
                             gray = 255;
                         }
                         // 閾値を超えた画素は透明にする
-                        if (gray > threshhold) {
+                        if (gray > threshold) {
                             a = 0;
                         }
                         int newPixel = (a << 24 | r << 16 | g << 8 | b << 0);
