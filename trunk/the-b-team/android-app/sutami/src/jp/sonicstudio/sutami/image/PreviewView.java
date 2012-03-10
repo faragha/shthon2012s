@@ -2,11 +2,9 @@ package jp.sonicstudio.sutami.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -38,8 +36,8 @@ public class PreviewView extends View {
 			float scale = Math.min(scaleWidth, scaleHeight);
 			int scaledWidth = (int) (scale * mBitmap.getWidth());
 			int scaledHeight = (int) (scale * mBitmap.getHeight());
-			int offsetX = (mViewWidth - scaledWidth) / 2; 
-			int offsetY = 0; // (mViewHeight - scaledHeight) / 2; // 上寄せ
+			int offsetX = (mViewWidth - scaledWidth) / 2;
+			int offsetY = (mViewHeight - scaledHeight) / 2; // 上寄せ
 			Paint paint = new Paint();
 			Matrix matrix = new Matrix();
 			matrix.setScale(scale, scale);
@@ -47,18 +45,18 @@ public class PreviewView extends View {
 			canvas.drawBitmap(mBitmap, matrix, paint);
 		}
 	}
-	
+
 	public void setBitmap(Bitmap bitmap) {
 		mBitmap = bitmap;
 		invalidate();
 	}
-	
+
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		mViewWidth = w;
-		mViewHeight= h;
+		mViewHeight = h;
 		invalidate();
 	}
-	
+
 }
