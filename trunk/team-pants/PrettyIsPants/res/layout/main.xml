@@ -1,10 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    <TextView
+    android:orientation="vertical"
+    >
+    <!-- 修飾画像:上のレース -->
+    <ImageView
+        android:id="@+id/img_lace_top"
+        android:src="@drawable/ic_launcher"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
-</LinearLayout>
+        />
+    <!-- メインロゴとボタン -->
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <!-- メインロゴ -->
+        <ImageView
+            android:id="@+id/img_logo"
+            android:src="@drawable/ic_launcher"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <!-- ボタン：写真を撮ってラクガキ -->
+        <ImageView
+            android:id="@+id/btn_take_photo"
+            android:src="@drawable/ic_launcher"
+            android:layout_below="@+id/img_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <!-- ボタン：写真を選んでラクガキ -->
+        <ImageView
+            android:id="@+id/btn_pick_photo"
+            android:src="@drawable/ic_launcher"
+            android:layout_below="@+id/btn_take_photo"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <!-- ボタン：トモダチのラクガキに参加 -->
+        <ImageView
+            android:id="@+id/btn_join"
+            android:src="@drawable/ic_launcher"
+            android:layout_below="@+id/btn_pick_photo"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </RelativeLayout>
+    <!-- 修飾画像:下のレース -->
+    <ImageView
+        android:src="@drawable/ic_launcher"
+        android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+</RelativeLayout>
