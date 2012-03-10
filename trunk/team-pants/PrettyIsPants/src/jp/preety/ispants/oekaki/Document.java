@@ -135,6 +135,24 @@ public class Document implements OnDataUpdateListener {
         }
     }
 
+    public void drawYohaku(SpriteManager spriteManager) {
+        spriteManager.begin();
+        {
+            Rect area = baseImageCorrector.getImageArea(new Rect());
+
+            if (baseImageCorrector.isXLongImage()) {
+                spriteManager.fillRect(0, 0, area.right, area.top, 0x000000ff);
+                spriteManager.fillRect(area.left, area.bottom, (int) baseImageCorrector.getRenderAreaRight(),
+                        (int) baseImageCorrector.getRenderAreaBottom(), 0x000000ff);
+            } else if (baseImageCorrector.isYLongImage()) {
+                spriteManager.fillRect(0, 0, area.left, area.bottom, 0x000000ff);
+                spriteManager.fillRect(area.right, area.top, (int) baseImageCorrector.getRenderAreaRight(),
+                        (int) baseImageCorrector.getRenderAreaBottom(), 0x000000ff);
+            }
+        }
+        spriteManager.end();
+    }
+
     /**
      * 描画用のペンを取得する。
      * @return
