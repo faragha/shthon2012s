@@ -39,6 +39,7 @@ public abstract class RenderShapeBase extends DisposableResource {
     protected RenderShapeBase(OekakiRender render, Data _data) {
         this(render);
         this.data.pen = _data.pen;
+        data.beginTime = _data.beginTime;
         //! データをコピーする
         for (Vector2 v : _data.touchPoints) {
             put(v.x, v.y);

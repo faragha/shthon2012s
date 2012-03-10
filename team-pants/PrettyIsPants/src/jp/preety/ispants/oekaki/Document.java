@@ -7,6 +7,7 @@ import java.util.List;
 import jp.preety.ispants.R;
 import jp.preety.ispants.oekaki.data.DataServer;
 import jp.preety.ispants.oekaki.data.Pen;
+import jp.preety.ispants.oekaki.render.RenderShapeBase;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -36,6 +37,11 @@ public class Document {
     DataServer server = null;
 
     List<TextureImageBase> penTextures = new ArrayList<TextureImageBase>();
+
+    /**
+     * 追加済みの落書きシェイプデータ
+     */
+    List<RenderShapeBase> shapeDatas = new ArrayList<RenderShapeBase>();
 
     public Document(OekakiRender render) {
         this.render = render;
@@ -96,6 +102,16 @@ public class Document {
     }
 
     /**
+     * シェイプの描画を行う。
+     * @param shape
+     */
+    public void drawServerShapes(SpriteManager spriteManager) {
+        for (RenderShapeBase shape : shapeDatas) {
+            shape.draw();
+        }
+    }
+
+    /**
      * 描画用のペンを取得する。
      * @return
      */
@@ -114,6 +130,32 @@ public class Document {
 
     public TextureImageBase getBaseImage() {
         return baseImage;
+    }
+
+    /**
+     * サーバーを取得する。
+     * @return
+     */
+    public DataServer getServer() {
+        return server;
+    }
+
+    /**
+     * シェイプをスタックに追加する。
+     * @param shape
+     */
+    public void addShape(final RenderShapeBase shape) {
+        if (!render.isRenderThread()) {
+            render.getRenderHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    addShape(shape);
+                }
+            });
+            return;
+        }
+        shapeDatas.add(shape);
+        server.add(shape.getData());
     }
 
     /**

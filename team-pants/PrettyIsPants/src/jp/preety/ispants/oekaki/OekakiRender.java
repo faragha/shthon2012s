@@ -1,5 +1,8 @@
 package jp.preety.ispants.oekaki;
 
+import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
+
 import jp.preety.ispants.R;
 import jp.preety.ispants.oekaki.gesture.GestureController;
 import android.net.Uri;
@@ -187,6 +190,15 @@ public class OekakiRender implements Callback {
         spriteManager.end();
 
         {
+            GL11 gl = glManager.getGL();
+            gl.glLoadIdentity();
+            gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+
+            {
+                //! 確定済みのシェイプを描画する
+                document.drawServerShapes(spriteManager);
+            }
+
             //! ジェスチャ範囲を描画する
             controller.draw();
         }
