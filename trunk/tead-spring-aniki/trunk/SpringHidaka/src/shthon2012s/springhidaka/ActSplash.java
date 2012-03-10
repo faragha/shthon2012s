@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 public class ActSplash extends Activity {
 
 	private Button bt_camera;
 	private Button bt_show;
+	private ImageView iv_demo;
 
 	private Context ctx;
 
@@ -20,6 +22,17 @@ public class ActSplash extends Activity {
         setContentView(R.layout.splash);
         bt_camera = (Button) findViewById(R.id.bt_camera);
         bt_show = (Button) findViewById(R.id.bt_show);
+        iv_demo = (ImageView) findViewById(R.id.iv_dummybtn);
+
+
+        iv_demo.setAlpha(30);
+        iv_demo.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				DemoPlay();
+			}
+		});
+
+        //iv_demo.setVisibility(8);
 
         ctx=this.getApplicationContext();
         bt_camera.setOnClickListener(new OnClickListener() {
@@ -33,6 +46,11 @@ public class ActSplash extends Activity {
 			}
 		});
     }
+
+
+	protected void DemoPlay() {
+
+	}
 
 
 	protected void GoAlbum() {
