@@ -485,11 +485,14 @@ public class BluetoothService {
             try {
                 byte[] sendBuffer = buffer;
                 if(buffer.length % BUFFER_MAX == 0) {
-                    sendBuffer = new byte[buffer.length + 1];
-                    for(int i = 0; i < sendBuffer.length; i++) {
+                    byte[] space = " ".getBytes();
+                    sendBuffer = new byte[buffer.length + space.length];
+                    for(int i = 0; i < buffer.length; i++) {
                         sendBuffer[i] = buffer[i];
                     }
-                    sendBuffer[sendBuffer.length - 1] = 0x20;
+                    for(int i = 0; i < space.length; i++) {
+                        sendBuffer[buffer.length + i] = space[i];
+                    }
                 }
                 mmOutStream.write(sendBuffer);
 
