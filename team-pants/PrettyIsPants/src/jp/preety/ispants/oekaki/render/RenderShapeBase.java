@@ -16,7 +16,7 @@ import com.eaglesakura.lib.android.game.math.Vector2;
  * @author TAKESHI YAMASHITA
  *
  */
-public abstract class TegakiStackBase extends DisposableResource {
+public abstract class RenderShapeBase extends DisposableResource {
 
     protected Data data = new Data();
     protected OekakiRender render;
@@ -25,7 +25,7 @@ public abstract class TegakiStackBase extends DisposableResource {
      * データを新規作成する。
      * @param render
      */
-    protected TegakiStackBase(OekakiRender render) {
+    protected RenderShapeBase(OekakiRender render) {
         this.render = render;
         data.pen = render.getDocument().getPen();
         realloc();
@@ -36,7 +36,7 @@ public abstract class TegakiStackBase extends DisposableResource {
      * @param render
      * @param data
      */
-    protected TegakiStackBase(OekakiRender render, Data _data) {
+    protected RenderShapeBase(OekakiRender render, Data _data) {
         this(render);
         this.data.pen = _data.pen;
         //! データをコピーする
