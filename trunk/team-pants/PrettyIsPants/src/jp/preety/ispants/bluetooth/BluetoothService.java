@@ -448,7 +448,7 @@ public class BluetoothService {
                 try {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
-                    if(bytes == BUFFER_MAX) {
+                    if(readAllBufferSize != 0) {
                         byte[] tempBuffer = new byte[readAllBufferSize];
                         for(int i = 0; i < readAllBufferSize; i++) {
                             tempBuffer[i] = readAllBuffer[i];
@@ -460,10 +460,16 @@ public class BluetoothService {
                         for(int i = 0; i < bytes; i++) {
                             readAllBuffer[readAllBufferSize + i] = buffer[i];
                         }
-                        readAllBufferSize += bytes;
-                        continue;
+                    } else {
+                        readAllBuffer = new byte[bytes];
+                        for(int i = 0; i < bytes; i++) {
+                            readAllBuffer[i] = buffer[i];
+                        }
                     }
                     readAllBufferSize += bytes;
+                    if(bytes == BUFFER_MAX) {
+                        continue;
+                    }
 
                     // Send the obtained bytes to the UI Activity
                     int from = (isClient? FROM_SERVER : FROM_CLIENT);
