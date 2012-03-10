@@ -27,6 +27,9 @@ public class ActAlbum extends Activity {
 
 		// ためしにかさねてみたよ
 		testOverlay();
+
+		//どっかきめたフォルダに保存したの読んでgridviewとか？
+		//ファイル名を時刻＋セリフにしちゃえば管理楽なんじゃね
 	}
 
 	private void testOverlay() {
