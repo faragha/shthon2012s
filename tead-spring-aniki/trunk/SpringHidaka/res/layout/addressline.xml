@@ -7,7 +7,13 @@
     <RelativeLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:background="#ffffff">
+        android:layout_height="45dp" android:background="#ffffff">
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="1px" android:background="#000000">
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -40,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_list_03" android:layout_alignParentRight="true"/>
+            android:src="@drawable/icon_list_03" android:layout_alignParentRight="true" android:layout_marginRight="6dp"/>
 
     </RelativeLayout>
 
