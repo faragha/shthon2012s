@@ -80,11 +80,15 @@ public class BluetoothActivity extends Activity {
                             && mService.getStateAsServer() == BluetoothService.STATE_NONE) {
                         mService.startAcceptAsServer();
                     }
-                    onChangeBluetoothServerMessageState(mService.getStateAsServer());
+                    if (mService != null) {
+                        onChangeBluetoothServerMessageState(mService.getStateAsServer());
+                    }
                     break;
                 case BluetoothService.MESSAGE_STATE_AS_CLIENT_CHANGE:
                     Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
-                    onChangeBluetoothClientMessageState(mService.getStateAsClient());
+                    if (mService != null) {
+                        onChangeBluetoothClientMessageState(mService.getStateAsClient());
+                    }
                     break;
                 case BluetoothService.MESSAGE_READ:
                     String readMessage = (String) msg.obj;
