@@ -35,31 +35,28 @@
         <!-- ボタン：写真を撮ってラクガキ -->
         <Button
             android:id="@+id/btn_take_photo"
-            android:background="@drawable/base_btn_bk"
-            android:text="@string/main_btn_take_photo"
+            android:background="@drawable/take_photo_btn_bk"
             android:layout_below="@+id/img_logo"
             android:layout_centerHorizontal="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <!-- ボタン：写真を選んでラクガキ -->
         <Button
             android:id="@+id/btn_pick_photo"
-            android:background="@drawable/base_btn_bk"
-            android:text="@string/main_btn_pick_photo"
+            android:background="@drawable/pick_photo_btn_bk"
             android:layout_below="@+id/btn_take_photo"
             android:layout_centerHorizontal="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <!-- ボタン：トモダチのラクガキに参加 -->
         <Button
             android:id="@+id/btn_join"
-            android:background="@drawable/base_btn_bk"
-            android:text="@string/main_btn_join"
+            android:background="@drawable/join_btn_bk"
             android:layout_below="@+id/btn_pick_photo"
             android:layout_centerHorizontal="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
     </RelativeLayout>
