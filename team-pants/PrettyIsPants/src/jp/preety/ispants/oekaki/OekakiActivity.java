@@ -1,10 +1,10 @@
 package jp.preety.ispants.oekaki;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import jp.preety.ispants.CompleteActivity;
 import jp.preety.ispants.R;
@@ -16,20 +16,20 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.eaglesakura.lib.android.game.thread.UIHandler;
 import com.eaglesakura.lib.android.game.util.GameUtil;
@@ -76,43 +76,28 @@ public class OekakiActivity extends BluetoothActivity {
      * スタンプ用ダイアログ
      */
     AlertDialog mStampDialog;
-    
+
     /**
      * 色リソース配列
      */
     private Integer[] mColorResources = {
-        R.drawable.color_1,
-        R.drawable.color_2,
-        R.drawable.color_3,
-        R.drawable.color_4,
-        R.drawable.color_5,
-        R.drawable.color_6,
-        R.drawable.color_7,
-        R.drawable.color_8,
+            R.drawable.color_1, R.drawable.color_2, R.drawable.color_3, R.drawable.color_4, R.drawable.color_5,
+            R.drawable.color_6, R.drawable.color_7, R.drawable.color_8,
     };
 
     /**
      * 太さリソース配列
      */
     private Integer[] mNibResources = {
-        R.drawable.nib_1,
-        R.drawable.nib_2,
-        R.drawable.nib_3,
-        R.drawable.nib_4,
+            R.drawable.nib_1, R.drawable.nib_2, R.drawable.nib_3, R.drawable.nib_4,
     };
 
     /**
      * スタンプリソース配列
      */
     private Integer[] mStampResources = {
-        R.drawable.stamp_1,
-        R.drawable.stamp_2,
-        R.drawable.stamp_3,
-        R.drawable.stamp_4,
-        R.drawable.stamp_5,
-        R.drawable.stamp_6,
-        R.drawable.stamp_7,
-        R.drawable.stamp_8,
+            R.drawable.stamp_1, R.drawable.stamp_2, R.drawable.stamp_3, R.drawable.stamp_4, R.drawable.stamp_5,
+            R.drawable.stamp_6, R.drawable.stamp_7, R.drawable.stamp_8,
     };
 
     /**
@@ -277,6 +262,7 @@ public class OekakiActivity extends BluetoothActivity {
     protected void sendToOtherDevice(String sendData) {
         super.sendToOtherDevice(sendData);
     }
+
     private void init() {
         mColorMap.put(R.drawable.color_1, Color.rgb(255, 0, 0));
         mColorMap.put(R.drawable.color_2, Color.rgb(0, 255, 0));
@@ -286,12 +272,12 @@ public class OekakiActivity extends BluetoothActivity {
         mColorMap.put(R.drawable.color_6, Color.rgb(0, 255, 255));
         mColorMap.put(R.drawable.color_7, Color.rgb(128, 0, 0));
         mColorMap.put(R.drawable.color_8, Color.rgb(0, 128, 0));
-        
+
         mNibMap.put(R.drawable.nib_1, 4.0f);
         mNibMap.put(R.drawable.nib_2, 8.0f);
         mNibMap.put(R.drawable.nib_3, 16.0f);
         mNibMap.put(R.drawable.nib_4, 32.0f);
-        
+
         mStampMap.put(R.drawable.stamp_1, "stamp_1");
         mStampMap.put(R.drawable.stamp_2, "stamp_2");
         mStampMap.put(R.drawable.stamp_3, "stamp_3");
@@ -301,16 +287,16 @@ public class OekakiActivity extends BluetoothActivity {
         mStampMap.put(R.drawable.stamp_7, "stamp_7");
         mStampMap.put(R.drawable.stamp_8, "stamp_8");
     }
-    
+
     private void makeDialog() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // 以下、ペン用ダイアログ
-        View layout = inflater.inflate(R.layout.pen_dialog, (ViewGroup)findViewById(R.id.layout_root));
+        View layout = inflater.inflate(R.layout.pen_dialog, (ViewGroup) findViewById(R.id.layout_root));
 
-        GridView colorGrid = (GridView)layout.findViewById(R.id.color_grid);
-        GridView nibGrid = (GridView)layout.findViewById(R.id.nib_grid);
-        
+        GridView colorGrid = (GridView) layout.findViewById(R.id.color_grid);
+        GridView nibGrid = (GridView) layout.findViewById(R.id.nib_grid);
+
         layout.findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,16 +308,16 @@ public class OekakiActivity extends BluetoothActivity {
                 render.getDocument().setPen(pen);
             }
         });
-        
+
         colorGrid.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 parent.getChildAt(mSelectedColor).setBackgroundColor(Color.TRANSPARENT);
                 v.setBackgroundColor(Color.GRAY);
                 mSelectedColor = position;
-                }
+            }
         });
-        
+
         nibGrid.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -340,7 +326,7 @@ public class OekakiActivity extends BluetoothActivity {
                 mSelectedNib = position;
             }
         });
-        
+
         ImageAdapter colorAdapter = new ImageAdapter(mColorResources, mSelectedColor);
         colorGrid.setAdapter(colorAdapter);
 
@@ -351,8 +337,8 @@ public class OekakiActivity extends BluetoothActivity {
         mPenDialog = builder.create();
 
         // 以下、スタンプ用ダイアログ
-        layout = inflater.inflate(R.layout.stamp_dialog, (ViewGroup)findViewById(R.id.layout_root));
-        GridView stampGrid = (GridView)layout.findViewById(R.id.stamp_grid);
+        layout = inflater.inflate(R.layout.stamp_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        GridView stampGrid = (GridView) layout.findViewById(R.id.stamp_grid);
 
         stampGrid.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -375,15 +361,16 @@ public class OekakiActivity extends BluetoothActivity {
         builder.setView(layout);
         mStampDialog = builder.create();
     }
+
     class ImageAdapter extends BaseAdapter {
         private Integer[] mIdList;
         private Integer mSelected;
 
         public ImageAdapter(Integer[] idList, Integer selected) {
-        	mIdList = idList;
-        	mSelected = selected;
+            mIdList = idList;
+            mSelected = selected;
         }
-        
+
         @Override
         public int getCount() {
             return mIdList.length;
@@ -412,14 +399,24 @@ public class OekakiActivity extends BluetoothActivity {
             }
 
             imageView.setImageResource(mIdList[position]);
-            
-            if(mSelected==position){
+
+            if (mSelected == position) {
                 imageView.setBackgroundColor(Color.GRAY);
             } else {
                 imageView.setBackgroundColor(Color.TRANSPARENT);
             }
 
             return imageView;
+        }
+    }
+
+    /**
+     * 
+     */
+    @Override
+    protected void onBluetoothConnectComplete() {
+        if (!isImageOrner()) {
+            sendToOtherDevice(MESSAGE_REQUEST_IMAGE);
         }
     }
 }
