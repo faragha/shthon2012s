@@ -17,9 +17,8 @@
     <ImageView
         android:id="@+id/img_photo"
         android:scaleType="fitXY"
-        android:adjustViewBounds="true"
         android:layout_centerInParent="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
     <!-- ボタン部分 -->
