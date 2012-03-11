@@ -63,29 +63,32 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/actionbar_bg"
-            android:gravity="bottom" >
-
-            <Button
-                android:id="@+id/button_save"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_save" />
-
-            <Button
-                android:id="@+id/button_share"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/btn_share" />
+            android:layout_gravity="bottom"
+            android:background="@drawable/actionbar_bg" >
 
             <Button
                 android:id="@+id/button_up"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/btn_upload" />
+                android:background="@drawable/btn_upload"
+                android:gravity="bottom" />
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_save"
+                android:gravity="bottom" />
+
+            <Button
+                android:id="@+id/button_share"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_share"
+                android:gravity="bottom" />
         </LinearLayout>
     </LinearLayout>
 
