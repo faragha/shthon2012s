@@ -14,6 +14,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -47,6 +49,7 @@ public class ActAlbum extends Activity {
 				imgList.add(files[i].getAbsolutePath());
 			}
 			gv.setAdapter(new ImageAdapter(ctx));
+			gv.setOnItemClickListener(new GridViewOnClick());
 		}
 
 		// testFileSearch();
@@ -56,14 +59,14 @@ public class ActAlbum extends Activity {
 		// ↑あー、らくだわ。
 	}
 
-	// protected void GoPicture(String imagePath) {
-	// Intent it = new Intent(ctx, ActPicture.class);
-	//
-	// it.putExtra("filepath", imagePath);
-	// it.putExtra("saveflag", false);
-	//
-	// startActivity(it);
-	// }
+	 protected void GoPicture(String imagePath) {
+	 Intent it = new Intent(ctx, ActPicture.class);
+
+	 it.putExtra("filepath", imagePath);
+	 it.putExtra("saveflag", false);
+
+	 startActivity(it);
+	 }
 	//
 	// private void testFileSearch(){
 	//
@@ -128,5 +131,11 @@ public class ActAlbum extends Activity {
 					bmpOp));
 			return imageView;
 		}
+	}
+	public class GridViewOnClick implements OnItemClickListener {
+
+	    public void onItemClick(AdapterView parent, View v, int position, long id) {
+	    	GoPicture(imgList.get(position));
+	    }
 	}
 }
