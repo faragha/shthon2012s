@@ -88,7 +88,7 @@ public class BluetoothActivity extends Activity {
                     String readMessage = (String) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     // String readMessage = new String(readBuf, 0, msg.arg1);
-                    // Log.d(TAG, readMessage);
+                    Log.d(TAG, readMessage);
                     sendToOtherDevice(readMessage, msg.arg1);
                     onMessageRead(readMessage);
                     break;
