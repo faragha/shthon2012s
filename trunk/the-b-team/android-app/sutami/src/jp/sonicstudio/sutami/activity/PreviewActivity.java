@@ -18,6 +18,8 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -157,8 +159,18 @@ public class PreviewActivity extends Activity {
         public void onClick(View v) {
             // 画像を保存する
             saveImage(false); // false:共有しない
-            // TODO:みゅおさんのコード呼び出す？？？
-        }
+			makeDecome();
+		}
+
+		/**
+		 * デコメを作成して保存する。
+		 */
+		private void makeDecome() {
+			String decomeName = "deco";
+			SaveDecomeTask saveDecomeTask = new SaveDecomeTask(PreviewActivity.this, false);
+			saveDecomeTask.setDecoName(decomeName);
+			saveDecomeTask.execute(mDstBitmap);
+		}
     };
 
     /**
@@ -430,4 +442,117 @@ public class PreviewActivity extends Activity {
 
     };
 
+	/**
+	 * デコメ保存クラス(画像保存クラスの丸パク)
+	 */
+	class SaveDecomeTask extends AsyncTask<Bitmap, Void, Boolean> {
+
+		private Context mContext;
+		private boolean mIsShare;
+		private ProgressDialog mProgressDialog;
+		private final String DECOME_OUTPUT_DIR = "/mnt/sdcard/download";
+		private String decoName;
+
+		/**
+		 * コンストラクタ
+		 * 
+		 * @param context コンテキスト
+		 * @param isShare 保存処理後、共有するかどうか
+		 */
+		public SaveDecomeTask(Context context, boolean isShare) {
+			mContext = context;
+			mIsShare = isShare;
+		}
+
+		public void setDecoName(String name) {
+			decoName = name;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// プログレスダイアログ表示
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setMessage(mContext.getString(R.string.progress_to_save_decome));
+			mProgressDialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Bitmap... params) {
+			boolean success = false;
+			if (params.length > 0) {
+				if (params[0] != null) {
+					if (params[0] instanceof Bitmap) {
+						Bitmap bitmap = params[0];
+						// このアプリケーションの外部ストレージ内での保存ルートパスのディレクトリが存在しなければ作成する
+						File file = new File(DECOME_OUTPUT_DIR);
+						if (!file.exists()) {
+							file.mkdir();
+						}
+
+						// 指定された画像をJPEGで書きだす
+						File imageFile = new File(DECOME_OUTPUT_DIR + "/" + decoName + ".jpg");
+						try {
+							Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+									bitmap.getConfig());
+							Canvas canvas = new Canvas(outBitmap);
+							canvas.drawColor(Color.WHITE);
+							canvas.drawBitmap(bitmap, 0, 0, null);
+							
+							FileOutputStream fos = new FileOutputStream(imageFile);
+							outBitmap.compress(CompressFormat.JPEG, 100, fos);
+							fos.close();
+							success = true;
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			return success;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			// プログレスダイアログを閉じる
+			if (mProgressDialog != null) {
+				mProgressDialog.dismiss();
+				mProgressDialog = null;
+			}
+			if (mIsShare) {
+				// 共有する場合、失敗時のみトースト表示する
+				if (result) {
+					shareImage();
+				} else {
+					String text = mContext.getString(R.string.failed_to_share_decome);
+					Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+				}
+			} else {
+				// 保存のみの場合、常にトースト表示する
+				int resId;
+				if (result) {
+					resId = R.string.success_to_save_decome;
+				} else {
+					resId = R.string.failed_to_save_decome;
+				}
+				String text = mContext.getString(resId);
+				Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		/**
+		 * インテント経由でテンポラリ画像を共有する
+		 */
+		private void shareImage() {
+			Uri uri = Uri.fromFile(new File(getTemporallyImagePath()));
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("image/jpeg");
+			intent.putExtra(Intent.EXTRA_STREAM, uri);
+			startActivity(Intent.createChooser(intent, null));
+		}
+
+	};
 }
