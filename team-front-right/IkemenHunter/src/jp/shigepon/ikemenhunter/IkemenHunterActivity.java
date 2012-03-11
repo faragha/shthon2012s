@@ -69,7 +69,6 @@ public class IkemenHunterActivity extends Activity implements OnTouchListener {
     	finish();
     }
 
-	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		finish();
 		return true;
