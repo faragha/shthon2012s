@@ -135,18 +135,18 @@ public class Utils {
 
 	public static int getDrawableFrameId(){
 		Random rand = new Random();
-		return frameList.get(rand.nextInt(frameList.size()-1));
+		return frameList.get(rand.nextInt(frameList.size()));
 	}
 	public static int getDrawableCopy1Id(){
 		Random rand = new Random();
-		return copy1List.get(rand.nextInt(copy1List.size()-1));
+		return copy1List.get(rand.nextInt(copy1List.size()));
 	}
 	public static int getDrawableCopy2Id(){
 		Random rand = new Random();
-		return copy2List.get(rand.nextInt(copy2List.size()-1));
+		return copy2List.get(rand.nextInt(copy2List.size()));
 	}
 	public static int getDrawableCopy3Id(){
 		Random rand = new Random();
-		return copy3List.get(rand.nextInt(copy3List.size()-1));
+		return copy3List.get(rand.nextInt(copy3List.size()));
 	}
 }
