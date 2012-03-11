@@ -1,7 +1,6 @@
 package shthon2012s.springhidaka;
 
-import java.io.IOException;
-import java.io.InputStream;
+import shthon2012s.springhidaka.Utils.Utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,9 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 
 public class ActAlbum extends Activity {
@@ -22,6 +18,9 @@ public class ActAlbum extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.album);
+
+		//ランダムに生成する
+		Utils.createDrawbleCollection();
 
 		ctx = this.getApplicationContext();
 
@@ -34,32 +33,29 @@ public class ActAlbum extends Activity {
 
 	private void testOverlay() {
 
-		InputStream is;
 		Bitmap bm;
 		Bitmap bmo;
 		Canvas mCanvas;
-		try {
-			is = getResources().getAssets().open("frame_01.png");
-			bm = BitmapFactory.decodeStream(is);
-			bm = bm.copy(Bitmap.Config.ARGB_8888, true);
-			mCanvas = new Canvas(bm);
 
-			is = getResources().getAssets().open("copy1_01.png");
-			bmo = BitmapFactory.decodeStream(is);
-			mCanvas.drawBitmap(bmo, 0, 0, null);
-			is = getResources().getAssets().open("copy2_01.png");
-			bmo = BitmapFactory.decodeStream(is);
-			mCanvas.drawBitmap(bmo, 0, 0, null);
-			is = getResources().getAssets().open("copy3_01.png");
-			bmo = BitmapFactory.decodeStream(is);
-			mCanvas.drawBitmap(bmo, 0, 0, null);
+		int resId = Utils.getDrawableFrameId();
+		bm = BitmapFactory.decodeResource(getResources(), resId);
+		bm = bm.copy(Bitmap.Config.ARGB_8888, true);
+		mCanvas = new Canvas(bm);
 
-			ImageView image = (ImageView) findViewById(R.id.imageView1);
-			image.setImageBitmap(bm);
+		resId = Utils.getDrawableCopy1Id();
+		bmo =  BitmapFactory.decodeResource(getResources(), resId);
+		mCanvas.drawBitmap(bmo, 0, 0, null);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		resId = Utils.getDrawableCopy2Id();
+		bmo =  BitmapFactory.decodeResource(getResources(), resId);
+		mCanvas.drawBitmap(bmo, 0, 0, null);
+
+		resId = Utils.getDrawableCopy3Id();
+		bmo =  BitmapFactory.decodeResource(getResources(), resId);
+					mCanvas.drawBitmap(bmo, 0, 0, null);
+
+		ImageView image = (ImageView) findViewById(R.id.imageView1);
+		image.setImageBitmap(bm);
 
 	}
 }
