@@ -1,10 +1,5 @@
 package jp.preety.ispants;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import jp.preety.ispants.oekaki.OekakiActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +8,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Top Activity
@@ -107,8 +106,8 @@ public class TopActivity extends Activity implements View.OnClickListener {
      * 写真選択時のイベント
      */
     protected void onPhotoSelected(Uri uri) {
-        final Intent intent = new Intent(this, OekakiActivity.class);
-        intent.putExtra(OekakiActivity.INTENT_IMAGE_URI, uri.toString());
+        final Intent intent = new Intent(this, ConfirmActivity.class);
+        intent.putExtra(ConfirmActivity.INTENT_IMAGE_URI, uri.toString());
         startActivity(intent);
     }
 

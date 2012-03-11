@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <!-- メッセージ -->
+    <TextView
+        android:text="この画像でラクガキをはじめますか？"
+        android:gravity="center"
+        android:background="#66000000"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <!-- 画像 -->
+    <ImageView
+        android:id="@+id/img_photo"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <!-- ボタン部分 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="#66000000"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <!-- はいボタン -->
+        <Button
+            android:id="@+id/btn_ok"
+            android:text="はい"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!-- いいえボタン -->
+        <Button
+            android:id="@+id/btn_cancel"
+            android:text="いいえ"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+</RelativeLayout>
