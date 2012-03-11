@@ -82,7 +82,7 @@ public class BluetoothService {
 
     private static final int BUFFER_MAX = 1024;
 
-    private static final String EOD = "          ";
+    private static final String EOD = "          EOD          ";
 
     Context mContext;
 
@@ -474,11 +474,17 @@ public class BluetoothService {
                     sb.append(str);
                     // 終端判定
                     String allStr = sb.toString();
-                    int index = allStr.lastIndexOf(EOD);
-                    if (index == -1 || index != allStr.length() - EOD.length()) {
-                        // Log.d(TAG, "read continue");
+                    int index = allStr.indexOf(EOD);
+                    if (index == -1) {
+                        Log.d(TAG, "read continue");
                         continue;
                     }
+                    
+                    String remine = allStr.substring(index + EOD.length());
+                    allStr = allStr.substring(0, index);
+                    sb = new StringBuffer();
+                    sb.append(remine);
+                    
                     // Log.d(TAG, "read finish");
                     allStr = allStr.substring(0, index);
                     // byte[] readAllBuffer = allStr.getBytes();
@@ -487,7 +493,7 @@ public class BluetoothService {
                     int from = (isClient ? FROM_SERVER : FROM_CLIENT);
                     // Log.d(TAG, String.valueOf(readAllBuffer.length));
                     mHandler.obtainMessage(MESSAGE_READ, from, -1, allStr).sendToTarget();
-                    sb = new StringBuffer();
+                    //sb = new StringBuffer();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
                     connectionLost(mmServer);
@@ -505,6 +511,7 @@ public class BluetoothService {
         public void write(String sendString) {
             try {
                 String str = sendString + EOD;
+                Log.d(TAG, "sendData : " + str);
                 // byte[] space = EOD.getBytes();
                 byte[] sendBuffer = str.getBytes();
                 /*
