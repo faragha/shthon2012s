@@ -415,6 +415,7 @@ public class OekakiActivity extends BluetoothActivity {
      */
     @Override
     protected void onBluetoothConnectComplete() {
+        super.onBluetoothConnectComplete();
         if (!isImageOrner()) {
             sendToOtherDevice(MESSAGE_REQUEST_IMAGE);
         }
