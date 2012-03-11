@@ -43,6 +43,11 @@
             android:name=".WebApis.AsyncTaskSample"
             android:screenOrientation="portrait" >
         </activity>
+         <activity
+            android:label="@string/app_name"
+            android:name=".ActPicture"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:label="@string/app_name"
             android:name=".ActCamera"
