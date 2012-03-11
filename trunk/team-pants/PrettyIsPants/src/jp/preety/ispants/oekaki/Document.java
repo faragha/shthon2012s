@@ -46,6 +46,12 @@ public class Document implements OnDataUpdateListener {
     Map<Object, TextureImageBase> stampTextures = new HashMap<Object, TextureImageBase>();
 
     /**
+     * 美白値
+     * 0〜100で指定する。
+     */
+    float bihakuLevel = 0;
+
+    /**
      * 追加済みの落書きシェイプデータ
      */
     List<RenderShapeBase> shapeDatas = new ArrayList<RenderShapeBase>();
@@ -61,6 +67,14 @@ public class Document implements OnDataUpdateListener {
             pen.setTegakiData(4, 255, 255, 255);
             setPen(pen);
         }
+    }
+
+    public void setBihakuLevel(float bihakuLevel) {
+        this.bihakuLevel = bihakuLevel;
+    }
+
+    public float getBihakuLevel() {
+        return bihakuLevel;
     }
 
     /**
