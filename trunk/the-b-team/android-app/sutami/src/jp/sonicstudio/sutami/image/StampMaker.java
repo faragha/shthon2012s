@@ -1,6 +1,9 @@
 
 package jp.sonicstudio.sutami.image;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import android.graphics.Bitmap;
 
 /**
@@ -23,6 +26,36 @@ public class StampMaker {
     public void initialize(Bitmap srcBitmap) {
         mSrcBitmap = srcBitmap;
         mDstBitmap = mSrcBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        setHasAlpha(mDstBitmap, true);
+    }
+
+    /**
+     * <p>
+     * Bitmap setHasAlpha() は、API Level 12（Android3.1）以降、<br>
+     * （それ以前ではhide）のため、リフレクションで呼び出す
+     * </p>
+     * 
+     * @param bitmap 対象ビットマップ
+     * @param hasAlpha アルファをセットするかどうか
+     */
+    private void setHasAlpha(Bitmap bitmap, boolean hasAlpha) {
+        try {
+            Class<?> clazz = Bitmap.class;
+            Method method = clazz.getDeclaredMethod("setHasAlpha", boolean.class);
+            if (method != null) {
+                method.invoke(bitmap, hasAlpha);
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
