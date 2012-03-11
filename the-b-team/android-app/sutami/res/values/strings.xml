@@ -22,6 +22,8 @@
     <string name="failed_to_save_decome">スタンプ画像の保存に失敗しました</string>
     <string name="failed_to_share_decome">スタンプ画像の共有に失敗しました</string>
     <string name="progress_to_up_decome">デコメをアップロード中・・・</string>
+    <string name="success_to_up_decome">デコメのアップロードに成功しました</string>
+    <string name="failed_to_up_decome">デコメのアップロードに失敗しました</string>
     
     <string name="deco_upload_to">http://sutamesh.appspot.com/m/upload</string>
     
