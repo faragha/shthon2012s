@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 
@@ -48,16 +48,14 @@ public class HomeActivity extends Activity {
 		mAdapter = new ImageAdapter(this);
 		mImageGridView = (GridView) findViewById(R.id.image_grid_view);
 		mImageGridView.setAdapter(mAdapter);
-		mImageGridView
-				.setOnItemLongClickListener(new OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> parent,
-							View view, int position, long id) {
-						mAdapter.toggleChecked(position);
-						mAdapter.notifyDataSetChanged();
-						return true;
-					}
-				});
+		mImageGridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				mAdapter.toggleChecked(position);
+				mAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	private void initOKButton() {
