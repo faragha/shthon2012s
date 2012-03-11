@@ -11,6 +11,7 @@
     <string name="back">戻る</string>
     <string name="save">保存</string>
     <string name="share">共有</string>
+    <string name="up">アップ(仮)</string>
     <string name="progress_to_save_image">スタンプ画像を保存中・・・</string>
     <string name="success_to_save_image">スタンプ画像の保存に成功しました</string>
     <string name="failed_to_save_image">スタンプ画像の保存に失敗しました</string>
@@ -20,5 +21,7 @@
     <string name="success_to_save_decome">スタンプ画像の保存に成功しました</string>
     <string name="failed_to_save_decome">スタンプ画像の保存に失敗しました</string>
     <string name="failed_to_share_decome">スタンプ画像の共有に失敗しました</string>
+    <string name="progress_to_up_decome">デコメをアップロード中・・・</string>
     
+    <string name="deco_upload_to">http://sutamesh.appspot.com/m/upload</string>
 </resources>
