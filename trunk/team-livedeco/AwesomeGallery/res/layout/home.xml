@@ -13,6 +13,7 @@
         android:columnWidth="60dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
+        android:listSelector="@drawable/background"
         android:numColumns="auto_fit"
         android:padding="10dp"
         android:stretchMode="columnWidth"

@@ -55,7 +55,7 @@ public class ImageAdapter extends BaseAdapter {
 			imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
 			imageView.setAdjustViewBounds(true);
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(8, 8, 8, 8);
+			// imageView.setPadding(8, 8, 8, 8);
 		} else {
 			imageView = (ImageView) convertView;
 		}
@@ -68,7 +68,7 @@ public class ImageAdapter extends BaseAdapter {
 		if (mSelectedImageIdCollection.contains(position)) {
 			imageView.setBackgroundResource(R.drawable.background_selected);
 		} else {
-			imageView.setBackgroundResource(R.drawable.background);
+			imageView.setBackgroundResource(R.drawable.background_normal);
 		}
 
 		return imageView;
