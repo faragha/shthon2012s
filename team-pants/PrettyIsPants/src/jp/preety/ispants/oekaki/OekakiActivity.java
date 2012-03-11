@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+import jp.preety.ispants.CompleteActivity;
 import jp.preety.ispants.R;
 import jp.preety.ispants.bluetooth.BluetoothActivity;
 import jp.preety.ispants.oekaki.data.Data;
@@ -13,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -113,6 +115,9 @@ public class OekakiActivity extends BluetoothActivity {
                     @Override
                     public void run() {
                         dialog.dismiss();
+                        Intent intent = new Intent(OekakiActivity.this, CompleteActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }
