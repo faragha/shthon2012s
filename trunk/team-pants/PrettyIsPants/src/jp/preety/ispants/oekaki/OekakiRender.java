@@ -279,4 +279,8 @@ public class OekakiRender implements Callback {
     public GestureController getController() {
         return controller;
     }
+
+    public OekakiActivity getActivity() {
+        return activity;
+    }
 }
