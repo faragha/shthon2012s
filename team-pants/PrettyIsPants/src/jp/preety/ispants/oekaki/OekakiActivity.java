@@ -223,6 +223,19 @@ public class OekakiActivity extends BluetoothActivity {
      */
     @Override
     protected void onMessageRead(String message) {
+        {
+            File dir = new File(Environment.getExternalStorageDirectory(), "btlog");
+            dir.mkdir();
+            File file = new File(dir, "log-" + System.currentTimeMillis() + ".txt");
+            try {
+                FileOutputStream os = new FileOutputStream(file);
+                os.write(message.getBytes());
+                os.close();
+            } catch (Exception e) {
+                LogUtil.log(e);
+            }
+        }
+
         // 画像を送ってくれっていうメッセージを受けた
         if (MESSAGE_REQUEST_IMAGE.equals(message)) {
             if (!isImageOrner()) {
