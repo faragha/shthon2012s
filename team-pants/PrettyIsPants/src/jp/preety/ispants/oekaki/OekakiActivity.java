@@ -110,12 +110,15 @@ public class OekakiActivity extends BluetoothActivity {
         render.getRenderHandler().post(new Runnable() {
             @Override
             public void run() {
-                render.capture(new File(Environment.getExternalStorageDirectory(), "output.png"));
+                final File path = new File(Environment.getExternalStorageDirectory(), "image"
+                        + System.currentTimeMillis() + ".png");
+                render.capture(path);
                 (new UIHandler()).post(new Runnable() {
                     @Override
                     public void run() {
                         dialog.dismiss();
                         Intent intent = new Intent(OekakiActivity.this, CompleteActivity.class);
+                        intent.putExtra(CompleteActivity.INTENT_IMAGE_URI, Uri.fromFile(path).toString());
                         startActivity(intent);
                         finish();
                     }
