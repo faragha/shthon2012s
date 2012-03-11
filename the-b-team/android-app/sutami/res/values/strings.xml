@@ -24,4 +24,6 @@
     <string name="progress_to_up_decome">デコメをアップロード中・・・</string>
     
     <string name="deco_upload_to">http://sutamesh.appspot.com/m/upload</string>
+    
+    <string name="deco_hint">デコメの名前</string>
 </resources>

@@ -18,17 +18,19 @@
         android:layout_marginLeft="72dip"
         android:layout_marginRight="72dip"
         android:layout_marginTop="24dip" />
+    
+    <EditText
+        android:id="@+id/decoName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:hint="@string/deco_hint"
+        android:inputType="text"
+        />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/button_back"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/back" />
 
         <Button
             android:id="@+id/button_save"
