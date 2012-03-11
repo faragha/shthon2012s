@@ -96,8 +96,8 @@ public class OekakiActivity extends BluetoothActivity {
      * スタンプリソース配列
      */
     private Integer[] mStampResources = {
-            R.drawable.stamp_icon_1, R.drawable.stamp_icon_2, R.drawable.stamp_icon_3, R.drawable.stamp_icon_4, R.drawable.stamp_icon_5,
-            R.drawable.stamp_icon_6, R.drawable.stamp_icon_7, R.drawable.stamp_icon_8,
+            R.drawable.stamp_icon_1, R.drawable.stamp_icon_2, R.drawable.stamp_icon_3, R.drawable.stamp_icon_4,
+            R.drawable.stamp_icon_5, R.drawable.stamp_icon_6, R.drawable.stamp_icon_7, R.drawable.stamp_icon_8,
     };
 
     /**
@@ -410,14 +410,20 @@ public class OekakiActivity extends BluetoothActivity {
         }
     }
 
+    private boolean sendedRequestImage = false;
+
     /**
      * 
      */
     @Override
-    protected void onBluetoothConnectComplete() {
+    protected synchronized void onBluetoothConnectComplete() {
         super.onBluetoothConnectComplete();
-        if (!isImageOrner()) {
-            sendToOtherDevice(MESSAGE_REQUEST_IMAGE);
+        // 制御メッセージを送付済みだったら
+        if (!sendedRequestImage) {
+            if (!isImageOrner()) {
+                sendedRequestImage = true;
+                sendToOtherDevice(MESSAGE_REQUEST_IMAGE);
+            }
         }
     }
 }

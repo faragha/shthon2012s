@@ -88,6 +88,7 @@ public class Document implements OnDataUpdateListener {
         baseImage = new BitmapTextureImage(bitmap, render.getGLManager());
         baseImageCorrector.setRenderArea(virtualDisplay);
         baseImageCorrector.setImageAspect(bitmap.getWidth(), bitmap.getHeight());
+        bitmap.recycle();
     }
 
     void addStamp(Context context, int drawableId) {
