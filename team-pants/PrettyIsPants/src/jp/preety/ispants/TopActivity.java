@@ -23,6 +23,7 @@ public class TopActivity extends Activity implements View.OnClickListener {
     private static final int REQUEST_TAKE_PHOTO = 0x0100;
     private static final int REQUEST_PICK_PHOTO = 0x0200;
     private static final File PHOTO_DIR = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera");
+    private static final String KEY_CURRENT_PHOTO_FILE = "currentPhotoFile";
     protected File mCurrentPhotoFile;
 
     @Override
@@ -58,6 +59,24 @@ public class TopActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             }
+        }
+    }
+    
+    /** onSaveInstanceState */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mCurrentPhotoFile != null) {
+            outState.putString(KEY_CURRENT_PHOTO_FILE, mCurrentPhotoFile.toString());
+        }
+        super.onSaveInstanceState(outState);
+    }
+    
+    /** onRestoreInstanceState */
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        final String fileName = savedInstanceState.getString(KEY_CURRENT_PHOTO_FILE);
+        if (fileName != null) {
+            mCurrentPhotoFile = new File(fileName);
         }
     }
 
