@@ -183,6 +183,7 @@ public class BluetoothActivity extends Activity {
                         mService = null;
                     }
                     mService = new BluetoothService(this, mHandler);
+                    mService.start();
                     Toast.makeText(this, R.string.connecting, Toast.LENGTH_SHORT).show();
                     connectDevice(data.getExtras().getString("address"));
                     mBTClientSelected = true;
