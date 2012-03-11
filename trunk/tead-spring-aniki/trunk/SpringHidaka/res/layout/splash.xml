@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/splash_bg"  android:scaleType="fitXY" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -23,13 +23,14 @@
             android:id="@+id/bt_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="撮る" android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:background="@drawable/btn_splash_camera" />
 
         <Button
             android:id="@+id/bt_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="見る" />
+            android:background="@drawable/btn_splash_album" />
 
     </LinearLayout>
 
@@ -40,5 +41,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_launcher" />
+
 
 </RelativeLayout>
