@@ -1,6 +1,7 @@
 
 package jp.sonicstudio.sutami.activity;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,6 +33,8 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -280,6 +283,35 @@ public class PreviewActivity extends Activity {
                         try {
                             if (mSrcBitmap == null) {
                                 Uri uri = (Uri) params[0];
+                                // 回転状態を取得する
+                                String tmpFileDir = "/mnt/sdcard/sutami/";
+                                String tmpFilePath = tmpFileDir + "/__tmp__.jpg";
+                                File file = new File(tmpFileDir);
+                                if (!file.exists()) {
+                                    file.mkdir();
+                                }
+                    			InputStream input = getContentResolver().openInputStream(uri);
+                    			FileOutputStream fos = new FileOutputStream(tmpFilePath);
+                    			BufferedOutputStream bos = new BufferedOutputStream(fos);
+                    			byte[] buf = new byte[4096];
+                    			int bytesRead = 0;
+                    			while (0 < (bytesRead = input.read(buf))) {
+                    				bos.write(buf, 0, bytesRead);
+                    			}
+                    			bos.flush();
+                    			bos.close();
+                    			fos.close();
+                    			ExifInterface exif = new ExifInterface(tmpFilePath);
+                    			int rotation = 0;
+                    			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                    			switch (orientation) {
+                    			case 6:
+                    				rotation = 90;
+                    				break;
+                    			}
+                    			File tmpFile = new File(tmpFilePath);
+                    			tmpFile.delete();
+                                
                                 // 画像のサイズを取得（実際には画像を展開しない）
                                 BitmapFactory.Options options = new BitmapFactory.Options();
                                 options.inJustDecodeBounds = true;
@@ -291,20 +323,40 @@ public class PreviewActivity extends Activity {
                                 // 画像を縮小して展開する
                                 int scaleWidth = 1;
                                 int scaleHeight = 1;
-                                if ((options.outWidth > MAX_WIDTH)
-                                        || (options.outHeight > MAX_HEIGHT)) {
-                                    scaleWidth = options.outWidth / MAX_WIDTH + 1;
-                                    scaleHeight = options.outHeight / MAX_HEIGHT
-                                            + 1;
+                                int outWidth;
+                                int outHeight;
+                                if (rotation == 90) {
+                                	outWidth = options.outHeight;
+                                	outHeight = options.outWidth;
+                                }
+                                else {
+                                	outWidth = options.outWidth;
+                                	outHeight = options.outHeight;
+                                }
+                                if ((outWidth > MAX_WIDTH)
+                                        || (outHeight > MAX_HEIGHT)) {
+                                    scaleWidth = outWidth / MAX_WIDTH + 1;
+                                    scaleHeight = outHeight / MAX_HEIGHT + 1;
                                 }
                                 int scale = Math.max(scaleWidth, scaleHeight);
                                 options.inJustDecodeBounds = false;
                                 options.inSampleSize = scale;
                                 inputStream = getContentResolver().openInputStream(
                                         uri);
-                                mSrcBitmap = BitmapFactory.decodeStream(
+                                Bitmap _mSrcBitmap = BitmapFactory.decodeStream(
                                         inputStream, null, options);
                                 inputStream.close();
+                				if (rotation != 0) {
+                                    Matrix matrix = new Matrix();
+                					matrix.postRotate(rotation);
+                                    mSrcBitmap = Bitmap.createBitmap(_mSrcBitmap, 0, 0, _mSrcBitmap.getWidth(), _mSrcBitmap.getHeight(), matrix, true);
+                				}
+                				else {
+                					mSrcBitmap = _mSrcBitmap;
+                				}
+                                ////
+                                
+
                             }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
