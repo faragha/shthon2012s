@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, SpringHidakaActivity!</string>
-    <string name="app_name">SpringHidaka</string>
+    <string name="app_name">春のアニキのつけまつ毛</string>
 
     <string-array name="word_first">
         <item>春の</item>
