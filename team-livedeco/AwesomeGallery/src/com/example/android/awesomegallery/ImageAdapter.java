@@ -12,6 +12,7 @@ import java.util.concurrent.RejectedExecutionException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -36,9 +37,13 @@ public class ImageAdapter extends BaseAdapter {
 
 	private Map<Long, LoadImageTask> mLoadingImageTaskHolder = new HashMap<Long, ImageAdapter.LoadImageTask>();
 
+	private AnimationDrawable mCatProgress;
+
 	public ImageAdapter(Context context) {
 		mContext = context;
 		mContentResolver = context.getContentResolver();
+		mCatProgress = (AnimationDrawable) mContext.getResources().getDrawable(
+				R.drawable.cat_progress);
 	}
 
 	@Override
@@ -76,8 +81,9 @@ public class ImageAdapter extends BaseAdapter {
 			bitmap = bitmapRef.get();
 		}
 		if (bitmap == null) {
-			// imageView.setImageDrawable(mCatProgress);
-			imageView.setImageResource(R.drawable.cat_progress);
+			imageView.setImageDrawable(mCatProgress);
+			mCatProgress.start();
+			// imageView.setImageResource(R.drawable.cat_progress);
 
 			synchronized (mLoadingImageTaskHolder) {
 				if (!mLoadingImageTaskHolder.containsKey(id)) {
