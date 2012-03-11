@@ -40,12 +40,6 @@ public class Document implements OnDataUpdateListener {
     TextureImageBase baseImage = null;
     ImageCorrector baseImageCorrector = new ImageCorrector();
     DataServer server = null;
-
-    /**
-     * 手書き用ペンのテクスチャ
-     */
-    List<TextureImageBase> penTextures = new ArrayList<TextureImageBase>();
-
     /**
      * スタンプ用のテクスチャ
      */
@@ -64,8 +58,7 @@ public class Document implements OnDataUpdateListener {
         //! 適当なペンを作成する
         {
             Pen pen = new Pen();
-            pen.setTegakiData(5, 0, 0, 255);
-            //            pen.setStampData("test");
+            pen.setTegakiData(5, 255, 255, 255);
             setPen(pen);
         }
     }
@@ -94,12 +87,13 @@ public class Document implements OnDataUpdateListener {
         baseImageCorrector.setImageAspect(bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public void loadPenTextuers(Context context) {
-        penTextures.add(loadImage(context.getResources(), R.drawable.pen, render.getGLManager()));
+    void addStamp(Context context, int drawableId) {
+        stampTextures.put(drawableId, loadImage(context.getResources(), drawableId, render.getGLManager()));
+    }
 
+    public void loadPenTextuers(Context context) {
         {
-            stampTextures.put("" + R.drawable.ic_launcher,
-                    loadImage(context.getResources(), R.drawable.ic_launcher, render.getGLManager()));
+            addStamp(context, R.drawable.ic_launcher);
         }
     }
 
@@ -109,11 +103,18 @@ public class Document implements OnDataUpdateListener {
      * @return
      */
     public TextureImageBase getPenTexture(Pen pen) {
+        TextureImageBase result = null;
         if (pen.type == Type.Stamp) {
-            return stampTextures.get("" + R.drawable.ic_launcher);
+
+            result = stampTextures.get(R.drawable.ic_launcher);
+
+            if (result == null) {
+                result = stampTextures.get(R.drawable.ic_launcher);
+            }
+            return result;
         }
 
-        return penTextures.get(0);
+        return null;
     }
 
     /**
