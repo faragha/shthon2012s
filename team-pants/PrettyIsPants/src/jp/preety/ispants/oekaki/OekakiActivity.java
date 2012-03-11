@@ -4,6 +4,7 @@ import java.io.File;
 
 import jp.preety.ispants.R;
 import jp.preety.ispants.bluetooth.BluetoothActivity;
+import jp.preety.ispants.oekaki.data.Data;
 import jp.preety.ispants.oekaki.data.Pen;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -14,6 +15,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.eaglesakura.lib.android.game.thread.UIHandler;
 import com.eaglesakura.lib.android.game.util.LogUtil;
 
 /**
@@ -29,6 +31,17 @@ public class OekakiActivity extends BluetoothActivity {
     public static final String INTENT_IMAGE_URI = "INTENT_IMAGE_URI";
 
     /**
+     * bluetoothで受け取った画像のURI。
+     * こっちに格納される場合がある。
+     */
+    public static final String INTENT_IMAGE_RESP = "INTENT_IMAGE_RESP";
+
+    /**
+     * キャッシュファイルの保存先
+     */
+    private static final File CACHE_FILE = new File(Environment.getExternalStorageDirectory(), ".pahts.cache");
+
+    /**
      * お絵かき用のレンダリングオブジェクト
      */
     OekakiRender render = null;
@@ -37,7 +50,6 @@ public class OekakiActivity extends BluetoothActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oekaki);
-
         // 仮でリスな登録
         {
             findViewById(R.id.oekaki_pen_btn).setOnClickListener(new OnClickListener() {
@@ -71,21 +83,28 @@ public class OekakiActivity extends BluetoothActivity {
                 }
             });
         }
-
         LogUtil.setOutput(true);
         render = new OekakiRender(this);
     }
 
+    /**
+     * 画像のキャプチャを行う。
+     * 処理自体は非同期で裏で行われるから、終わったらdismissの必要がある。
+     */
     public void startCapture() {
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("画像を保存中です");
         dialog.show();
         render.getRenderHandler().post(new Runnable() {
-
             @Override
             public void run() {
-                render.capture(new File(Environment.getExternalStorageDirectory(), "output.jpg"));
-                dialog.dismiss();
+                render.capture(new File(Environment.getExternalStorageDirectory(), "output.png"));
+                (new UIHandler()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
@@ -107,7 +126,13 @@ public class OekakiActivity extends BluetoothActivity {
      */
     @Override
     protected void onMessageRead(String message) {
-        render.getDocument().getServer().add(message);
+        Data data = Data.fromRececiveData(message);
+
+        if (data.image == null) {
+            render.getDocument().getServer().add(data, message);
+        } else {
+
+        }
     }
 
     @Override

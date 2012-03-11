@@ -14,6 +14,28 @@ import com.eaglesakura.lib.android.game.math.Vector2;
  *
  */
 public class Data {
+
+    /**
+     * 書き物データ
+     */
+    public static final String TYPE_STROKE = "TYPE_STROKE";
+
+    /**
+     * 画像データ
+     */
+    public static final String TYPE_PHOTO = "TYPE_PHOTO";
+
+    /**
+     * 画像ファイルのbyte配列。
+     * RGB配列はダメ絶対
+     */
+    public byte[] image = null;
+
+    /**
+     * データタイプ
+     */
+    public String type = null;
+
     /**
      * 描画用のペン
      */
