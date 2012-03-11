@@ -210,6 +210,8 @@ public class Document implements OnDataUpdateListener {
 
     @Override
     public void onDataAdded(DataServer server, Data data, String json) {
+        //! データを他のデバイスに転送する
+        render.getActivity().sendToOtherDevice(json);
         render.rendering();
     }
 
