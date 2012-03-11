@@ -4,5 +4,6 @@
     <string name="app_name">AwesomeGallery</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="cat">ネコ</string>
 
 </resources>
