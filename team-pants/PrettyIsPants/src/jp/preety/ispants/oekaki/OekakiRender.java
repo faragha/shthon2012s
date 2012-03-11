@@ -163,7 +163,7 @@ public class OekakiRender implements Callback {
             while (uri == null) {
                 uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_RESP);
                 GameUtil.sleep(100);
-                LogUtil.log("sleep get image...");
+                //                LogUtil.log("sleep get image...");
             }
 
             document.loadBaseImage(activity, Uri.parse(uri), spriteManager.getVirtualDisplay());
