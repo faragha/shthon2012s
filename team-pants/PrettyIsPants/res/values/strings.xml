@@ -18,6 +18,6 @@
     <string name="connected">%1sに接続しました。</string>
     <string name="bluetooth_not_support">Bluetoothがサポートれていません。</string>
     <string name="bluetooth_not_enabled">BluetoothがONにしてもらえませんでした。</string>
-    <string name="connecting">"接続します。"</string>
+    <string name="connecting">接続します。</string>
     <string name="device_not_found">接続できるデバイスがありません</string>
 </resources>
