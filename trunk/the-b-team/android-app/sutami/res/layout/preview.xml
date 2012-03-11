@@ -10,23 +10,41 @@
         android:layout_height="0dip"
         android:layout_weight="1" />
 
-    <SeekBar
-        android:id="@+id/seekbar"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dip"
-        android:layout_marginLeft="72dip"
-        android:layout_marginRight="72dip"
-        android:layout_marginTop="24dip" />
-    
-    <EditText
-        android:id="@+id/decoName"
+        android:background="@drawable/slider_bg" >
+
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dip"
+            android:layout_marginLeft="72dip"
+            android:layout_marginRight="72dip"
+            android:layout_marginTop="24dip"
+            android:background="@drawable/seekbar_background"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:thumb="@drawable/seekbar_thumb" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:hint="@string/deco_hint"
-        android:inputType="text"
-        />
+        android:background="@drawable/input_bg" >
+
+        <EditText
+            android:id="@+id/decoName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dip"
+            android:layout_marginLeft="16dip"
+            android:layout_marginRight="16dip"
+            android:layout_marginTop="32dip"
+            android:hint="@string/deco_hint"
+            android:inputType="text"
+            android:maxLines="1" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -45,13 +63,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/share" />
-            
+
         <Button
             android:id="@+id/button_up"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/up" />
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
