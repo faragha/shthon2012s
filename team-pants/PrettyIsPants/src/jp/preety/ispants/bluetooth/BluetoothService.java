@@ -485,7 +485,7 @@ public class BluetoothService {
                     sb = new StringBuffer();
                     sb.append(remine);
                     
-                    // Log.d(TAG, "read finish");
+                    Log.d(TAG, "read finish");
                     allStr = allStr.substring(0, index);
                     // byte[] readAllBuffer = allStr.getBytes();
 
@@ -513,13 +513,24 @@ public class BluetoothService {
                 String str = sendString + EOD;
                 Log.d(TAG, "sendData : " + str);
                 // byte[] space = EOD.getBytes();
-                byte[] sendBuffer = str.getBytes();
                 /*
                  * for (int i = 0; i < buffer.length; i++) { sendBuffer[i] =
                  * buffer[i]; } for (int i = 0; i < space.length; i++) {
                  * sendBuffer[buffer.length + i] = space[i]; }
                  */
-                mmOutStream.write(sendBuffer);
+                String remine = str;
+                while (!remine.isEmpty()) {
+                    String sendStr = "";
+                    if(remine.length() < 1024) {
+                        sendStr = remine;
+                        remine = "";
+                    } else {
+                        sendStr = remine.substring(0, 1024);
+                        remine = remine.substring(1024);
+                    }
+                    byte[] sendBuffer = sendStr.getBytes();
+                    mmOutStream.write(sendBuffer);
+                }
 
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, sendString).sendToTarget();

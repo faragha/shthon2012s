@@ -1,3 +1,4 @@
+
 package jp.preety.ispants.bluetooth;
 
 import jp.preety.ispants.R;
@@ -75,7 +76,8 @@ public class BluetoothActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case BluetoothService.MESSAGE_STATE_AS_SERVER_CHANGE:
-                    if (mService != null && mService.getStateAsServer() == BluetoothService.STATE_NONE) {
+                    if (mService != null
+                            && mService.getStateAsServer() == BluetoothService.STATE_NONE) {
                         mService.startAcceptAsServer();
                     }
                     onChangeBluetoothServerMessageState(mService.getStateAsServer());
@@ -98,8 +100,9 @@ public class BluetoothActivity extends Activity {
                     onMessageDeviceName(mConnectedDeviceName);
                     break;
                 case BluetoothService.MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(), msg.getData().getString(BluetoothService.TOAST),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            msg.getData().getString(BluetoothService.TOAST), Toast.LENGTH_SHORT)
+                            .show();
                     break;
             }
         }
@@ -109,7 +112,7 @@ public class BluetoothActivity extends Activity {
     };
 
     protected void onChangeBluetoothClientMessageState(int state) {
-        if(state == BluetoothService.STATE_CONNECTED) {
+        if (state == BluetoothService.STATE_CONNECTED) {
             onBluetoothConnectComplete();
         }
     };
@@ -157,7 +160,7 @@ public class BluetoothActivity extends Activity {
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
-                    if(mServerFlag == 0) {
+                    if (mServerFlag == 0) {
                         mService = new BluetoothService(this, mHandler);
                         mService.start();
                     }
@@ -171,10 +174,10 @@ public class BluetoothActivity extends Activity {
             case REQUEST_PICK_BLUETOOTH_DEVICE:
                 mBTClientSelected = false;
                 if (resultCode == Activity.RESULT_OK) {
-                    if(mService != null) {
-            mService.stop();
-            mService = null;
-        }
+                    if (mService != null) {
+                        mService.stop();
+                        mService = null;
+                    }
                     mService = new BluetoothService(this, mHandler);
                     Toast.makeText(this, R.string.connecting, Toast.LENGTH_SHORT).show();
                     connectDevice(data.getExtras().getString("address"));
