@@ -16,4 +16,9 @@
     <string name="failed_to_save_image">スタンプ画像の保存に失敗しました</string>
     <string name="failed_to_share_image">スタンプ画像の共有に失敗しました</string>
 
+    <string name="progress_to_save_decome">デコメを保存中・・・</string>
+    <string name="success_to_save_decome">スタンプ画像の保存に成功しました</string>
+    <string name="failed_to_save_decome">スタンプ画像の保存に失敗しました</string>
+    <string name="failed_to_share_decome">スタンプ画像の共有に失敗しました</string>
+    
 </resources>
