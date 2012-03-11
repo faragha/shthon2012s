@@ -154,6 +154,6 @@ public class Utils {
 	public static String getAnikiDir(){
 
 		 return Environment.getExternalStorageDirectory()
-			.getPath() + "/SpringAniki" ;
+			.getPath() + "/DCIM/100ANDRO" ;
 	}
 }
