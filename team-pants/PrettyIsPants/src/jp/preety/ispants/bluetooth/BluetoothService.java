@@ -455,8 +455,10 @@ public class BluetoothService {
                     String allStr = sb.toString();
                     int index = allStr.lastIndexOf(EOD);
                     if(index == -1 || index != allStr.length() - 4) {
+                        Log.d(TAG, "read continue");
                         continue;
                     }
+                    Log.d(TAG, "read finish");
                     allStr = allStr.substring(0, index);
                     byte[] readAllBuffer = allStr.getBytes();
 
