@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
@@ -130,6 +131,7 @@ public class SutamiActivity extends Activity {
             View buttonPickAPictureFromGalrally = findViewById(R.id.button_pick_a_picture);
             View imageRabbit = findViewById(R.id.image_rabbit);
             View imageCat = findViewById(R.id.image_cat);
+            View textTitleDescription = findViewById(R.id.text_title_description);
 
             if (msg.what == MESSAGE_START_ANIMATION_0) {
                 mHandler.sendEmptyMessageDelayed(MESSAGE_START_ANIMATION_1, DELAY_START_ANIMATION_0);
@@ -151,8 +153,14 @@ public class SutamiActivity extends Activity {
                 }
                 mHandler.sendEmptyMessageDelayed(MESSAGE_START_ANIMATION_2, DELAY_START_ANIMATION_2);
             } else if (msg.what == MESSAGE_START_ANIMATION_2) {
+                textTitleDescription.setVisibility(View.VISIBLE);
                 buttonTakeAPicture.setVisibility(View.VISIBLE);
                 buttonPickAPictureFromGalrally.setVisibility(View.VISIBLE);
+                {
+                    Animation anim = new AlphaAnimation(0, 1);
+                    anim.setDuration(DELAY_START_ANIMATION_2);
+                    textTitleDescription.startAnimation(anim);
+                }
                 { // ボタン1のアニメーション
                     Animation anim = new TranslateAnimation(-buttonTakeAPicture.getWidth() * 2, 0,
                             0, 0);
@@ -198,6 +206,7 @@ public class SutamiActivity extends Activity {
             View buttonPickAPictureFromGalrally = findViewById(R.id.button_pick_a_picture);
             View imageRabbit = findViewById(R.id.image_rabbit);
             View imageCat = findViewById(R.id.image_cat);
+            View textTitleDescription = findViewById(R.id.text_title_description);
 
             imageTop.setVisibility(View.INVISIBLE);
             imageBottom.setVisibility(View.INVISIBLE);
@@ -205,10 +214,27 @@ public class SutamiActivity extends Activity {
             buttonPickAPictureFromGalrally.setVisibility(View.INVISIBLE);
             imageRabbit.setVisibility(View.INVISIBLE);
             imageCat.setVisibility(View.INVISIBLE);
+            textTitleDescription.setVisibility(View.INVISIBLE);
             mHandler.sendEmptyMessage(MESSAGE_START_ANIMATION_0);
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopAllAnimation();
+    }
+
+    private void stopAllAnimation() {
+        mHandler.removeMessages(MESSAGE_START_ANIMATION_0);
+        mHandler.removeMessages(MESSAGE_START_ANIMATION_1);
+        mHandler.removeMessages(MESSAGE_START_ANIMATION_2);
+        mHandler.removeMessages(MESSAGE_START_ANIMATION_3);
+    }
+
+    /**
+     * 猫とうさぎの座標だけは仕方なくプログラムで計算している
+     */
     private void resetCatRabbitLayout() {
         Drawable bg = getResources().getDrawable(R.drawable.bg_bottom);
         Drawable rabbit = getResources().getDrawable(R.drawable.bg_rabbit);
@@ -220,8 +246,8 @@ public class SutamiActivity extends Activity {
         float scale = (float)imageBottom.getWidth() / (float)bg.getMinimumWidth();
 
         int topOffset = -imageBottom.getHeight() / 4;
-        int rabittPos = (int)(imageBottom.getWidth() * scale * 0.30);
-        int catPos = (int)(imageBottom.getWidth() * scale * 0.78);
+        int rabittPos = (int)(imageBottom.getWidth() * 0.2);
+        int catPos = (int)(imageBottom.getWidth() * 0.8);
         imageBottom.bringToFront();
         imageRabbit.layout(//
                 rabittPos, // Left
@@ -230,9 +256,9 @@ public class SutamiActivity extends Activity {
                 topOffset + (int)(imageBottom.getTop() + rabbit.getMinimumHeight() * scale) // Bottom
         );
         imageCat.layout(//
-                catPos, // // Left
+                catPos - (int)(cat.getMinimumWidth() * scale), // // Left
                 topOffset + (int)(imageBottom.getTop()), // Top
-                catPos + (int)(cat.getMinimumWidth() * scale), // Right
+                catPos, // Right
                 topOffset + (int)(imageBottom.getTop() + cat.getMinimumHeight() * scale) // Bottom
         );
     }
