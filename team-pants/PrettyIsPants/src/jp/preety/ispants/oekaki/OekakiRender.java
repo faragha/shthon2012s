@@ -22,6 +22,7 @@ import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 
 import com.eaglesakura.lib.android.game.display.VirtualDisplay;
+import com.eaglesakura.lib.android.game.graphics.Color;
 import com.eaglesakura.lib.android.game.graphics.gl11.OpenGLManager;
 import com.eaglesakura.lib.android.game.graphics.gl11.SpriteManager;
 import com.eaglesakura.lib.android.game.thread.AsyncHandler;
@@ -252,6 +253,17 @@ public class OekakiRender implements Callback {
         spriteManager.begin();
         {
             document.drawBaseImage(spriteManager);
+
+            if (document.getBihakuLevel() > 0) {
+                float alpha = (document.getBihakuLevel()) / 2;
+                glManager.setBlendMode(OpenGLManager.BLEND_ALPHA_ADD);
+                {
+                    Rect area = document.getBaseImageCorrector().getImageArea(new Rect());
+                    spriteManager.fillRect(area.left, area.top, area.width(), area.height(),
+                            Color.toColorRGBA(255, 255, 255, (int) (alpha / 100 * 255)));
+                }
+                glManager.setBlendMode(OpenGLManager.BLEND_ALPHA_NORMAL);
+            }
         }
         spriteManager.end();
 

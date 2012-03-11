@@ -87,8 +87,8 @@ public class OekakiActivity extends BluetoothActivity {
      * 色リソース配列
      */
     private Integer[] mColorResources = {
-            R.drawable.color_yellow, R.drawable.color_orange, R.drawable.color_green, R.drawable.color_black, R.drawable.color_blue,
-            R.drawable.color_pink, R.drawable.color_red, R.drawable.color_white,
+            R.drawable.color_yellow, R.drawable.color_orange, R.drawable.color_green, R.drawable.color_black,
+            R.drawable.color_blue, R.drawable.color_pink, R.drawable.color_red, R.drawable.color_white,
     };
 
     /**
@@ -151,7 +151,7 @@ public class OekakiActivity extends BluetoothActivity {
             findViewById(R.id.oekaki_white_btn).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	mWhiteningDialog.show();
+                    mWhiteningDialog.show();
                 }
             });
 
@@ -386,35 +386,36 @@ public class OekakiActivity extends BluetoothActivity {
         builder = new AlertDialog.Builder(this);
         builder.setView(layout);
         mStampDialog = builder.create();
-        
+
         // 以下、美白用ダイアログ
         layout = inflater.inflate(R.layout.whitening_dialog, (ViewGroup) findViewById(R.id.layout_root));
-        SeekBar seekBar = (SeekBar)layout.findViewById(R.id.seekbar);
+        SeekBar seekBar = (SeekBar) layout.findViewById(R.id.seekbar);
         seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // TODO Auto-generated method stub
-                
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-                
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-                
+                //! TODO ここに美白設定を追加
+                {
+                    Pen pen = new Pen();
+                    pen.setBihakuData(seekBar.getProgress());
+                    render.getDocument().setPen(pen);
+                    render.rendering();
+                }
             }
         });
         builder = new AlertDialog.Builder(this);
         builder.setView(layout);
         mWhiteningDialog = builder.create();
     }
-    
+
     class ImageAdapter extends BaseAdapter {
         private Integer[] mIdList;
         private Integer mSelected;
