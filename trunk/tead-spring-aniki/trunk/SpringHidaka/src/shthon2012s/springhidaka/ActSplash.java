@@ -1,5 +1,6 @@
 package shthon2012s.springhidaka;
 
+import shthon2012s.springhidaka.WebApis.AsyncTaskSample;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,8 @@ public class ActSplash extends Activity {
 
 	protected void DemoPlay() {
 
+		Intent it = new Intent(ctx, AsyncTaskSample.class);
+		startActivity(it);
 	}
 
 
