@@ -59,7 +59,6 @@ public class GestureController implements android.view.GestureDetector.OnGesture
         ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
         final float u = baseImageCorrector.pixToImageU(event.getX());
         final float v = baseImageCorrector.pixToImageV(event.getY());
-
         return new Vector2(u, v);
     }
 
