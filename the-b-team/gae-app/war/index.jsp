@@ -8,7 +8,7 @@
 <c:param name="body">
 <div data-role="page" class="type-index">
 	<div data-role="header" data-theme="f">
-		<h1>スタ☆me</h1>
+		<h1><img src="${f:url('/image/logo.png')}" alt="スタ☆me"/></h1>
 		<%--
 		<a href="../../" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
 		<a href="../nav.html" data-icon="search" data-iconpos="notext" data-rel="dialog" data-transition="fade">Search</a>

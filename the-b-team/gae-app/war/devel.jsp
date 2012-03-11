@@ -14,6 +14,10 @@
 <form action="${f:url('/m/upload')}" method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
+			<td>タイトル</td>
+			<td><input type="text" name="title"/></td>
+		</tr>
+		<tr>
 			<td>ファイル</td>
 			<td><input type="file" name="file"/></td>
 		</tr>

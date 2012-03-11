@@ -6,6 +6,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width;initial-scale=1.0;user-scalable=no;maximum-scale=1.0;minimum-scale=1.0;target-densitydpi=device-dpi">
 	<title>${param.title}</title>
 	<link rel="stylesheet" href="${f:url('/css/jquery.mobile-1.0.1.min.css')}" />
 	<link rel="stylesheet" href="${f:url('/css/jquery.mobile.structure-1.0.1.min.css')}" />
