@@ -6,6 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import jp.sonicstudio.sutami.R;
 import jp.sonicstudio.sutami.image.PreviewView;
@@ -99,7 +108,9 @@ public class PreviewActivity extends Activity {
             LoadImageTask loadImageTask = new LoadImageTask();
             loadImageTask.execute(uri);
         }
-    }
+        Button buttonUp = (Button) findViewById(R.id.button_up);
+        buttonUp.setOnClickListener(mUpOnClickListener);
+   }
 
     /**
      * シークバー変更リスナー
@@ -181,6 +192,20 @@ public class PreviewActivity extends Activity {
         public void onClick(View v) {
             // 画像を一時保存し、画像をインテントで共有する
             saveImage(true); // true:共有する
+        }
+    };
+
+    /**
+     * アップロードボタンクリックリスナー
+     */
+    private View.OnClickListener mUpOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // 画像をアップロードする
+			String decomeName = "deco";
+        	UploadDecomeTask uploadDecomeTask = new UploadDecomeTask(PreviewActivity.this);
+			uploadDecomeTask.setDecoName(decomeName);
+        	uploadDecomeTask.execute(mDstBitmap);
         }
     };
 
@@ -541,6 +566,124 @@ public class PreviewActivity extends Activity {
 				String text = mContext.getString(resId);
 				Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
 			}
+		}
+
+		/**
+		 * インテント経由でテンポラリ画像を共有する
+		 */
+		private void shareImage() {
+			Uri uri = Uri.fromFile(new File(getTemporallyImagePath()));
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("image/jpeg");
+			intent.putExtra(Intent.EXTRA_STREAM, uri);
+			startActivity(Intent.createChooser(intent, null));
+		}
+
+	};
+
+	/**
+	 * デコメアップロードクラス(画像保存クラスの丸パク)
+	 */
+	class UploadDecomeTask extends AsyncTask<Bitmap, Void, Boolean> {
+
+		private Context mContext;
+		private ProgressDialog mProgressDialog;
+		private final String DECOME_OUTPUT_DIR = "/mnt/sdcard/_tmp_decome";
+		private String decoName;
+
+		/**
+		 * コンストラクタ
+		 * 
+		 * @param context コンテキスト
+		 * @param isShare 保存処理後、共有するかどうか
+		 */
+		public UploadDecomeTask(Context context) {
+			mContext = context;
+		}
+
+		public void setDecoName(String name) {
+			decoName = name;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// プログレスダイアログ表示
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setMessage(mContext.getString(R.string.progress_to_up_decome));
+			mProgressDialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Bitmap... params) {
+			boolean success = false;
+			if (params.length > 0) {
+				if (params[0] != null) {
+					if (params[0] instanceof Bitmap) {
+						Bitmap bitmap = params[0];
+						// このアプリケーションの外部ストレージ内での保存ルートパスのディレクトリが存在しなければ作成する
+						File file = new File(DECOME_OUTPUT_DIR);
+						if (!file.exists()) {
+							file.mkdir();
+						}
+
+						// 指定された画像をJPEGで書きだす
+						String imageFilePath = DECOME_OUTPUT_DIR + "/" + decoName + ".jpg";
+						File imageFile = new File(imageFilePath);
+						try {
+							Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+									bitmap.getConfig());
+							Canvas canvas = new Canvas(outBitmap);
+							canvas.drawColor(Color.WHITE);
+							canvas.drawBitmap(bitmap, 0, 0, null);
+							
+							FileOutputStream fos = new FileOutputStream(imageFile);
+							outBitmap.compress(CompressFormat.JPEG, 100, fos);
+							fos.close();
+							
+							MultipartEntity entity = new MultipartEntity();
+							FileBody fileBody = new FileBody(new File(imageFilePath));
+							System.out.println("MIME type: " + fileBody.getMimeType());
+							StringBody msgBody;
+							msgBody = new StringBody(decoName, Charset.forName("UTF-8"));
+							entity.addPart("file", fileBody);
+							entity.addPart("title", msgBody);
+							DefaultHttpClient client = new DefaultHttpClient();
+							HttpPost httpPost = new HttpPost(getString(R.string.deco_upload_to));
+							httpPost.setEntity(entity);
+							HttpResponse resp = client.execute(httpPost);
+							String respString = EntityUtils.toString(resp.getEntity(), "UTF-8");
+							System.out.println("resp: " + respString);
+							////
+							success = true;
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			return success;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			// プログレスダイアログを閉じる
+			if (mProgressDialog != null) {
+				mProgressDialog.dismiss();
+				mProgressDialog = null;
+			}
+			// 保存のみの場合、常にトースト表示する
+			int resId;
+			if (result) {
+				resId = R.string.success_to_save_decome;
+			} else {
+				resId = R.string.failed_to_save_decome;
+			}
+			String text = mContext.getString(resId);
+			Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
 		}
 
 		/**
