@@ -21,6 +21,8 @@ import jp.sonicstudio.sutami.image.PreviewView;
 import jp.sonicstudio.sutami.image.StampMaker;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -34,6 +36,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -220,6 +224,7 @@ public class PreviewActivity extends Activity {
     private void saveImage(boolean isShare) {
         SaveImageTask saveImageTask = new SaveImageTask(PreviewActivity.this,
                 isShare);
+		saveImageTask.setDecoName(decoNameEditText.getText().toString());
         saveImageTask.execute(mDstBitmap);
     }
 
@@ -367,6 +372,8 @@ public class PreviewActivity extends Activity {
         private Context mContext;
         private boolean mIsShare;
         private ProgressDialog mProgressDialog;
+        private String decoName;
+		private final String STAMP_OUTPUT_DIR = "/mnt/sdcard/sutami";
 
         /**
          * コンストラクタ
@@ -388,34 +395,36 @@ public class PreviewActivity extends Activity {
             mProgressDialog.show();
         }
 
+		public void setDecoName(String name) {
+			decoName = name;
+		}
+		
         @Override
         protected Boolean doInBackground(Bitmap... params) {
             boolean success = false;
             if (params.length > 0) {
                 if (params[0] != null) {
                     if (params[0] instanceof Bitmap) {
+                    	String imageFilePath = STAMP_OUTPUT_DIR + "/" + decoName + ".png";
                         Bitmap bitmap = params[0];
                         // このアプリケーションの外部ストレージ内での保存ルートパスのディレクトリが存在しなければ作成する
-                        File file = new File(getAppExternalStoragePath());
+                        File file = new File(STAMP_OUTPUT_DIR);
                         if (!file.exists()) {
                             file.mkdir();
                         }
-                        // MediaScanner 対象外にするためのファイルが存在しなければ作成する
-                        File nomediaFile = new File(file.toString()
-                                + File.separator + NOMEDIA_FILE_NAME);
-                        if (!nomediaFile.exists()) {
-                            try {
-                                nomediaFile.createNewFile();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
                         // 指定された画像をテンポラリパスのファイルにPNG形式で保存する
-                        File imageFile = new File(getTemporallyImagePath());
+                        File imageFile = new File(imageFilePath);
                         try {
                             FileOutputStream fos = new FileOutputStream(imageFile);
                             bitmap.compress(CompressFormat.PNG, 100, fos);
                             fos.close();
+                            ContentResolver contentresolver = mContext.getContentResolver();
+                            ContentValues contentvalues = new ContentValues();
+                            contentvalues.put(Images.Media.MIME_TYPE, "image/png");
+                            contentvalues.put(Images.Media.DATA, imageFile.getPath());
+                            contentvalues.put(Images.Media.TITLE, imageFile.getName());
+                            contentvalues.put(Images.Media.DISPLAY_NAME, decoName);
+                            contentresolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentvalues);
                             success = true;
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
