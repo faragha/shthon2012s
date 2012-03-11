@@ -1,66 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/pen"
     >
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="pen dialog title"
+    <View
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         />
-    <LinearLayout
+    <GridView
+        android:id="@+id/color_grid"
+        android:layout_width="200dp"
+        android:layout_height="110dp"
+        android:numColumns="4"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:columnWidth="40dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:layout_marginLeft="90dp"
+        />
+    <View
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        />
+    <GridView
+        android:id="@+id/nib_grid"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:numColumns="4"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:columnWidth="40dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:layout_marginLeft="80dp"
+        />
+    <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         >
-        <TextView
-            android:id="@+id/color_sub"
+        <Button
+            android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="色"
-            />
-        <GridView
-            android:id="@+id/color_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="4"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:columnWidth="90dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_ok"
             />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:id="@+id/nib_sub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="太さ"
-            />
-        <GridView
-            android:id="@+id/nib_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="4"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:columnWidth="90dp"
-            android:stretchMode="columnWidth"
-            android:gravity="center"
-            />
-    </LinearLayout>
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="OK"
-        />
 </LinearLayout>
