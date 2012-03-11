@@ -18,7 +18,7 @@ public class CompleteActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.confirm);
+        setContentView(R.layout.complete);
         
         // ボタンイベント登録
         final Button btnOk = (Button)findViewById(R.id.btn_ok);
