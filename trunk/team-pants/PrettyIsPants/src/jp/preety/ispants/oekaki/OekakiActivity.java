@@ -1,21 +1,26 @@
 package jp.preety.ispants.oekaki;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import jp.preety.ispants.R;
 import jp.preety.ispants.bluetooth.BluetoothActivity;
 import jp.preety.ispants.oekaki.data.Data;
 import jp.preety.ispants.oekaki.data.Pen;
+import net.arnx.jsonic.JSON;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.eaglesakura.lib.android.game.thread.UIHandler;
+import com.eaglesakura.lib.android.game.util.GameUtil;
 import com.eaglesakura.lib.android.game.util.LogUtil;
 
 /**
@@ -39,7 +44,12 @@ public class OekakiActivity extends BluetoothActivity {
     /**
      * キャッシュファイルの保存先
      */
-    private static final File CACHE_FILE = new File(Environment.getExternalStorageDirectory(), ".pahts.cache");
+    private static final File CACHE_FILE = new File(Environment.getExternalStorageDirectory(), ".pants.cache");
+
+    /**
+     * 他の端末から画像ポストのメッセージが来た。
+     */
+    public static final String MESSAGE_REQUEST_IMAGE = "MESSAGE_REQUEST_IMAGE";
 
     /**
      * お絵かき用のレンダリングオブジェクト
@@ -122,16 +132,61 @@ public class OekakiActivity extends BluetoothActivity {
     }
 
     /**
+     * サーバー
+     * @return
+     */
+    private boolean isImageOrner() {
+        return getIntent().getStringExtra(INTENT_IMAGE_URI) != null;
+    }
+
+    String createImageJSON(String uri) {
+        Data data = new Data();
+        try {
+            InputStream is = getContentResolver().openInputStream(Uri.parse(uri));
+            data.image = GameUtil.toByteArray(is);
+            return JSON.encode(data);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
      * 他の端末からデータを受け取った
      */
     @Override
     protected void onMessageRead(String message) {
-        Data data = Data.fromRececiveData(message);
+        // 画像を送ってくれっていうメッセージを受けた
+        if (MESSAGE_REQUEST_IMAGE.equals(message)) {
+            if (!isImageOrner()) {
+                // 画像所有者じゃなければ何もしない
+                return;
+            }
+            sendToOtherDevice(createImageJSON(getIntent().getStringExtra(INTENT_IMAGE_URI)));
+            return;
+        }
 
+        Data data = Data.fromRececiveData(message);
         if (data.image == null) {
             render.getDocument().getServer().add(data, message);
         } else {
 
+            // 既に画像を受け取り済みだったら何もしない
+            if (getIntent().getStringExtra(INTENT_IMAGE_RESP) != null) {
+                return;
+            }
+
+            final byte[] bytes = data.image;
+            try {
+                FileOutputStream os = new FileOutputStream(CACHE_FILE);
+                os.write(bytes);
+                os.close();
+
+                getIntent().putExtra(INTENT_IMAGE_RESP, Uri.fromFile(CACHE_FILE).toString());
+
+            } catch (Exception e) {
+                LogUtil.log(e);
+                throw new RuntimeException("not image");
+            }
         }
     }
 
