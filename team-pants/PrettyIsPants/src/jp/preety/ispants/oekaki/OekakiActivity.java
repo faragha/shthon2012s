@@ -30,6 +30,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.eaglesakura.lib.android.game.thread.UIHandler;
 import com.eaglesakura.lib.android.game.util.GameUtil;
@@ -76,6 +78,10 @@ public class OekakiActivity extends BluetoothActivity {
      * スタンプ用ダイアログ
      */
     AlertDialog mStampDialog;
+    /**
+     * 美白用ダイアログ
+     */
+    AlertDialog mWhiteningDialog;
 
     /**
      * 色リソース配列
@@ -139,6 +145,13 @@ public class OekakiActivity extends BluetoothActivity {
                 @Override
                 public void onClick(View v) {
                     mStampDialog.show();
+                }
+            });
+
+            findViewById(R.id.oekaki_white_btn).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	mWhiteningDialog.show();
                 }
             });
 
@@ -373,8 +386,35 @@ public class OekakiActivity extends BluetoothActivity {
         builder = new AlertDialog.Builder(this);
         builder.setView(layout);
         mStampDialog = builder.create();
-    }
+        
+        // 以下、美白用ダイアログ
+        layout = inflater.inflate(R.layout.whitening_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        SeekBar seekBar = (SeekBar)layout.findViewById(R.id.seekbar);
+        seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
+        builder = new AlertDialog.Builder(this);
+        builder.setView(layout);
+        mWhiteningDialog = builder.create();
+    }
+    
     class ImageAdapter extends BaseAdapter {
         private Integer[] mIdList;
         private Integer mSelected;
