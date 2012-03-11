@@ -24,6 +24,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 
+import shthon2012s.springhidaka.Utils.Utils;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -95,8 +97,7 @@ public class CreateImageAsyncTask extends AsyncTask<String, String, Boolean> {
 			if (responseCode == HttpStatus.SC_OK) {
 
 				// データが存在したらダウンロードのためいったん保存する
-				String dir = Environment.getExternalStorageDirectory()
-						.getPath() + "/" + parent.getPackageName();
+				String dir = Utils.getAnikiDir();
 				new File(dir).mkdir();
 
 				File file = new File(dir, fileName);

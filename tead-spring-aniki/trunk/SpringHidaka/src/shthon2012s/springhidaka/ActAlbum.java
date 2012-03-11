@@ -1,14 +1,13 @@
 package shthon2012s.springhidaka;
 
+import java.io.File;
+
 import shthon2012s.springhidaka.Utils.Utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 public class ActAlbum extends Activity {
 
@@ -24,38 +23,34 @@ public class ActAlbum extends Activity {
 
 		ctx = this.getApplicationContext();
 
-		// ためしにかさねてみたよ
-		testOverlay();
+		testFileSearch();
 
 		//どっかきめたフォルダに保存したの読んでgridviewとか？
 		//ファイル名を時刻＋セリフにしちゃえば管理楽なんじゃね
+		// ↑あー、らくだわ。
 	}
 
-	private void testOverlay() {
+	protected void GoPicture(String imagePath) {
+		Intent it = new Intent(ctx, ActPicture.class);
 
-		Bitmap bm;
-		Bitmap bmo;
-		Canvas mCanvas;
+		it.putExtra("filepath", imagePath);
+		it.putExtra("saveflag", false);
 
-		int resId = Utils.getDrawableFrameId();
-		bm = BitmapFactory.decodeResource(getResources(), resId);
-		bm = bm.copy(Bitmap.Config.ARGB_8888, true);
-		mCanvas = new Canvas(bm);
+		startActivity(it);
+	}
 
-		resId = Utils.getDrawableCopy1Id();
-		bmo =  BitmapFactory.decodeResource(getResources(), resId);
-		mCanvas.drawBitmap(bmo, 0, 0, null);
+	private void testFileSearch(){
 
-		resId = Utils.getDrawableCopy2Id();
-		bmo =  BitmapFactory.decodeResource(getResources(), resId);
-		mCanvas.drawBitmap(bmo, 0, 0, null);
+		File dir = new File( Utils.getAnikiDir() );
+		final File[] files = dir.listFiles();
 
-		resId = Utils.getDrawableCopy3Id();
-		bmo =  BitmapFactory.decodeResource(getResources(), resId);
-					mCanvas.drawBitmap(bmo, 0, 0, null);
+		final String[] str_items;
+		str_items = new String[files.length + 1];
+		for (int i = 0; i < files.length; i++) {
+		    File file = files[i];
+		    str_items[i] = file.getName();
+		}
 
-		ImageView image = (ImageView) findViewById(R.id.imageView1);
-		image.setImageBitmap(bm);
-
+		GoPicture( Utils.getAnikiDir() + "/" + str_items[0]);
 	}
 }

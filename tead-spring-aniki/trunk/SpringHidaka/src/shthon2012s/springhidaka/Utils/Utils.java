@@ -10,6 +10,7 @@ import shthon2012s.springhidaka.DialNumber;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 
@@ -148,5 +149,11 @@ public class Utils {
 	public static int getDrawableCopy3Id(){
 		Random rand = new Random();
 		return copy3List.get(rand.nextInt(copy3List.size()));
+	}
+
+	public static String getAnikiDir(){
+
+		 return Environment.getExternalStorageDirectory()
+			.getPath() + "/SpringAniki" ;
 	}
 }
