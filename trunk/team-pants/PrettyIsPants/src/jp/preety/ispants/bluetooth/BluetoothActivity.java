@@ -54,13 +54,13 @@ public class BluetoothActivity extends Activity {
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         } else {
             if (mService == null) {
-                mService = new BluetoothService(this, mHandler);
-                mService.start();
                 Intent i = getIntent();
                 if (i.hasExtra(EXTRA_SERVER)) {
                     mServerFlag = i.getIntExtra(EXTRA_SERVER, 0);
                     i.removeExtra(EXTRA_SERVER);
                     if (mServerFlag == 1) {
+                        mService = new BluetoothService(this, mHandler);
+                        mService.start();
                     } else {
                         pickBluetooth();
                     }
@@ -78,11 +78,11 @@ public class BluetoothActivity extends Activity {
                     if (mService != null && mService.getStateAsServer() == BluetoothService.STATE_NONE) {
                         mService.startAcceptAsServer();
                     }
-                    onChangeBluetoothServerMessageState();
+                    onChangeBluetoothServerMessageState(mService.getStateAsServer());
                     break;
                 case BluetoothService.MESSAGE_STATE_AS_CLIENT_CHANGE:
                     Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
-                    onChangeBluetoothClientMessageState();
+                    onChangeBluetoothClientMessageState(mService.getStateAsClient());
                     break;
                 case BluetoothService.MESSAGE_READ:
                     String readMessage = (String) msg.obj;
@@ -105,10 +105,13 @@ public class BluetoothActivity extends Activity {
         }
     };
 
-    protected void onChangeBluetoothServerMessageState() {
+    protected void onChangeBluetoothServerMessageState(int state) {
     };
 
-    protected void onChangeBluetoothClientMessageState() {
+    protected void onChangeBluetoothClientMessageState(int state) {
+        if(state == BluetoothService.STATE_CONNECTED) {
+            onBluetoothConnectComplete();
+        }
     };
 
     protected void onMessageRead(String message) {
@@ -154,8 +157,10 @@ public class BluetoothActivity extends Activity {
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
-                    mService = new BluetoothService(this, mHandler);
-                    mService.start();
+                    if(mServerFlag == 0) {
+                        mService = new BluetoothService(this, mHandler);
+                        mService.start();
+                    }
                 } else {
                     // User did not enable Bluetooth or an error occurred
                     Log.d(TAG, "BT not enabled");
@@ -166,6 +171,11 @@ public class BluetoothActivity extends Activity {
             case REQUEST_PICK_BLUETOOTH_DEVICE:
                 mBTClientSelected = false;
                 if (resultCode == Activity.RESULT_OK) {
+                    if(mService != null) {
+            mService.stop();
+            mService = null;
+        }
+                    mService = new BluetoothService(this, mHandler);
                     Toast.makeText(this, R.string.connecting, Toast.LENGTH_SHORT).show();
                     connectDevice(data.getExtras().getString("address"));
                     mBTClientSelected = true;
