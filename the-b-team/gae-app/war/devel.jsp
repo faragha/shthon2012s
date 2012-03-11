@@ -11,7 +11,7 @@
 <body>
 <h1>開発用</h1>
 <h2>アップロード</h2>
-<form action="${f:url('/m/upload')}" method="post" enctype="multipart/form-data"/>
+<form action="${f:url('/m/upload')}" method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<td>ファイル</td>

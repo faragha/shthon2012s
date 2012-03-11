@@ -9,6 +9,7 @@ import org.slim3.datastore.Attribute;
 import org.slim3.datastore.CreationDate;
 import org.slim3.datastore.Model;
 import org.slim3.datastore.ModificationDate;
+import org.slim3.datastore.json.Json;
 
 @Model(schemaVersion = 1)
 public class ImageSummaryModel implements Serializable {
@@ -16,6 +17,7 @@ public class ImageSummaryModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Attribute(primaryKey = true)
+    @Json(ignore=true)
     private Key key;
 
     @Attribute(version = true)
@@ -23,6 +25,7 @@ public class ImageSummaryModel implements Serializable {
 
     private Long imageId;
     
+    @Json(ignore=true)
     private Key userKey;
 
     @Attribute(listener = CreationDate.class)
