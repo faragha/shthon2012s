@@ -1,6 +1,12 @@
 @CHARSET "utf-8";
 
-body { background-color: #EEEEEE; }
+body {
+	background-image: url("/image/bg.png");
+}
+.ui-page {
+	background-image: url("/image/bg.png");
+	background-size: 100%;
+}
 
 h1 { 
 	height: 33px;

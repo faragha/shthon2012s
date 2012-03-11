@@ -38,6 +38,7 @@ public class ImageService {
             ImageSummaryModel imageSummaryModel = new ImageSummaryModel();
             imageSummaryModel.setUserKey(userModel.getKey());
             imageSummaryModel.setImageId(imageId);
+            imageSummaryModel.setTitle(imageModel.getTitle());
             Datastore.put(imageSummaryModel);
         }
         

@@ -18,10 +18,32 @@ function loadImages(datas, requestCode) {
 	var imagesGrid = $("#imagesGrid");
 	for (var i=0;i<datas.length;i++) {
 		var data = datas[i];
-		$("<img>")
-		.addClass("ui-block-c")
-		.attr("src","${f:url('/i/')}" + data.imageId)
-	    .appendTo($(imagesGrid));
+		var tag = $("<div>")
+			.addClass("ui-block-c");
+		var img = $("<div>");
+		{
+			$("<img>")
+				.css("width", "95%")
+				.attr("src","${f:url('/i/')}" + data.imageId)
+				.appendTo(img);
+			img.appendTo(tag);
+		}
+		var text = $("<div>");
+		{
+			text.css("position", "relative");
+			if (data.title != null) {
+				text.text(data.title);
+			} else {
+				text.text("");
+			}
+			text.appendTo(tag);
+		}
+		
+		tag.appendTo(imagesGrid);
+		tag.height(tag.width());
+		text.css("left", 0);
+		text.css("top", -text.height());
+		
 	}
 }
 //-->
@@ -31,7 +53,7 @@ function loadImages(datas, requestCode) {
 <c:param name="body">
 <div data-role="page" class="type-index">
 	<div data-role="header" data-theme="f">
-		<h1>スタ☆me</h1>
+		<h1><img src="${f:url('/image/logo.png')}" alt="スタ☆me"/></h1>
 		<a href="${f:url('/')}" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
 		<%--
 		<a href="../nav.html" data-icon="search" data-iconpos="notext" data-rel="dialog" data-transition="fade">Search</a>

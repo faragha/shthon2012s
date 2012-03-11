@@ -31,6 +31,8 @@ public class ImageModel implements Serializable {
     @Attribute(listener = ModificationDate.class)
     private Date updatedAt;
 
+    private String title;
+    
     private String contentType;
     
     @Attribute(lob=true)
@@ -118,6 +120,14 @@ public class ImageModel implements Serializable {
 
     public void setUserKey(Key userKey) {
         this.userKey = userKey;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContentType() {

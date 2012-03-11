@@ -53,6 +53,9 @@ public class FrontPage extends ScenicPage {
     @ActionPath("jsonList")
     public Navigation jsonList() throws IOException {
         List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels();
+        
+        response.setContentType(StameConstants.CONTENT_TYPE);
+        
         String json = imageSummaryModelMeta.modelsToJson(imageSummaryModels);
         response.getWriter().append(json);
         
@@ -63,6 +66,8 @@ public class FrontPage extends ScenicPage {
     public Navigation jsonpList() throws IOException {
         String func = param("func");
         String requestCode = param("requestCode");
+        
+        response.setContentType(StameConstants.CONTENT_TYPE);
         
         List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels();
         String json = imageSummaryModelMeta.modelsToJson(imageSummaryModels);

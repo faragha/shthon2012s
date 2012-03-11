@@ -30,12 +30,14 @@ public class ManagePage extends ScenicPage {
 
     @ActionPath("upload")
     public Navigation upload()  throws IOException {
+        String title = requestScope("title");
         FileItem fileItem = requestScope("file");
         
         ImageModel imageModel = null;
         if (fileItem != null && fileItem.getData() != null && fileItem.getData().length > 0) {
             imageModel = new ImageModel();
             imageModel.setImageData(fileItem.getData());
+            imageModel.setTitle(title);
             
             UserModel userModel = mUserService.getGuestUser();
             mImageService.registerImage(imageModel, userModel);
@@ -54,7 +56,7 @@ public class ManagePage extends ScenicPage {
         }
     }
 
-    // /
+    //
     @Default
     public Navigation index() {
         return forward("/index.jsp");
