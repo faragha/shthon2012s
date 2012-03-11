@@ -58,7 +58,7 @@ public class Document implements OnDataUpdateListener {
         //! 適当なペンを作成する
         {
             Pen pen = new Pen();
-            pen.setTegakiData(5, 255, 255, 255);
+            pen.setTegakiData(4, 255, 255, 255);
             setPen(pen);
         }
     }
