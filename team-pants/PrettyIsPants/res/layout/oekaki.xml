@@ -8,8 +8,7 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="#0000FF">
+        android:layout_height="40dp">
         <View
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -37,12 +36,11 @@
         android:orientation="horizontal"
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#00FF00">
+        android:layout_height="wrap_content">
         <!-- ペン -->
         <Button
             android:id="@+id/oekaki_pen_btn"
-            android:background="@drawable/base_btn_bk"
+            android:background="@drawable/oekaki_base_btn_bk"
             android:drawableTop="@drawable/pen_icon"
             android:text="@string/oekaki_btn_pen"
             android:textSize="12dp"
@@ -53,7 +51,7 @@
         <!-- スタンプ -->
         <Button
             android:id="@+id/oekaki_stamp_btn"
-            android:background="@drawable/base_btn_bk"
+            android:background="@drawable/oekaki_base_btn_bk"
             android:drawableTop="@drawable/stamp_icon"
             android:text="@string/oekaki_btn_stamp"
             android:textSize="12dp"
@@ -64,7 +62,7 @@
         <!-- フレーム -->
         <Button
             android:id="@+id/oekaki_frame_btn"
-            android:background="@drawable/base_btn_bk"
+            android:background="@drawable/oekaki_base_btn_bk"
             android:drawableTop="@drawable/frame_icon"
             android:text="@string/oekaki_btn_frame"
             android:textSize="12dp"
@@ -75,7 +73,7 @@
         <!-- 美白 -->
         <Button
             android:id="@+id/oekaki_white_btn"
-            android:background="@drawable/base_btn_bk"
+            android:background="@drawable/oekaki_base_btn_bk"
             android:drawableTop="@drawable/white_icon"
             android:text="@string/oekaki_btn_white"
             android:textSize="12dp"

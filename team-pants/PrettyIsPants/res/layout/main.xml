@@ -7,14 +7,12 @@
     android:orientation="vertical"
     >
     <!-- 修飾画像:上のレース -->
-    <ImageView
-        android:id="@+id/img_lace_top"
-        android:src="@drawable/ic_launcher"
-        android:scaleType="fitXY"
+    <View
+        android:background="@drawable/tiled_lace_top"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="42px"
         />
     <!-- メインロゴとボタン -->
     <RelativeLayout
@@ -26,10 +24,10 @@
         <!-- メインロゴ -->
         <ImageView
             android:id="@+id/img_logo"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/main_logo"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
         <!-- ボタン：写真を撮ってラクガキ -->
@@ -61,12 +59,11 @@
             />
     </RelativeLayout>
     <!-- 修飾画像:下のレース -->
-    <ImageView
-        android:src="@drawable/ic_launcher"
-        android:scaleType="fitXY"
+    <View
+        android:background="@drawable/tiled_lace_bottom"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="42px"
         />
 </RelativeLayout>
