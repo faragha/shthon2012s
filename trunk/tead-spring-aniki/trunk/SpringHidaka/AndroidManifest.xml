@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:label="@string/app_name"
-            android:name=".AsyncTaskSample"
+            android:name=".WebApis.AsyncTaskSample"
             android:screenOrientation="portrait" >
         </activity>
         <activity
