@@ -1,4 +1,3 @@
-
 package jp.preety.ispants.bluetooth;
 
 import jp.preety.ispants.R;
@@ -76,8 +75,7 @@ public class BluetoothActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case BluetoothService.MESSAGE_STATE_AS_SERVER_CHANGE:
-                    if (mService != null
-                            && mService.getStateAsServer() == BluetoothService.STATE_NONE) {
+                    if (mService != null && mService.getStateAsServer() == BluetoothService.STATE_NONE) {
                         mService.startAcceptAsServer();
                     }
                     onChangeBluetoothServerMessageState();
@@ -100,9 +98,8 @@ public class BluetoothActivity extends Activity {
                     onMessageDeviceName(mConnectedDeviceName);
                     break;
                 case BluetoothService.MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(),
-                            msg.getData().getString(BluetoothService.TOAST), Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(BluetoothService.TOAST),
+                            Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -204,5 +201,12 @@ public class BluetoothActivity extends Activity {
             mService.stop();
             mService = null;
         }
+    }
+
+    /**
+     * bluetoothのコネクトが完了した。
+     */
+    protected void onBluetoothConnectComplete() {
+
     }
 }
