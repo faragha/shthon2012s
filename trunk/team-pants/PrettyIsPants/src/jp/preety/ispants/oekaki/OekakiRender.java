@@ -24,6 +24,7 @@ import com.eaglesakura.lib.android.game.graphics.gl11.OpenGLManager;
 import com.eaglesakura.lib.android.game.graphics.gl11.SpriteManager;
 import com.eaglesakura.lib.android.game.thread.AsyncHandler;
 import com.eaglesakura.lib.android.game.thread.ThreadSyncRunnerBase;
+import com.eaglesakura.lib.android.game.util.GameUtil;
 import com.eaglesakura.lib.android.game.util.LogUtil;
 import com.eaglesakura.lib.android.view.OpenGLView;
 
@@ -138,6 +139,7 @@ public class OekakiRender implements Callback {
             @Override
             public void run() {
                 if (!glManager.isInitialized()) {
+
                     glManager.initGL(renderHandler);
                     glManager.updateDrawArea(display);
                     spriteManager = new SpriteManager(display, glManager);
@@ -156,10 +158,14 @@ public class OekakiRender implements Callback {
     void initializeDatas() {
         try {
             String uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_URI);
-            if (uri == null) {
-                uri = "file:///sdcard/sample.jpg";
-            }
             LogUtil.log("get uri :: " + uri);
+
+            while (uri == null) {
+                uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_RESP);
+                GameUtil.sleep(100);
+                LogUtil.log("sleep get image...");
+            }
+
             document.loadBaseImage(activity, Uri.parse(uri), spriteManager.getVirtualDisplay());
             document.loadPenTextuers(activity);
         } catch (Exception e) {

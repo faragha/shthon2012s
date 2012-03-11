@@ -58,8 +58,7 @@ public class DataServer {
      * 描画データを追加する。
      * @param dataJson
      */
-    public void add(String dataJson) {
-        Data data = Data.fromRececiveData(dataJson);
+    public void add(Data data, String dataJson) {
         _add(data);
         for (OnDataUpdateListener listener : listeners) {
             listener.onDataReceve(this, data);
