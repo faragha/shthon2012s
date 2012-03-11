@@ -9,7 +9,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -21,12 +23,17 @@ import android.view.View;
 public class PreviewView extends View {
 
     private static final int RECT_LINE_SIZE = 5;
+    private static final String COLOR_RECT_LINE = "#E100E5";
+    private static final int SELECT_LINE_MARGE = RECT_LINE_SIZE * 2;
+    
     private Bitmap mBitmap;
     private int mViewWidth;
     private int mViewHeight;
     private Bitmap mCloseImage;
+    private boolean mShowRectFlag = false;
+    private RectF mRectf = new RectF(0, 0, 0, 0) ;
     
-    private static final String COLOR_RECT_LINE = "#E100E5";
+
 
     public PreviewView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -89,53 +96,40 @@ public class PreviewView extends View {
         mBitmap = bitmap;
         invalidate();
     }
-    
-    
-    
-    private float selectRectX = 0;
-    private float selectRectY = 0;
-    
-    private float selectRectXX = 0;
-    private float selectRectYY = 0;
-    
-    private boolean rectSetFlag = false;
+
     
     private float closeImageX = 0;
     private float closeImageY = 0;
     
+
+    
     public void drawSelectRect(Canvas canvas){
 	
-	if(selectRectX != 0 || selectRectY != 0 || selectRectXX != 0 || selectRectYY !=0 ){
+	if(mRectf.left != 0 || mRectf.top != 0 || mRectf.right !=0 || mRectf.bottom != 0){
 	    Paint paint = new Paint();
 	    paint.setColor(Color.parseColor(COLOR_RECT_LINE)); 
 	    paint.setStrokeWidth(RECT_LINE_SIZE);
 	    paint.setStyle(Style.STROKE);
-	    canvas.drawRect(selectRectX, selectRectY, selectRectXX, selectRectYY, paint);
+	    canvas.drawRect(mRectf, paint);
 	}
 	
-	if(rectSetFlag){
+	if (mShowRectFlag) {
 	    Paint closePaint = new Paint();
-	    closeImageX = selectRectXX - mCloseImage.getWidth()/2;
-	    closeImageY = selectRectY - mCloseImage.getHeight() + mCloseImage.getHeight()/2;
-	    
-	    if(closeImageX > getWidth()){
-		closeImageX =  getWidth() - mCloseImage.getWidth() - RECT_LINE_SIZE -20;
+	    closeImageX = mRectf.right - mCloseImage.getWidth() / 2;
+	    closeImageY = mRectf.top - mCloseImage.getHeight() + mCloseImage.getHeight() / 2;
+
+	    if (closeImageX > getWidth()) {
+		closeImageX = getWidth() - mCloseImage.getWidth() - RECT_LINE_SIZE - 20;
 	    }
-	    
-	    
-	    
-	    canvas.drawBitmap(mCloseImage, closeImageX,closeImageY, closePaint);
-	
-	} 
-	
-	
-	
+
+	    canvas.drawBitmap(mCloseImage, closeImageX, closeImageY, closePaint);
+	}
     }
     
-    private static final int SELECT_LINE_X = 1;
-    private static final int SELECT_LINE_Y = 2;
-    private static final int SELECT_LINE_XX = 3;
-    private static final int SELECT_LINE_YY = 4;
+    private static final int SELECT_LINE_LEFT = 1;
+    private static final int SELECT_LINE_TOP = 2;
+    private static final int SELECT_LINE_RIGHT = 3;
+    private static final int SELECT_LINE_BOTTOM = 4;
     private int mSelectLineNum = 0;
     
     @Override
@@ -144,62 +138,57 @@ public class PreviewView extends View {
 	switch (event.getAction()) {
 	    case MotionEvent.ACTION_DOWN:
 		Log.d("me","ACTION_DOWN");
-		if(!rectSetFlag){
+		if(!mShowRectFlag){
 		    // 選択の枠始点設定
-		    selectRectX = event.getX();
-		    selectRectY = event.getY();
-		    selectRectXX = event.getX();
-		    selectRectYY = event.getY();
+		    mRectf.left = event.getX();
+		    mRectf.top = event.getY();
+		    mRectf.right = event.getX();
+		    mRectf.bottom = event.getY();
 		}else{
 
 		    float x =  event.getX();
 		    float y = event.getY();
 
-		    //X線
-		    if(isSelectLineX(x)){
-			mSelectLineNum = SELECT_LINE_X;
+		    //選択された線を記憶
+		    if(isSelectLineLeft(x)){
+			mSelectLineNum = SELECT_LINE_LEFT;
 		    }else 
 		    
-		    if(isSelectLineXX(x)){
-			mSelectLineNum = SELECT_LINE_XX;
+		    if(isSelectLineRight(x)){
+			mSelectLineNum = SELECT_LINE_RIGHT;
 		    }else		    
 		    
-		    if(isSelectY(y)){
-			mSelectLineNum = SELECT_LINE_Y;
+		    if(isSelectTop(y)){
+			mSelectLineNum = SELECT_LINE_TOP;
 		    }else	
 	
-		    if(isSelectYY(y)){
-			mSelectLineNum = SELECT_LINE_YY; 
+		    if(isSelectBottom(y)){
+			mSelectLineNum = SELECT_LINE_BOTTOM; 
 		    }
 		}
 		
 		
 	        break;
 	    case MotionEvent.ACTION_UP:
-		if(!rectSetFlag){
+		if(!mShowRectFlag){
 		    
 		    Log.d("me","ACTION_UP");
 		    // 選択の枠終点指定
-		    selectRectXX = event.getX();
-		    selectRectYY = event.getY();
+		    mRectf.right = event.getX();
+		    mRectf.bottom = event.getY();
 		    
-		    rectSetFlag = true;
+		    mShowRectFlag = true;
 		    exchangePoints();
 		    invalidate();
 		}else{
 		    float  x= event.getX();
 		    float y =  event.getY();
 		    if(closeImageX < x && x < closeImageX + mCloseImage.getWidth() && closeImageY < y && y < closeImageY + mCloseImage.getHeight()){
-			    // 閉じるボタンを押した
-			    selectRectX = 0;
-			    selectRectY = 0;
-			    selectRectXX = 0;
-			    selectRectYY = 0;
-			    rectSetFlag = false;
-			    invalidate();
-			
+			// 閉じるボタンを押した
+			mRectf.set(0, 0, 0, 0);
+			mShowRectFlag = false;
+			invalidate();
 		    }else{
-		    	
 			setSelectLineMovePoint(event);
 			exchangePoints();
 			mSelectLineNum = 0;
@@ -211,16 +200,14 @@ public class PreviewView extends View {
 	        break;
 	    case MotionEvent.ACTION_MOVE:
 		Log.d("me","ACTION_MOVE");
-		if(!rectSetFlag){
+		if(!mShowRectFlag){
 		    // 選択の枠終点指定
-		    
-		    selectRectXX = event.getX();
-		    selectRectYY = event.getY();
+		    mRectf.right = event.getX();
+		    mRectf.bottom = event.getY();
 		    
 		}else{
 		    setSelectLineMovePoint(event);
 		}
-
 		invalidate();
 	        break;
 	    }
@@ -230,26 +217,26 @@ public class PreviewView extends View {
 
     private void setSelectLineMovePoint(MotionEvent event) {
 	switch (mSelectLineNum) {
-	case SELECT_LINE_X:
-	    selectRectX = event.getX();
+	case SELECT_LINE_LEFT:
+	    mRectf.left = event.getX();
 	    
 	    invalidate();
 	    break;
 
-	case SELECT_LINE_Y:
-	    selectRectY = event.getY();
+	case SELECT_LINE_TOP:
+	    mRectf.top = event.getY();
 	    
 	    invalidate();
 	    break;
 
-	case SELECT_LINE_XX:
-	    selectRectXX = event.getX();
+	case SELECT_LINE_RIGHT:
+	    mRectf.right = event.getX();
 	    
 	    invalidate();
 	    break;
 
-	case SELECT_LINE_YY:
-	    selectRectYY = event.getY();
+	case SELECT_LINE_BOTTOM:
+	    mRectf.bottom = event.getY();
 	    invalidate();
 	    break;
 
@@ -260,56 +247,58 @@ public class PreviewView extends View {
     }
     
     private void exchangePoints(){
-	if(selectRectXX < selectRectX){
-	    float tmp = selectRectX;
-	    selectRectX = selectRectXX;
-	    selectRectXX = tmp;
+	
+	
+	if(mRectf.right < mRectf.left){
+	    float tmp = mRectf.left;
+	    mRectf.left = mRectf.right;
+	    mRectf.right = tmp;
 	}
-	if(selectRectYY < selectRectY){
-	    float tmp = selectRectY;
-	    selectRectY = selectRectYY;
-	    selectRectYY = tmp;
+	if(mRectf.bottom < mRectf.top){
+	    float tmp = mRectf.top;
+	    mRectf.top = mRectf.bottom;
+	    mRectf.bottom = tmp;
 	}
-	if(selectRectX < RECT_LINE_SIZE){
-	    selectRectX = RECT_LINE_SIZE;
+	if(mRectf.left < RECT_LINE_SIZE){
+	    mRectf.left = RECT_LINE_SIZE;
 	}
-	if(selectRectY < RECT_LINE_SIZE){
-	    selectRectY = RECT_LINE_SIZE;
+	if(mRectf.top < RECT_LINE_SIZE){
+	    mRectf.top = RECT_LINE_SIZE;
 	}
-	if(selectRectXX > getWidth() -RECT_LINE_SIZE){
-	    selectRectXX =  getWidth() -RECT_LINE_SIZE;
+	if(mRectf.right > getWidth() -RECT_LINE_SIZE){
+	    mRectf.right =  getWidth() -RECT_LINE_SIZE;
 	}
-	if(selectRectYY > getHeight() -RECT_LINE_SIZE){
-	    selectRectYY =  getHeight() -RECT_LINE_SIZE;
+	if(mRectf.bottom > getHeight() -RECT_LINE_SIZE){
+	    mRectf.bottom =  getHeight() -RECT_LINE_SIZE;
 	}
 	
 	
     }
 
-    private boolean isSelectLineX(float x) {
-	if (selectRectX - RECT_LINE_SIZE * 2 <= x && x <= selectRectX + RECT_LINE_SIZE * 2) {
+    private boolean isSelectLineLeft(float x) {
+	if (mRectf.left - SELECT_LINE_MARGE <= x && x <= mRectf.left + SELECT_LINE_MARGE) {
 	    return true;
 	}
 	return false;
     }
 
-    private boolean isSelectLineXX(float x) {
-	if (selectRectXX - RECT_LINE_SIZE * 2 <= x && x <= selectRectXX + RECT_LINE_SIZE * 2) {
+    private boolean isSelectLineRight(float x) {
+	if (mRectf.right - SELECT_LINE_MARGE <= x && x <= mRectf.right + SELECT_LINE_MARGE) {
 	    return true;
 	}
 
 	return false;
     }
 
-    private boolean isSelectY(float y) {
-	if (selectRectY - RECT_LINE_SIZE * 2 <= y && y <= selectRectY + RECT_LINE_SIZE * 2) {
+    private boolean isSelectTop(float y) {
+	if (mRectf.top - SELECT_LINE_MARGE <= y && y <= mRectf.top + SELECT_LINE_MARGE) {
 	    return true;
 	}
 	return false;
     }
 
-    private boolean isSelectYY(float y) {
-	if (selectRectYY - RECT_LINE_SIZE * 2 <= y && y <= selectRectYY + RECT_LINE_SIZE * 2) {
+    private boolean isSelectBottom(float y) {
+	if (mRectf.bottom - SELECT_LINE_MARGE <= y && y <= mRectf.bottom + SELECT_LINE_MARGE) {
 	    return true;
 	}
 	return false;
@@ -317,13 +306,13 @@ public class PreviewView extends View {
     
     public Bitmap getSelectImage(){
 	
-	if(!rectSetFlag){
+	if(!mShowRectFlag){
 	    return mBitmap;
+
 	}
         
-        Log.d("me","mBitmap w=" + mBitmap.getWidth() + " h=" + mBitmap.getHeight());
-        Log.d("me","Select x="  +  selectRectX +" y=" + selectRectY + "xx="+selectRectXX +" yy=" + selectRectYY);
-        
+        Log.d("me","Select x="  +  mRectf.left +" y=" + mRectf.top + "xx="+mRectf.right +" yy=" + mRectf.bottom);
+	Log.d("me","mBitmap w=" + mBitmap.getWidth() + " h=" + mBitmap.getHeight());        
         Log.d("me","Width="  +  getWidth() +" height=" + getHeight());
         
         
@@ -346,7 +335,7 @@ public class PreviewView extends View {
         canvas.drawBitmap(mBitmap, matrix, paint);
         canvas.restore();
         
-	return Bitmap.createBitmap(bitmap, (int)(selectRectX), (int)(selectRectY), (int)(selectRectXX -selectRectX), (int)(selectRectYY - selectRectY));
+	return Bitmap.createBitmap(bitmap, (int)mRectf.left, (int)mRectf.top, (int)mRectf.width(), (int)mRectf.height());
     }
     
 }
