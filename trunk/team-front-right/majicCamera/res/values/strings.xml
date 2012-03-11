@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, DietcameraActivity!</string>
+    <string name="app_name">魔法のカメラ</string>
+    <string name="today_check">今日の私をチェック</string>
+    <string name="history_check">過去の私をチェック</string>
+
+</resources>
