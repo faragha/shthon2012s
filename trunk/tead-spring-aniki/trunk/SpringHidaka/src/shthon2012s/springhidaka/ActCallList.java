@@ -71,6 +71,7 @@ public class ActCallList extends Activity implements UploadAsyncTaskCallback {
 
 	protected void SendTo(String pn) {
 		DBG.LogOut(3, "To", ":" + pn);
+		pn=pn.replaceAll("-", "");
 		phoneNumber = pn;
 		// ここからAPI
 
