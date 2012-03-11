@@ -13,6 +13,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import jp.preety.ispants.oekaki.OekakiActivity;
+
 /**
  * Top Activity
  * @author pretty is pants
@@ -99,7 +101,8 @@ public class TopActivity extends Activity implements View.OnClickListener {
      * start join intent
      */
     private void join() {
-        // トモダチのラクガキに参加する
+        final Intent intent = new Intent(this, OekakiActivity.class);
+        startActivity(intent);
     }
 
     /**
