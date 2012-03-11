@@ -16,6 +16,7 @@ import shthon2012s.springhidaka.WebApis.UploadAsyncTask;
 import shthon2012s.springhidaka.WebApis.UploadAsyncTaskCallback;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class ActCallList extends Activity implements UploadAsyncTaskCallback {
 	private AQuery aq;
 	private Context ctx;
 	private ArrayList<DialNumber> alldata;
+    private ProgressDialog progressDialog;
 
 	private String phoneNumber;
 	public static final String SMS_RECIPIENT_EXTRA = "com.example.android.apis.os.SMS_RECIPIENT";
@@ -93,6 +95,7 @@ public class ActCallList extends Activity implements UploadAsyncTaskCallback {
 	}
 
 	protected void BackToTop() {
+		progressDialog.dismiss();
 		// 終わったらダイアログとかだしてTOP戻るとか？
 		unregisterReceiver(sms_bc);
 		Toast.makeText(getApplicationContext(), "送信しました", Toast.LENGTH_SHORT)
@@ -111,6 +114,11 @@ public class ActCallList extends Activity implements UploadAsyncTaskCallback {
 		aq = new AQuery(this);
 		aq.ajax(url, JSONObject.class, this, "jsonCallback");
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("写真送信中");
+        progressDialog.setCancelable(true);
+        progressDialog.show();
 		// http://api.bitly.com/v3/shorten?longUrl=https://play.google.com/store&login=kaakaa&apiKey=R_8e279e29e758e6191d67a44b109cbdbd
 	}
 
@@ -125,10 +133,15 @@ public class ActCallList extends Activity implements UploadAsyncTaskCallback {
 			} catch (JSONException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
+				progressDialog.dismiss();
+				Toast.makeText(getApplicationContext(), "失敗しちゃったごめん",
+						Toast.LENGTH_SHORT).show();
 			}
 
 		} else {
 			DBG.LogOut(3, "jsonCallback", ":ajax error");
+			Toast.makeText(getApplicationContext(), "失敗しちゃったよごめん",
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -167,10 +180,12 @@ public class ActCallList extends Activity implements UploadAsyncTaskCallback {
 			}
 
 			if (error) {
+				progressDialog.dismiss();
 				DBG.LogOut(3, "ActCallList", ":BroadcastReceiver:" + message);
 
 				Toast.makeText(getApplicationContext(), "失敗しちゃったごめんね",
 						Toast.LENGTH_SHORT).show();
+
 			} else {
 				BackToTop();
 			}
