@@ -96,8 +96,8 @@ public class OekakiActivity extends BluetoothActivity {
      * スタンプリソース配列
      */
     private Integer[] mStampResources = {
-            R.drawable.stamp_1, R.drawable.stamp_2, R.drawable.stamp_3, R.drawable.stamp_4, R.drawable.stamp_5,
-            R.drawable.stamp_6, R.drawable.stamp_7, R.drawable.stamp_8,
+            R.drawable.stamp_icon_1, R.drawable.stamp_icon_2, R.drawable.stamp_icon_3, R.drawable.stamp_icon_4, R.drawable.stamp_icon_5,
+            R.drawable.stamp_icon_6, R.drawable.stamp_icon_7, R.drawable.stamp_icon_8,
     };
 
     /**
@@ -278,14 +278,14 @@ public class OekakiActivity extends BluetoothActivity {
         mNibMap.put(R.drawable.nib_3, 16.0f);
         mNibMap.put(R.drawable.nib_4, 32.0f);
 
-        mStampMap.put(R.drawable.stamp_1, "stamp_1");
-        mStampMap.put(R.drawable.stamp_2, "stamp_2");
-        mStampMap.put(R.drawable.stamp_3, "stamp_3");
-        mStampMap.put(R.drawable.stamp_4, "stamp_4");
-        mStampMap.put(R.drawable.stamp_5, "stamp_5");
-        mStampMap.put(R.drawable.stamp_6, "stamp_6");
-        mStampMap.put(R.drawable.stamp_7, "stamp_7");
-        mStampMap.put(R.drawable.stamp_8, "stamp_8");
+        mStampMap.put(R.drawable.stamp_icon_1, "stamp_1");
+        mStampMap.put(R.drawable.stamp_icon_2, "stamp_2");
+        mStampMap.put(R.drawable.stamp_icon_3, "stamp_3");
+        mStampMap.put(R.drawable.stamp_icon_4, "stamp_4");
+        mStampMap.put(R.drawable.stamp_icon_5, "stamp_5");
+        mStampMap.put(R.drawable.stamp_icon_6, "stamp_6");
+        mStampMap.put(R.drawable.stamp_icon_7, "stamp_7");
+        mStampMap.put(R.drawable.stamp_icon_8, "stamp_8");
     }
 
     private void makeDialog() {
