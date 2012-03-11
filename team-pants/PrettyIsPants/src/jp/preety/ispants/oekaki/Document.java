@@ -91,7 +91,7 @@ public class Document implements OnDataUpdateListener {
     }
 
     void addStamp(Context context, int drawableId) {
-        if (stampTextures.get(R.drawable.ic_launcher) != null) {
+        if (stampTextures.get(drawableId) != null) {
             return;
         }
         TextureImageBase image = loadImage(context.getResources(), drawableId, render.getGLManager());
@@ -112,7 +112,9 @@ public class Document implements OnDataUpdateListener {
     public TextureImageBase getPenTexture(Pen pen) {
         TextureImageBase result = null;
         if (pen.type == Type.Stamp) {
-            result = stampTextures.get(R.drawable.ic_launcher);
+            int id = pen.getStampResId(render.getActivity());
+            addStamp(render.getActivity(), id);
+            result = stampTextures.get(id);
 
             if (result == null) {
                 result = stampTextures.get(R.drawable.ic_launcher);
