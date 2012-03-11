@@ -21,7 +21,7 @@ public class ActPicture extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.album);
+		setContentView(R.layout.picture);
 
 		ctx = this.getApplicationContext();
 
