@@ -37,18 +37,13 @@ public class TegakiLineRender extends RenderShapeBase {
         gl.glLoadIdentity();
         {
             ImageCorrector baseImageCorrector = render.getDocument().getBaseImageCorrector();
-            float imageAspect = baseImageCorrector.getImageAspect();
-            if (imageAspect > 1) {
-                float over = imageAspect - 1.0f;
-                imageAspect = baseImageCorrector.getImageAspect() - (over / 2);
+            float areaHeight = baseImageCorrector.getRenderAreaHeight();
+            float imageHeight = baseImageCorrector.getImageAreaBottom() - baseImageCorrector.getImageAreaTop();
 
-                gl.glScalef(1.0f, 1.0f / imageAspect, 1);
-            } else {
-                float over = 1.0f - imageAspect;
-                imageAspect = baseImageCorrector.getImageAspect() + (over / 2);
+            float areaWidth = baseImageCorrector.getRenderAreaWidth();
+            float imageWidth = baseImageCorrector.getImageAreaRight() - baseImageCorrector.getImageAreaLeft();
 
-                gl.glScalef(imageAspect, 1.0f, 1);
-            }
+            gl.glScalef(imageWidth / areaWidth, imageHeight / areaHeight, 1);
         }
         gl.glColor4f(data.pen.color.r, data.pen.color.g, data.pen.color.b, data.pen.color.a);
         gl.glVertexPointer(2, GL10.GL_FLOAT, 0, getBuffer());
