@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+
+    <item
+        android:drawable="@drawable/cat_progress09"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress10"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress11"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress12"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress01"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress02"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress03"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress04"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress05"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress06"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress07"
+        android:duration="10"/>
+    <item
+        android:drawable="@drawable/cat_progress08"
+        android:duration="10"/>
+
+</animation-list>

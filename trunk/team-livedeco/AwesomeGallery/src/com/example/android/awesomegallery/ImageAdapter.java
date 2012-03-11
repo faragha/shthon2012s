@@ -1,14 +1,19 @@
 package com.example.android.awesomegallery;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.RejectedExecutionException;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Thumbnails;
 import android.view.View;
@@ -26,6 +31,10 @@ public class ImageAdapter extends BaseAdapter {
 	private List<Long> mImageIdList = new ArrayList<Long>();
 
 	private Set<Integer> mSelectedImageIdCollection = new HashSet<Integer>();
+
+	private Map<Long, SoftReference<Bitmap>> mThumbnailCacheHolder = new HashMap<Long, SoftReference<Bitmap>>();
+
+	private Map<Long, LoadImageTask> mLoadingImageTaskHolder = new HashMap<Long, ImageAdapter.LoadImageTask>();
 
 	public ImageAdapter(Context context) {
 		mContext = context;
@@ -55,15 +64,35 @@ public class ImageAdapter extends BaseAdapter {
 			imageView.setLayoutParams(new GridView.LayoutParams(90, 90));
 			imageView.setAdjustViewBounds(true);
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			// imageView.setPadding(8, 8, 8, 8);
+			imageView.setPadding(8, 8, 8, 8);
 		} else {
 			imageView = (ImageView) convertView;
 		}
 
 		Long id = mImageIdList.get(position);
-		Bitmap thumbnail = Thumbnails.getThumbnail(mContentResolver,
-				id.longValue(), Thumbnails.MICRO_KIND, null);
-		imageView.setImageBitmap(thumbnail);
+		Bitmap bitmap = null;
+		if (mThumbnailCacheHolder.containsKey(id)) {
+			SoftReference<Bitmap> bitmapRef = mThumbnailCacheHolder.get(id);
+			bitmap = bitmapRef.get();
+		}
+		if (bitmap == null) {
+			// imageView.setImageDrawable(mCatProgress);
+			imageView.setImageResource(R.drawable.cat_progress);
+
+			synchronized (mLoadingImageTaskHolder) {
+				if (!mLoadingImageTaskHolder.containsKey(id)) {
+					try {
+						LoadImageTask task = new LoadImageTask();
+						mLoadingImageTaskHolder.put(id, task);
+						task.execute(id);
+					} catch (RejectedExecutionException e) {
+						mLoadingImageTaskHolder.remove(id);
+					}
+				}
+			}
+		} else {
+			imageView.setImageBitmap(bitmap);
+		}
 
 		if (mSelectedImageIdCollection.contains(position)) {
 			imageView.setBackgroundResource(R.drawable.background_selected);
@@ -78,6 +107,7 @@ public class ImageAdapter extends BaseAdapter {
 		mImageIdList.clear();
 		mImageIdList.addAll(imageIdList);
 		mSelectedImageIdCollection.clear();
+		mThumbnailCacheHolder.clear();
 	}
 
 	public void toggleChecked(int index) {
@@ -98,5 +128,30 @@ public class ImageAdapter extends BaseAdapter {
 			list.add(uri);
 		}
 		return list.toArray(new Uri[list.size()]);
+	}
+
+	private class LoadImageTask extends AsyncTask<Long, Void, Bitmap> {
+
+		private Long mId;
+
+		@Override
+		protected Bitmap doInBackground(Long... params) {
+			mId = params[0];
+			Bitmap thumbnail = Thumbnails.getThumbnail(mContentResolver,
+					mId.longValue(), Thumbnails.MINI_KIND, null);
+			return thumbnail;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			if (mThumbnailCacheHolder.containsKey(mId)) {
+				mThumbnailCacheHolder.remove(mId);
+			}
+			mThumbnailCacheHolder.put(mId, new SoftReference<Bitmap>(result));
+			synchronized (mLoadingImageTaskHolder) {
+				mLoadingImageTaskHolder.remove(mId);
+			}
+			notifyDataSetChanged();
+		}
 	}
 }
