@@ -87,15 +87,15 @@ public class OekakiActivity extends BluetoothActivity {
      * 色リソース配列
      */
     private Integer[] mColorResources = {
-            R.drawable.color_1, R.drawable.color_2, R.drawable.color_3, R.drawable.color_4, R.drawable.color_5,
-            R.drawable.color_6, R.drawable.color_7, R.drawable.color_8,
+            R.drawable.color_yellow, R.drawable.color_orange, R.drawable.color_green, R.drawable.color_black, R.drawable.color_blue,
+            R.drawable.color_pink, R.drawable.color_red, R.drawable.color_white,
     };
 
     /**
      * 太さリソース配列
      */
     private Integer[] mNibResources = {
-            R.drawable.nib_1, R.drawable.nib_2, R.drawable.nib_3, R.drawable.nib_4,
+            R.drawable.bold01, R.drawable.bold02, R.drawable.bold03, R.drawable.bold04,
     };
 
     /**
@@ -109,7 +109,7 @@ public class OekakiActivity extends BluetoothActivity {
     /**
      * 選択されている色配列Index
      */
-    Integer mSelectedColor = 0;
+    Integer mSelectedColor = 7;
     /**
      * 選択されている太さ配列Index
      */
@@ -290,19 +290,19 @@ public class OekakiActivity extends BluetoothActivity {
     }
 
     private void init() {
-        mColorMap.put(R.drawable.color_1, Color.rgb(255, 0, 0));
-        mColorMap.put(R.drawable.color_2, Color.rgb(0, 255, 0));
-        mColorMap.put(R.drawable.color_3, Color.rgb(0, 0, 255));
-        mColorMap.put(R.drawable.color_4, Color.rgb(255, 255, 0));
-        mColorMap.put(R.drawable.color_5, Color.rgb(255, 0, 255));
-        mColorMap.put(R.drawable.color_6, Color.rgb(0, 255, 255));
-        mColorMap.put(R.drawable.color_7, Color.rgb(128, 0, 0));
-        mColorMap.put(R.drawable.color_8, Color.rgb(0, 128, 0));
+        mColorMap.put(R.drawable.color_yellow, Color.rgb(229, 235, 63));
+        mColorMap.put(R.drawable.color_orange, Color.rgb(235, 171, 61));
+        mColorMap.put(R.drawable.color_green, Color.rgb(107, 235, 62));
+        mColorMap.put(R.drawable.color_black, Color.rgb(0, 0, 0));
+        mColorMap.put(R.drawable.color_blue, Color.rgb(62, 112, 235));
+        mColorMap.put(R.drawable.color_pink, Color.rgb(235, 61, 146));
+        mColorMap.put(R.drawable.color_red, Color.rgb(235, 62, 64));
+        mColorMap.put(R.drawable.color_white, Color.rgb(255, 255, 255));
 
-        mNibMap.put(R.drawable.nib_1, 4.0f);
-        mNibMap.put(R.drawable.nib_2, 8.0f);
-        mNibMap.put(R.drawable.nib_3, 16.0f);
-        mNibMap.put(R.drawable.nib_4, 32.0f);
+        mNibMap.put(R.drawable.bold01, 4.0f);
+        mNibMap.put(R.drawable.bold02, 8.0f);
+        mNibMap.put(R.drawable.bold03, 12.0f);
+        mNibMap.put(R.drawable.bold04, 16.0f);
 
         mStampMap.put(R.drawable.stamp_icon_1, "stamp_1");
         mStampMap.put(R.drawable.stamp_icon_2, "stamp_2");
