@@ -316,6 +316,10 @@ public class PreviewView extends View {
     }
     
     public Bitmap getSelectImage(){
+	
+	if(!rectSetFlag){
+	    return mBitmap;
+	}
         
         Log.d("me","mBitmap w=" + mBitmap.getWidth() + " h=" + mBitmap.getHeight());
         Log.d("me","Select x="  +  selectRectX +" y=" + selectRectY + "xx="+selectRectXX +" yy=" + selectRectYY);
