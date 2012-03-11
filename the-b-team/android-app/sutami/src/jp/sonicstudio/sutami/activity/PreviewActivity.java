@@ -190,7 +190,8 @@ public class PreviewActivity extends Activity {
 			String decomeName = "deco";
 			SaveDecomeTask saveDecomeTask = new SaveDecomeTask(PreviewActivity.this, false);
 			saveDecomeTask.setDecoName(decoNameEditText.getText().toString());
-			saveDecomeTask.execute(mDstBitmap);
+			//saveDecomeTask.execute(mDstBitmap);
+			saveDecomeTask.execute(mPreviewView.getSelectImage());
 		}
     };
 
@@ -215,7 +216,9 @@ public class PreviewActivity extends Activity {
 			String decomeName = "deco";
         	UploadDecomeTask uploadDecomeTask = new UploadDecomeTask(PreviewActivity.this);
 			uploadDecomeTask.setDecoName(decoNameEditText.getText().toString());
-        	uploadDecomeTask.execute(mDstBitmap);
+        	//uploadDecomeTask.execute(mDstBitmap);
+        	uploadDecomeTask.execute(mPreviewView.getSelectImage());
+        	
         }
     };
 
@@ -228,7 +231,9 @@ public class PreviewActivity extends Activity {
         SaveImageTask saveImageTask = new SaveImageTask(PreviewActivity.this,
                 isShare);
 		saveImageTask.setDecoName(decoNameEditText.getText().toString());
-        saveImageTask.execute(mDstBitmap);
+        //saveImageTask.execute(mDstBitmap);
+        saveImageTask.execute(mPreviewView.getSelectImage());
+       
     }
 
     /**
