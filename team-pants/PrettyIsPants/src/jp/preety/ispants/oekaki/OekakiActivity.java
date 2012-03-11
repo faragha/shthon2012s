@@ -1,6 +1,8 @@
 package jp.preety.ispants.oekaki;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
@@ -14,12 +16,20 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.eaglesakura.lib.android.game.thread.UIHandler;
 import com.eaglesakura.lib.android.game.util.GameUtil;
@@ -58,27 +68,92 @@ public class OekakiActivity extends BluetoothActivity {
      */
     OekakiRender render = null;
 
+    /**
+     * ペン用ダイアログ
+     */
+    AlertDialog mPenDialog;
+    /**
+     * スタンプ用ダイアログ
+     */
+    AlertDialog mStampDialog;
+    
+    /**
+     * 色リソース配列
+     */
+    private Integer[] mColorResources = {
+        R.drawable.color_1,
+        R.drawable.color_2,
+        R.drawable.color_3,
+        R.drawable.color_4,
+        R.drawable.color_5,
+        R.drawable.color_6,
+        R.drawable.color_7,
+        R.drawable.color_8,
+    };
+
+    /**
+     * 太さリソース配列
+     */
+    private Integer[] mNibResources = {
+        R.drawable.nib_1,
+        R.drawable.nib_2,
+        R.drawable.nib_3,
+        R.drawable.nib_4,
+    };
+
+    /**
+     * スタンプリソース配列
+     */
+    private Integer[] mStampResources = {
+        R.drawable.stamp_1,
+        R.drawable.stamp_2,
+        R.drawable.stamp_3,
+        R.drawable.stamp_4,
+        R.drawable.stamp_5,
+        R.drawable.stamp_6,
+        R.drawable.stamp_7,
+        R.drawable.stamp_8,
+    };
+
+    /**
+     * 選択されている色配列Index
+     */
+    Integer mSelectedColor = 0;
+    /**
+     * 選択されている太さ配列Index
+     */
+    Integer mSelectedNib = 0;
+    /**
+     * 選択されているスタンプ配列Index
+     */
+    Integer mSelectedStamp = 0;
+
+    /**
+     * 色リソースマッピング用
+     */
+    Map<Integer, Integer> mColorMap = new HashMap<Integer, Integer>();
+    Map<Integer, Float> mNibMap = new HashMap<Integer, Float>();
+    Map<Integer, String> mStampMap = new HashMap<Integer, String>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oekaki);
-        // 仮でリスな登録
+        init();
+        makeDialog();
+
         {
             findViewById(R.id.oekaki_pen_btn).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Pen pen = new Pen();
-                    pen.setTegakiData(5, 128, 128, 0);
-                    render.getDocument().setPen(pen);
+                    mPenDialog.show();
                 }
             });
 
             findViewById(R.id.oekaki_stamp_btn).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Pen pen = new Pen();
-                    pen.setStampData("");
-                    render.getDocument().setPen(pen);
+                    mStampDialog.show();
                 }
             });
 
@@ -201,5 +276,150 @@ public class OekakiActivity extends BluetoothActivity {
     @Override
     protected void sendToOtherDevice(String sendData) {
         super.sendToOtherDevice(sendData);
+    }
+    private void init() {
+        mColorMap.put(R.drawable.color_1, Color.rgb(255, 0, 0));
+        mColorMap.put(R.drawable.color_2, Color.rgb(0, 255, 0));
+        mColorMap.put(R.drawable.color_3, Color.rgb(0, 0, 255));
+        mColorMap.put(R.drawable.color_4, Color.rgb(255, 255, 0));
+        mColorMap.put(R.drawable.color_5, Color.rgb(255, 0, 255));
+        mColorMap.put(R.drawable.color_6, Color.rgb(0, 255, 255));
+        mColorMap.put(R.drawable.color_7, Color.rgb(128, 0, 0));
+        mColorMap.put(R.drawable.color_8, Color.rgb(0, 128, 0));
+        
+        mNibMap.put(R.drawable.nib_1, 4.0f);
+        mNibMap.put(R.drawable.nib_2, 8.0f);
+        mNibMap.put(R.drawable.nib_3, 16.0f);
+        mNibMap.put(R.drawable.nib_4, 32.0f);
+        
+        mStampMap.put(R.drawable.stamp_1, "stamp_1");
+        mStampMap.put(R.drawable.stamp_2, "stamp_2");
+        mStampMap.put(R.drawable.stamp_3, "stamp_3");
+        mStampMap.put(R.drawable.stamp_4, "stamp_4");
+        mStampMap.put(R.drawable.stamp_5, "stamp_5");
+        mStampMap.put(R.drawable.stamp_6, "stamp_6");
+        mStampMap.put(R.drawable.stamp_7, "stamp_7");
+        mStampMap.put(R.drawable.stamp_8, "stamp_8");
+    }
+    
+    private void makeDialog() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // 以下、ペン用ダイアログ
+        View layout = inflater.inflate(R.layout.pen_dialog, (ViewGroup)findViewById(R.id.layout_root));
+
+        GridView colorGrid = (GridView)layout.findViewById(R.id.color_grid);
+        GridView nibGrid = (GridView)layout.findViewById(R.id.nib_grid);
+        
+        layout.findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPenDialog.dismiss();
+                int colorCode = mColorMap.get(mColorResources[mSelectedColor]);
+                float nibSize = mNibMap.get(mNibResources[mSelectedNib]);
+                Pen pen = new Pen();
+                pen.setTegakiData(nibSize, Color.red(colorCode), Color.green(colorCode), Color.blue(colorCode));
+                render.getDocument().setPen(pen);
+            }
+        });
+        
+        colorGrid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                parent.getChildAt(mSelectedColor).setBackgroundColor(Color.TRANSPARENT);
+                v.setBackgroundColor(Color.GRAY);
+                mSelectedColor = position;
+                }
+        });
+        
+        nibGrid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                parent.getChildAt(mSelectedNib).setBackgroundColor(Color.TRANSPARENT);
+                v.setBackgroundColor(Color.GRAY);
+                mSelectedNib = position;
+            }
+        });
+        
+        ImageAdapter colorAdapter = new ImageAdapter(mColorResources, mSelectedColor);
+        colorGrid.setAdapter(colorAdapter);
+
+        ImageAdapter nibAdapter = new ImageAdapter(mNibResources, mSelectedNib);
+        nibGrid.setAdapter(nibAdapter);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(layout);
+        mPenDialog = builder.create();
+
+        // 以下、スタンプ用ダイアログ
+        layout = inflater.inflate(R.layout.stamp_dialog, (ViewGroup)findViewById(R.id.layout_root));
+        GridView stampGrid = (GridView)layout.findViewById(R.id.stamp_grid);
+
+        stampGrid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                mStampDialog.dismiss();
+                parent.getChildAt(mSelectedStamp).setBackgroundColor(Color.TRANSPARENT);
+                v.setBackgroundColor(Color.GRAY);
+                mSelectedStamp = position;
+
+                String stampName = mStampMap.get(mStampResources[mSelectedStamp]);
+                Pen pen = new Pen();
+                pen.setStampData(stampName);
+                render.getDocument().setPen(pen);
+            }
+        });
+
+        ImageAdapter stampAdapter = new ImageAdapter(mStampResources, mSelectedStamp);
+        stampGrid.setAdapter(stampAdapter);
+        builder = new AlertDialog.Builder(this);
+        builder.setView(layout);
+        mStampDialog = builder.create();
+    }
+    class ImageAdapter extends BaseAdapter {
+        private Integer[] mIdList;
+        private Integer mSelected;
+
+        public ImageAdapter(Integer[] idList, Integer selected) {
+        	mIdList = idList;
+        	mSelected = selected;
+        }
+        
+        @Override
+        public int getCount() {
+            return mIdList.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageView;
+            if (convertView == null) {
+                imageView = new ImageView(OekakiActivity.this);
+                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setPadding(8, 8, 8, 8);
+            } else {
+                imageView = (ImageView) convertView;
+            }
+
+            imageView.setImageResource(mIdList[position]);
+            
+            if(mSelected==position){
+                imageView.setBackgroundColor(Color.GRAY);
+            } else {
+                imageView.setBackgroundColor(Color.TRANSPARENT);
+            }
+
+            return imageView;
+        }
     }
 }
