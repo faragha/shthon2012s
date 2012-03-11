@@ -55,6 +55,7 @@ public class AsyncTaskSample extends Activity implements UploadAsyncTaskCallback
 	public void onSuccessUploadImage(String url) {
 		Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
 		imageUrl = url;
+		edit.setText(imageUrl);
 
 	}
 
