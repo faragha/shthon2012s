@@ -220,8 +220,8 @@ public class SutamiActivity extends Activity {
         float scale = (float)imageBottom.getWidth() / (float)bg.getMinimumWidth();
 
         int topOffset = -imageBottom.getHeight() / 4;
-        int rabittPos = (int)(imageBottom.getWidth() * scale * 0.25);
-        int catPos = (int)(imageBottom.getWidth() * scale * 0.7);
+        int rabittPos = (int)(imageBottom.getWidth() * scale * 0.30);
+        int catPos = (int)(imageBottom.getWidth() * scale * 0.78);
         imageBottom.bringToFront();
         imageRabbit.layout(//
                 rabittPos, // Left

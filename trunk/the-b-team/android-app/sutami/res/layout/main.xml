@@ -54,15 +54,19 @@
 	        android:id="@+id/button_taka_a_picture"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
 	        android:background="@drawable/button_camera"
             android:scaleType="centerInside"
+            android:adjustViewBounds="true"
             android:layout_margin="10dp" />
         <ImageButton
 	        android:id="@+id/button_pick_a_picture"
 	        android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/button_gallery"
             android:scaleType="centerInside"
+            android:adjustViewBounds="true"
             android:layout_margin="10dp" />
     </LinearLayout>
 
