@@ -3,7 +3,13 @@ package jp.sonicstudio.sutami.activity;
 
 import jp.sonicstudio.sutami.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
+import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,6 +44,7 @@ public class SutamiActivity extends Activity {
     private static final String TAG = "SutamiActivity";
 
     private final static int REQUEST_GET_CAMERA_IMAGE = 1;
+    private Context myCtx;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,7 @@ public class SutamiActivity extends Activity {
         findViewById(R.id.button_taka_a_picture).setOnClickListener(mTakeAPictureOnClickListener);
         findViewById(R.id.button_pick_a_picture).setOnClickListener(
                 mPickAPictureFromGarallyOnClickListener);
+        myCtx = this;
     }
 
     private Uri mCameraImageUri;
@@ -62,8 +70,22 @@ public class SutamiActivity extends Activity {
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 
             // 保存先
-            mCameraImageUri = getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            try {
+            	mCameraImageUri = getContentResolver().insert(
+            			MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } catch (UnsupportedOperationException e) {
+            	new AlertDialog.Builder(myCtx)
+            		.setTitle(myCtx.getString(R.string.err_sd_title))
+            		.setMessage(myCtx.getString(R.string.err_sd_msg))
+            		.setPositiveButton(myCtx.getString(R.string.err_sd_btn), new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							((Activity)myCtx).finish();
+						}
+					})
+            		.show();
+            	return;
+            }
 
             Intent intent = new Intent();
             // インテントにアクションをセット
