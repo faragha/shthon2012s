@@ -49,7 +49,7 @@ public class PreviewActivity extends Activity {
     /** MediaScanner 対象外にするためのファイル名 */
     private static final String NOMEDIA_FILE_NAME = ".nomedia";
     /** テンポラリ画像ファイル名 */
-    private static final String TMP_IMAGE_FILE_NAME = "tmp.png";
+    private static final String TMP_IMAGE_FILE_NAME = "stamp.png";
 
     /** スタンプ画像最大幅 */
     private static final int MAX_WIDTH = 320;
