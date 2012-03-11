@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import jp.preety.ispants.bluetooth.BluetoothActivity;
 import jp.preety.ispants.oekaki.OekakiActivity;
 
 /**
@@ -44,8 +45,10 @@ public class ConfirmActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_ok: {
-                final Intent intent = new Intent(this, OekakiActivity.class);
-                intent.putExtra(OekakiActivity.INTENT_IMAGE_URI, getImageUriString());
+                final Intent intent = new Intent(this, OekakiActivity.class)
+                    .putExtra(BluetoothActivity.EXTRA_SERVER, 1)
+                    .putExtra(OekakiActivity.INTENT_IMAGE_URI, getImageUriString())
+                    ;
                 startActivity(intent);
             }
             case R.id.btn_cancel: {
