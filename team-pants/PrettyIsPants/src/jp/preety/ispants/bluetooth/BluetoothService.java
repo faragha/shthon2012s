@@ -1,3 +1,4 @@
+
 package jp.preety.ispants.bluetooth;
 
 import java.io.IOException;
@@ -25,57 +26,71 @@ public class BluetoothService {
     private static final String NAME_SECURE = "ActivitySecure";
 
     // Unique UUID for this application
-    private static final UUID MY_UUID_SECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID MY_UUID_SECURE = UUID
+            .fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // Member fields
     private final BluetoothAdapter mAdapter;
+
     private final Handler mHandler;
 
     private AcceptAsServerThread mAcceptAsServerThread;
+
     private ConnectAsClientThread mConnectAsClientThread;
+
     private ConnectedThread mConnectedAsServerThread;
+
     private ConnectedThread mConnectedAsClientThread;
 
     private int mStateAsServer;
+
     private int mStateAsClient;
 
     // Constants that indicate the current connection state
     public static final int STATE_NONE = 0; // we're doing nothing
+
     public static final int STATE_LISTEN = 1; // now listening for incoming
                                               // connections
+
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing
                                                   // connection
+
     public static final int STATE_CONNECTED = 3; // now connected to a remote
                                                  // device
 
     // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_AS_SERVER_CHANGE = 1;
+
     public static final int MESSAGE_STATE_AS_CLIENT_CHANGE = 2;
+
     public static final int MESSAGE_WRITE = 3;
+
     public static final int MESSAGE_READ = 4;
+
     public static final int MESSAGE_DEVICE_NAME = 5;
+
     public static final int MESSAGE_TOAST = 6;
-    
+
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "device_name";
+
     public static final String TOAST = "toast";
-    
+
     public static final int FROM_SERVER = 0;
+
     public static final int FROM_CLIENT = 1;
-    
+
     private static final int BUFFER_MAX = 1024;
-    
+
     private static final String EOD = "          ";
-    
+
     Context mContext;
 
     /**
      * Constructor. Prepares a new SomenSliderActivity session.
      * 
-     * @param context
-     *            The UI Activity Context
-     * @param handler
-     *            A Handler to send messages back to the UI Activity
+     * @param context The UI Activity Context
+     * @param handler A Handler to send messages back to the UI Activity
      */
     public BluetoothService(Context context, Handler handler) {
         mContext = context;
@@ -198,7 +213,7 @@ public class BluetoothService {
         // Perform the write unsynchronized
         r.write(out);
     }
-    
+
     public void writeAsClient(byte[] out) {
         // Create temporary object
         ConnectedThread r;
@@ -319,20 +334,21 @@ public class BluetoothService {
                 if (socket != null) {
                     synchronized (BluetoothService.this) {
                         switch (mStateAsServer) {
-                        case STATE_LISTEN:
-                        case STATE_CONNECTING:
-                            connectedAsServer(socket, socket.getRemoteDevice());
-                            break;
-                        case STATE_NONE:
-                        case STATE_CONNECTED:
-                            // Either not ready or already connected. Terminate
-                            // new socket.
-                            try {
-                                socket.close();
-                            } catch (IOException e) {
-                                Log.e(TAG, "*AcceptThread* Could not close unwanted socket", e);
-                            }
-                            break;
+                            case STATE_LISTEN:
+                            case STATE_CONNECTING:
+                                connectedAsServer(socket, socket.getRemoteDevice());
+                                break;
+                            case STATE_NONE:
+                            case STATE_CONNECTED:
+                                // Either not ready or already connected.
+                                // Terminate
+                                // new socket.
+                                try {
+                                    socket.close();
+                                } catch (IOException e) {
+                                    Log.e(TAG, "*AcceptThread* Could not close unwanted socket", e);
+                                }
+                                break;
                         }
                     }
                 }
@@ -352,6 +368,7 @@ public class BluetoothService {
 
     private class ConnectAsClientThread extends Thread {
         private final BluetoothSocket mmSocket;
+
         private final BluetoothDevice mmDevice;
 
         public ConnectAsClientThread(BluetoothDevice device) {
@@ -385,7 +402,9 @@ public class BluetoothService {
                 try {
                     mmSocket.close();
                 } catch (IOException e2) {
-                    Log.e(TAG, "*ConnectAsClientThread* unable to close() socket during connection failure", e2);
+                    Log.e(TAG,
+                            "*ConnectAsClientThread* unable to close() socket during connection failure",
+                            e2);
                 }
                 connectionAsClietnFailed();
                 return;
@@ -411,10 +430,13 @@ public class BluetoothService {
 
     private class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
+
         private final InputStream mmInStream;
+
         private final OutputStream mmOutStream;
+
         private boolean mmServer;
-        
+
         public boolean isClient = false;
 
         public ConnectedThread(BluetoothSocket socket, boolean server) {
@@ -441,7 +463,6 @@ public class BluetoothService {
             Log.i(TAG, "*ConnectedThread* BEGIN mConnectedThread");
             byte[] buffer = new byte[BUFFER_MAX];
             int bytes;
-            
 
             // Keep listening to the InputStream while connected
             StringBuffer sb = new StringBuffer();
@@ -454,18 +475,19 @@ public class BluetoothService {
                     // 終端判定
                     String allStr = sb.toString();
                     int index = allStr.lastIndexOf(EOD);
-                    if(index == -1 || index != allStr.length() - 4) {
-                        Log.d(TAG, "read continue");
+                    if (index == -1 || index != allStr.length() - EOD.length()) {
+                        // Log.d(TAG, "read continue");
                         continue;
                     }
-                    Log.d(TAG, "read finish");
+                    // Log.d(TAG, "read finish");
                     allStr = allStr.substring(0, index);
                     byte[] readAllBuffer = allStr.getBytes();
 
                     // Send the obtained bytes to the UI Activity
-                    int from = (isClient? FROM_SERVER : FROM_CLIENT);
+                    int from = (isClient ? FROM_SERVER : FROM_CLIENT);
                     Log.d(TAG, String.valueOf(readAllBuffer.length));
-                    mHandler.obtainMessage(MESSAGE_READ, readAllBuffer.length, from, readAllBuffer).sendToTarget();
+                    mHandler.obtainMessage(MESSAGE_READ, readAllBuffer.length, from, readAllBuffer)
+                            .sendToTarget();
                     sb = new StringBuffer();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
@@ -478,17 +500,16 @@ public class BluetoothService {
         /**
          * Write to the connected OutStream.
          * 
-         * @param buffer
-         *            The bytes to write
+         * @param buffer The bytes to write
          */
         public void write(byte[] buffer) {
             try {
                 byte[] space = EOD.getBytes();
                 byte[] sendBuffer = new byte[buffer.length + space.length];
-                for(int i = 0; i < buffer.length; i++) {
+                for (int i = 0; i < buffer.length; i++) {
                     sendBuffer[i] = buffer[i];
                 }
-                for(int i = 0; i < space.length; i++) {
+                for (int i = 0; i < space.length; i++) {
                     sendBuffer[buffer.length + i] = space[i];
                 }
                 mmOutStream.write(sendBuffer);
