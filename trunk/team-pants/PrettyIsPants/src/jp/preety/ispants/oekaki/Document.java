@@ -192,10 +192,16 @@ public class Document implements OnDataUpdateListener {
      */
     public void setPen(Pen pen) {
         if (pen.type == Type.Bihaku) {
-            Data data = new Data();
+            final Data data = new Data();
             data.pen = pen;
-            getServer().add(data);
-            setBihakuLevel(data.pen.bihakuLevel);
+
+            render.getRenderHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    getServer().add(data);
+                    setBihakuLevel(data.pen.bihakuLevel);
+                }
+            });
             return;
         }
 
@@ -261,6 +267,7 @@ public class Document implements OnDataUpdateListener {
 
         if (data.pen.type == Type.Bihaku) {
             setBihakuLevel(data.pen.bihakuLevel);
+            render.rendering();
             return;
         }
 
