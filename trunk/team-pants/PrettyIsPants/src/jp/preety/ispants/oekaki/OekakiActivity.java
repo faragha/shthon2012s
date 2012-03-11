@@ -353,10 +353,10 @@ public class OekakiActivity extends BluetoothActivity {
             }
         });
 
-        ImageAdapter colorAdapter = new ImageAdapter(mColorResources, mSelectedColor);
+        ImageAdapter colorAdapter = new ImageAdapter(mColorResources, mSelectedColor, true);
         colorGrid.setAdapter(colorAdapter);
 
-        ImageAdapter nibAdapter = new ImageAdapter(mNibResources, mSelectedNib);
+        ImageAdapter nibAdapter = new ImageAdapter(mNibResources, mSelectedNib, true);
         nibGrid.setAdapter(nibAdapter);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout);
@@ -370,8 +370,6 @@ public class OekakiActivity extends BluetoothActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 mStampDialog.dismiss();
-                parent.getChildAt(mSelectedStamp).setBackgroundColor(Color.TRANSPARENT);
-                v.setBackgroundColor(Color.rgb(235, 204, 213));
                 mSelectedStamp = position;
 
                 String stampName = mStampMap.get(mStampResources[mSelectedStamp]);
@@ -381,7 +379,7 @@ public class OekakiActivity extends BluetoothActivity {
             }
         });
 
-        ImageAdapter stampAdapter = new ImageAdapter(mStampResources, mSelectedStamp);
+        ImageAdapter stampAdapter = new ImageAdapter(mStampResources, mSelectedStamp, false);
         stampGrid.setAdapter(stampAdapter);
         builder = new AlertDialog.Builder(this);
         builder.setView(layout);
@@ -419,10 +417,12 @@ public class OekakiActivity extends BluetoothActivity {
     class ImageAdapter extends BaseAdapter {
         private Integer[] mIdList;
         private Integer mSelected;
+        private boolean mIsBg;
 
-        public ImageAdapter(Integer[] idList, Integer selected) {
+        public ImageAdapter(Integer[] idList, Integer selected, boolean isBg) {
             mIdList = idList;
             mSelected = selected;
+            mIsBg = isBg;
         }
 
         @Override
@@ -454,7 +454,7 @@ public class OekakiActivity extends BluetoothActivity {
 
             imageView.setImageResource(mIdList[position]);
 
-            if (mSelected == position) {
+            if (mIsBg && mSelected == position) {
                 imageView.setBackgroundColor(Color.rgb(235, 204, 213));
             } else {
                 imageView.setBackgroundColor(Color.TRANSPARENT);
