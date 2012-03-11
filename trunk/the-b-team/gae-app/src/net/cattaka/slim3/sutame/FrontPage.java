@@ -59,6 +59,27 @@ public class FrontPage extends ScenicPage {
         return null;
     }
 
+    @ActionPath("jsonpList")
+    public Navigation jsonpList() throws IOException {
+        String func = param("func");
+        String requestCode = param("requestCode");
+        
+        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels();
+        String json = imageSummaryModelMeta.modelsToJson(imageSummaryModels);
+        response.getWriter().append(func);
+        response.getWriter().append('(');
+        response.getWriter().append(json);
+        response.getWriter().append(',');
+        if (requestCode != null) {
+            response.getWriter().append("\"" + requestCode+ "\"");
+        } else {
+            response.getWriter().append("null");
+        }
+        response.getWriter().append(')');
+        
+        return null;
+    }
+
     @Default
     public Navigation index() {
         return forward("/index.jsp");
@@ -67,5 +88,10 @@ public class FrontPage extends ScenicPage {
     @ActionPath("devel")
     public Navigation devel() {
         return forward("/devel.jsp");
+    }
+
+    @ActionPath("list")
+    public Navigation list() {
+        return forward("/list.jsp");
     }
 }
