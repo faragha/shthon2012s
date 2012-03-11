@@ -102,8 +102,8 @@ public class OekakiActivity extends BluetoothActivity {
      * スタンプリソース配列
      */
     private Integer[] mStampResources = {
-            R.drawable.stamp_icon_1, R.drawable.stamp_icon_2, R.drawable.stamp_icon_3, R.drawable.stamp_icon_4,
-            R.drawable.stamp_icon_5, R.drawable.stamp_icon_6, R.drawable.stamp_icon_7, R.drawable.stamp_icon_8,
+            R.drawable.ribon, R.drawable.kirakira, R.drawable.flower, R.drawable.cat,
+            R.drawable.rose, R.drawable.hell, R.drawable.king, R.drawable.hart,
     };
 
     /**
@@ -304,14 +304,14 @@ public class OekakiActivity extends BluetoothActivity {
         mNibMap.put(R.drawable.bold03, 12.0f);
         mNibMap.put(R.drawable.bold04, 16.0f);
 
-        mStampMap.put(R.drawable.stamp_icon_1, "stamp_1");
-        mStampMap.put(R.drawable.stamp_icon_2, "stamp_2");
-        mStampMap.put(R.drawable.stamp_icon_3, "stamp_3");
-        mStampMap.put(R.drawable.stamp_icon_4, "stamp_4");
-        mStampMap.put(R.drawable.stamp_icon_5, "stamp_5");
-        mStampMap.put(R.drawable.stamp_icon_6, "stamp_6");
-        mStampMap.put(R.drawable.stamp_icon_7, "stamp_7");
-        mStampMap.put(R.drawable.stamp_icon_8, "stamp_8");
+        mStampMap.put(R.drawable.ribon, "ribon");
+        mStampMap.put(R.drawable.kirakira, "kirakira");
+        mStampMap.put(R.drawable.flower, "flower");
+        mStampMap.put(R.drawable.cat, "cat");
+        mStampMap.put(R.drawable.rose, "rose");
+        mStampMap.put(R.drawable.hell, "hell");
+        mStampMap.put(R.drawable.king, "king");
+        mStampMap.put(R.drawable.hart, "hart");
     }
 
     private void makeDialog() {
@@ -339,7 +339,7 @@ public class OekakiActivity extends BluetoothActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 parent.getChildAt(mSelectedColor).setBackgroundColor(Color.TRANSPARENT);
-                v.setBackgroundColor(Color.GRAY);
+                v.setBackgroundColor(Color.rgb(235, 204, 213));
                 mSelectedColor = position;
             }
         });
@@ -348,7 +348,7 @@ public class OekakiActivity extends BluetoothActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 parent.getChildAt(mSelectedNib).setBackgroundColor(Color.TRANSPARENT);
-                v.setBackgroundColor(Color.GRAY);
+                v.setBackgroundColor(Color.rgb(235, 204, 213));
                 mSelectedNib = position;
             }
         });
@@ -371,7 +371,7 @@ public class OekakiActivity extends BluetoothActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 mStampDialog.dismiss();
                 parent.getChildAt(mSelectedStamp).setBackgroundColor(Color.TRANSPARENT);
-                v.setBackgroundColor(Color.GRAY);
+                v.setBackgroundColor(Color.rgb(235, 204, 213));
                 mSelectedStamp = position;
 
                 String stampName = mStampMap.get(mStampResources[mSelectedStamp]);
@@ -455,7 +455,7 @@ public class OekakiActivity extends BluetoothActivity {
             imageView.setImageResource(mIdList[position]);
 
             if (mSelected == position) {
-                imageView.setBackgroundColor(Color.GRAY);
+                imageView.setBackgroundColor(Color.rgb(235, 204, 213));
             } else {
                 imageView.setBackgroundColor(Color.TRANSPARENT);
             }
