@@ -690,24 +690,12 @@ public class PreviewActivity extends Activity {
 			// 保存のみの場合、常にトースト表示する
 			int resId;
 			if (result) {
-				resId = R.string.success_to_save_decome;
+				resId = R.string.success_to_up_decome;
 			} else {
-				resId = R.string.failed_to_save_decome;
+				resId = R.string.failed_to_up_decome;
 			}
 			String text = mContext.getString(resId);
 			Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
 		}
-
-		/**
-		 * インテント経由でテンポラリ画像を共有する
-		 */
-		private void shareImage() {
-			Uri uri = Uri.fromFile(new File(getTemporallyImagePath()));
-			Intent intent = new Intent(Intent.ACTION_SEND);
-			intent.setType("image/jpeg");
-			intent.putExtra(Intent.EXTRA_STREAM, uri);
-			startActivity(Intent.createChooser(intent, null));
-		}
-
 	};
 }
