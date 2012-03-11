@@ -235,18 +235,16 @@ public class OekakiActivity extends BluetoothActivity {
      * 他の端末からデータを受け取った
      */
     @Override
-    protected void onMessageRead(String message) {
-        {
-            File dir = new File(Environment.getExternalStorageDirectory(), "btlog");
-            dir.mkdir();
-            File file = new File(dir, "log-" + System.currentTimeMillis() + ".txt");
-            try {
-                FileOutputStream os = new FileOutputStream(file);
-                os.write(message.getBytes());
-                os.close();
-            } catch (Exception e) {
-                LogUtil.log(e);
-            }
+    protected void onMessageRead(final String message) {
+        // TODO 怪しいから別スレッドに動かす。
+        // 怪しいから怪しい挙動したらここ削除してUIスレッドで直実行してね
+        if (GameUtil.isUIThread()) {
+            (new Thread() {
+                public void run() {
+                    onMessageRead(message);
+                }
+            }).start();
+            return;
         }
 
         // 画像を送ってくれっていうメッセージを受けた
@@ -263,7 +261,6 @@ public class OekakiActivity extends BluetoothActivity {
         if (data.image == null) {
             render.getDocument().getServer().add(data, message);
         } else {
-
             // 既に画像を受け取り済みだったら何もしない
             if (getIntent().getStringExtra(INTENT_IMAGE_RESP) != null) {
                 return;
