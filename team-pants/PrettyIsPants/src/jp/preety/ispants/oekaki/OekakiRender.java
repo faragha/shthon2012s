@@ -8,10 +8,12 @@ import javax.microedition.khronos.opengles.GL11;
 
 import jp.preety.ispants.R;
 import jp.preety.ispants.oekaki.gesture.GestureController;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -24,7 +26,9 @@ import com.eaglesakura.lib.android.game.graphics.gl11.OpenGLManager;
 import com.eaglesakura.lib.android.game.graphics.gl11.SpriteManager;
 import com.eaglesakura.lib.android.game.thread.AsyncHandler;
 import com.eaglesakura.lib.android.game.thread.ThreadSyncRunnerBase;
+import com.eaglesakura.lib.android.game.thread.UIHandler;
 import com.eaglesakura.lib.android.game.util.GameUtil;
+import com.eaglesakura.lib.android.game.util.Holder;
 import com.eaglesakura.lib.android.game.util.LogUtil;
 import com.eaglesakura.lib.android.view.OpenGLView;
 
@@ -155,15 +159,44 @@ public class OekakiRender implements Callback {
         });
     }
 
+    String waitImageGet() {
+        String uri = null;
+        final Holder<ProgressDialog> dialogHolder = new Holder<ProgressDialog>();
+        Handler handler = new UIHandler();
+        (new ThreadSyncRunnerBase<Void>(handler) {
+            @Override
+            public Void onOtherThreadRun() throws Exception {
+                dialogHolder.set(new ProgressDialog(getActivity()));
+                dialogHolder.get().setMessage("画像を受け取り中です");
+                dialogHolder.get().setCanceledOnTouchOutside(false);
+                dialogHolder.get().show();
+                return null;
+            }
+        }).run();
+
+        while (uri == null) {
+            uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_RESP);
+            GameUtil.sleep(1000);
+        }
+
+        (new ThreadSyncRunnerBase<Void>(handler) {
+            @Override
+            public Void onOtherThreadRun() throws Exception {
+                dialogHolder.get().dismiss();
+                return null;
+            }
+        }).run();
+
+        return uri;
+    }
+
     void initializeDatas() {
         try {
             String uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_URI);
             LogUtil.log("get uri :: " + uri);
 
-            while (uri == null) {
-                uri = activity.getIntent().getStringExtra(OekakiActivity.INTENT_IMAGE_RESP);
-                GameUtil.sleep(100);
-                //                LogUtil.log("sleep get image...");
+            if (uri == null) {
+                uri = waitImageGet();
             }
 
             document.loadBaseImage(activity, Uri.parse(uri), spriteManager.getVirtualDisplay());
