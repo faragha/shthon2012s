@@ -187,6 +187,8 @@ public class BluetoothActivity extends Activity {
                     Toast.makeText(this, R.string.connecting, Toast.LENGTH_SHORT).show();
                     connectDevice(data.getExtras().getString("address"));
                     mBTClientSelected = true;
+                } else {
+                    finish();
                 }
         }
     }
