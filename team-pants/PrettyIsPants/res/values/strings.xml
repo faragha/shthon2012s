@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, TopActivity!</string>
-    <string name="app_name">PrettyIsPants</string>
+    <string name="app_name">プリ♡シェア</string>
     <!-- main -->
     <string name="main_btn_take_photo">写真を撮ってラクガキ</string>
     <string name="main_btn_pick_photo">写真を選んでラクガキ</string>
