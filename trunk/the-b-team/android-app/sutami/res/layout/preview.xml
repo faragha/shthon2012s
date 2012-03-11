@@ -19,10 +19,10 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dip"
+            android:layout_marginBottom="8dip"
             android:layout_marginLeft="8dip"
             android:layout_marginRight="8dip"
-            android:layout_marginTop="4dip"
+            android:layout_marginTop="8dip"
             android:background="@drawable/slider_bg" >
 
             <SeekBar
@@ -59,32 +59,34 @@
                 android:inputType="text"
                 android:maxLines="1" />
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/button_save"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/save" />
+            android:background="@drawable/actionbar_bg"
+            android:gravity="bottom" >
 
-        <Button
-            android:id="@+id/button_share"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/share" />
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_save" />
 
-        <Button
-            android:id="@+id/button_up"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/up" />
+            <Button
+                android:id="@+id/button_share"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_share" />
+
+            <Button
+                android:id="@+id/button_up"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_upload" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
