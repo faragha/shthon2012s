@@ -126,7 +126,7 @@ public class ActAlbum extends Activity {
 			// ビットマップ変換
 			File f = new File(imgList.get(i));
 			BitmapFactory.Options bmpOp = new BitmapFactory.Options();
-			bmpOp.inSampleSize = 50;
+			bmpOp.inSampleSize = 5;
 			imageView.setImageBitmap(BitmapFactory.decodeFile(f.getPath(),
 					bmpOp));
 			return imageView;
