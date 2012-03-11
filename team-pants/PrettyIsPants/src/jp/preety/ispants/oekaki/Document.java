@@ -84,7 +84,7 @@ public class Document implements OnDataUpdateListener {
      * @param uri
      */
     public void loadBaseImage(Context context, Uri uri, VirtualDisplay virtualDisplay) throws IOException {
-        Bitmap bitmap = BigImage.loadBitmap(context.getContentResolver(), uri, BigImage.FULL_HD, new Vector2());
+        Bitmap bitmap = BigImage.loadBitmap(context.getContentResolver(), uri, 1024 * 1024, new Vector2());
         baseImage = new BitmapTextureImage(bitmap, render.getGLManager());
         baseImageCorrector.setRenderArea(virtualDisplay);
         baseImageCorrector.setImageAspect(bitmap.getWidth(), bitmap.getHeight());
