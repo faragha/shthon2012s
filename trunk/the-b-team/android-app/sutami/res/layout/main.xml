@@ -10,6 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="30dip"
         android:padding="10dip"
         android:scaleType="centerInside"
         android:src="@drawable/logo"
@@ -21,7 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scaleType="centerInside"
-        android:src="@drawable/bg_bottom" android:adjustViewBounds="true"/>
+        android:src="@drawable/bg_bottom"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="30dip"
+        />
     <ImageView
         android:id="@+id/image_rabbit"
         android:layout_width="wrap_content"
@@ -47,27 +51,42 @@
 	    android:gravity="center"
 	    android:layout_below="@+id/image_top"
         android:layout_above="@+id/image_bottom"
-        android:padding="10dip"
         >
-        
+
+        <TextView
+            android:id="@+id/text_title_description"
+            android:textColor="#FF000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:textSize="11dip"
+            android:textStyle="bold"
+            android:text="スタ☆ミは、自分の手で書いた絵を撮影するだけで&#10;デコメスタンプにできちゃうアプリ！"
+            />
 	    <ImageButton
 	        android:id="@+id/button_taka_a_picture"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:background="@drawable/button_camera"
+	        android:background="@null"
+            android:src="@drawable/button_camera"
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
-            android:layout_margin="10dp" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
         <ImageButton
 	        android:id="@+id/button_pick_a_picture"
 	        android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/button_gallery"
+            android:background="@null"
+            android:src="@drawable/button_gallery"
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
-            android:layout_margin="10dp" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
     </LinearLayout>
 
 </RelativeLayout>
