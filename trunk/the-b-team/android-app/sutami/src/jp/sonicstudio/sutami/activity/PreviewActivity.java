@@ -24,6 +24,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -36,6 +37,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -77,6 +79,7 @@ public class PreviewActivity extends Activity {
     private Bitmap mDstBitmap;
 
     private int mThreshold = StampMaker.THRESHOLD_LEVEL_3;
+    private EditText decoNameEditText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +94,9 @@ public class PreviewActivity extends Activity {
         seekBar.setMax(MAX_LEVEL);
         seekBar.setProgress(DEFAULT_LEVEL);
         seekBar.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
-        // 戻るボタン初期化
-        Button buttonBack = (Button) findViewById(R.id.button_back);
-        buttonBack.setOnClickListener(mBackOnClickListener);
+        // デコメ名エディットを初期化
+        decoNameEditText = (EditText) findViewById(R.id.decoName);
+
         // 保存ボタン初期化
         Button buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(mSaveOnClickListener);
@@ -179,7 +182,7 @@ public class PreviewActivity extends Activity {
 		private void makeDecome() {
 			String decomeName = "deco";
 			SaveDecomeTask saveDecomeTask = new SaveDecomeTask(PreviewActivity.this, false);
-			saveDecomeTask.setDecoName(decomeName);
+			saveDecomeTask.setDecoName(decoNameEditText.getText().toString());
 			saveDecomeTask.execute(mDstBitmap);
 		}
     };
@@ -204,7 +207,7 @@ public class PreviewActivity extends Activity {
             // 画像をアップロードする
 			String decomeName = "deco";
         	UploadDecomeTask uploadDecomeTask = new UploadDecomeTask(PreviewActivity.this);
-			uploadDecomeTask.setDecoName(decomeName);
+			uploadDecomeTask.setDecoName(decoNameEditText.getText().toString());
         	uploadDecomeTask.execute(mDstBitmap);
         }
     };
