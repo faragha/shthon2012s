@@ -64,7 +64,7 @@ public class Document implements OnDataUpdateListener {
         //! 適当なペンを作成する
         {
             Pen pen = new Pen();
-            pen.setTegakiData(4, 255, 255, 255);
+            pen.setTegakiData(5, 255, 255, 255);
             setPen(pen);
         }
     }
@@ -191,6 +191,14 @@ public class Document implements OnDataUpdateListener {
      * @param pen
      */
     public void setPen(Pen pen) {
+        if (pen.type == Type.Bihaku) {
+            Data data = new Data();
+            data.pen = pen;
+            getServer().add(data);
+            setBihakuLevel(data.pen.bihakuLevel);
+            return;
+        }
+
         this.pen = pen;
     }
 
@@ -248,6 +256,11 @@ public class Document implements OnDataUpdateListener {
                     onDataReceve(server, data);
                 }
             });
+            return;
+        }
+
+        if (data.pen.type == Type.Bihaku) {
+            setBihakuLevel(data.pen.bihakuLevel);
             return;
         }
 
