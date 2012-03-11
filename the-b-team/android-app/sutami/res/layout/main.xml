@@ -10,8 +10,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:padding="10dip"
         android:scaleType="centerInside"
-        android:src="@drawable/title_top" android:adjustViewBounds="true"/>
+        android:src="@drawable/logo"
+        android:adjustViewBounds="true"/>
 
     <ImageView
         android:id="@+id/image_bottom"
@@ -19,35 +21,49 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scaleType="centerInside"
-        android:src="@drawable/title_bottom" android:adjustViewBounds="true"/>
+        android:src="@drawable/bg_bottom" android:adjustViewBounds="true"/>
+    <ImageView
+        android:id="@+id/image_rabbit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bg_rabbit"
+        android:adjustViewBounds="true"/>
+    <ImageView
+        android:id="@+id/image_cat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bg_cat"
+        android:adjustViewBounds="true"/>
     
     <LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_centerInParent="true"
 	    android:orientation="vertical"
-	    android:gravity="center_horizontal"
+	    android:gravity="center"
 	    android:layout_below="@+id/image_top"
         android:layout_above="@+id/image_bottom"
+        android:padding="10dip"
         >
         
-	    <Button
+	    <ImageButton
 	        android:id="@+id/button_taka_a_picture"
 	        android:layout_width="wrap_content"
-	        android:layout_height="0dip"
-	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
 	        android:background="@drawable/button_camera"
             android:scaleType="centerInside"
-	        android:layout_margin="5dp" />
-	
-        <Button
+            android:layout_margin="10dp" />
+        <ImageButton
 	        android:id="@+id/button_pick_a_picture"
 	        android:layout_width="wrap_content"
-            android:layout_height="0dip"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:background="@drawable/button_gallery"
             android:scaleType="centerInside"
-	        android:layout_margin="5dp" />
+            android:layout_margin="10dp" />
     </LinearLayout>
 
 </RelativeLayout>
