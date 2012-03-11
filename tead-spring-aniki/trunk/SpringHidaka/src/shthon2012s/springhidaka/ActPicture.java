@@ -35,9 +35,11 @@ public class ActPicture extends Activity implements CreateImageAsyncTaskCallback
 
 		ctx = this.getApplicationContext();
 
+		//毎回やっておく
+		Utils.createDrawbleCollection();
+
 		if(Intent.ACTION_VIEW.equals(getIntent().getAction())){
 
-			Utils.createDrawbleCollection();
 			String imageUrl = getIntent().getDataString();
 			//データ生成
     		CreateImageAsyncTask get = new CreateImageAsyncTask(this, this);
