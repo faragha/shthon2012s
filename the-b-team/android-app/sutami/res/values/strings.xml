@@ -29,6 +29,6 @@
     
     <string name="deco_hint">デコメの名前</string>
     <string name="err_sd_title">SDカードにアクセス出来ません</string>
-    <string name="err_sd_msg">SDカードがマウントされていないか挿入されていません。</string>
+    <string name="err_sd_msg">ケーブルがささっていたら抜いてください</string>
     <string name="err_sd_btn">OK</string>
 </resources>
