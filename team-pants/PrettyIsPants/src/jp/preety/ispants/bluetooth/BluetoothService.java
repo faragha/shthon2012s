@@ -200,7 +200,7 @@ public class BluetoothService {
 
     }
 
-    public void writeAsServer(byte[] out) {
+    public void writeAsServer(String str) {
         // Create temporary object
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
@@ -211,10 +211,10 @@ public class BluetoothService {
             r = mConnectedAsServerThread;
         }
         // Perform the write unsynchronized
-        r.write(out);
+        r.write(str);
     }
 
-    public void writeAsClient(byte[] out) {
+    public void writeAsClient(String str) {
         // Create temporary object
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
@@ -225,7 +225,7 @@ public class BluetoothService {
             r = mConnectedAsClientThread;
         }
         // Perform the write unsynchronized
-        r.write(out);
+        r.write(str);
     }
 
     private void connectionAsClietnFailed() {
@@ -481,13 +481,12 @@ public class BluetoothService {
                     }
                     // Log.d(TAG, "read finish");
                     allStr = allStr.substring(0, index);
-                    byte[] readAllBuffer = allStr.getBytes();
+                    // byte[] readAllBuffer = allStr.getBytes();
 
                     // Send the obtained bytes to the UI Activity
                     int from = (isClient ? FROM_SERVER : FROM_CLIENT);
-                    Log.d(TAG, String.valueOf(readAllBuffer.length));
-                    mHandler.obtainMessage(MESSAGE_READ, readAllBuffer.length, from, readAllBuffer)
-                            .sendToTarget();
+                    // Log.d(TAG, String.valueOf(readAllBuffer.length));
+                    mHandler.obtainMessage(MESSAGE_READ, from, -1, allStr).sendToTarget();
                     sb = new StringBuffer();
                 } catch (IOException e) {
                     Log.e(TAG, "*ConnectedThread* disconnected", e);
@@ -502,20 +501,21 @@ public class BluetoothService {
          * 
          * @param buffer The bytes to write
          */
-        public void write(byte[] buffer) {
+        // public void write(byte[] buffer) {
+        public void write(String sendString) {
             try {
-                byte[] space = EOD.getBytes();
-                byte[] sendBuffer = new byte[buffer.length + space.length];
-                for (int i = 0; i < buffer.length; i++) {
-                    sendBuffer[i] = buffer[i];
-                }
-                for (int i = 0; i < space.length; i++) {
-                    sendBuffer[buffer.length + i] = space[i];
-                }
+                String str = sendString + EOD;
+                // byte[] space = EOD.getBytes();
+                byte[] sendBuffer = str.getBytes();
+                /*
+                 * for (int i = 0; i < buffer.length; i++) { sendBuffer[i] =
+                 * buffer[i]; } for (int i = 0; i < space.length; i++) {
+                 * sendBuffer[buffer.length + i] = space[i]; }
+                 */
                 mmOutStream.write(sendBuffer);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
+                mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, sendString).sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "*ConnectedThread* Exception during write", e);
             }
