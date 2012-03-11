@@ -72,6 +72,9 @@ public class Document implements OnDataUpdateListener {
      */
     public static TextureImageBase loadImage(Resources resources, int drawableId, OpenGLManager glManager) {
         Bitmap bitmap = BitmapFactory.decodeResource(resources, drawableId);
+        if (bitmap == null) {
+            return null;
+        }
         return new BitmapTextureImage(bitmap, glManager);
     }
 
@@ -88,7 +91,11 @@ public class Document implements OnDataUpdateListener {
     }
 
     void addStamp(Context context, int drawableId) {
-        stampTextures.put(drawableId, loadImage(context.getResources(), drawableId, render.getGLManager()));
+        if (stampTextures.get(R.drawable.ic_launcher) != null) {
+            return;
+        }
+        TextureImageBase image = loadImage(context.getResources(), drawableId, render.getGLManager());
+        stampTextures.put(drawableId, image);
     }
 
     public void loadPenTextuers(Context context) {
@@ -105,7 +112,6 @@ public class Document implements OnDataUpdateListener {
     public TextureImageBase getPenTexture(Pen pen) {
         TextureImageBase result = null;
         if (pen.type == Type.Stamp) {
-
             result = stampTextures.get(R.drawable.ic_launcher);
 
             if (result == null) {
