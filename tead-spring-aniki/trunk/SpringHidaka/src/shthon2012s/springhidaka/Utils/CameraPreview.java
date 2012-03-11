@@ -56,7 +56,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 		} else {
 			camera.stopPreview();
 			setPictureFormat(format);
-			setPreviewSize(width, width);
+			setPreviewSize(width, height);
 			setPictureSize();
 			camera.startPreview();
 		}
