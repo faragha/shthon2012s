@@ -1,5 +1,7 @@
 package jp.preety.ispants.oekaki.data;
 
+import android.content.Context;
+
 import com.eaglesakura.lib.android.game.graphics.Color;
 
 /**
@@ -94,6 +96,15 @@ public class Pen {
     public void setStampData(String stampName) {
         this.stampName = stampName;
         type = Type.Stamp;
+    }
+
+    /**
+     * スタンプのリソースIDを返す
+     * @return スタンプのリソースID
+     */
+    public int getStampResId(Context context) {
+        int resId = context.getResources().getIdentifier(stampName,"drawable",context.getPackageName());
+        return resId;
     }
 
     /**
