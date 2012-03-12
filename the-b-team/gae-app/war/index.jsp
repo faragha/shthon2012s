@@ -19,9 +19,11 @@
 		<ul data-role="listview" data-inset="true">
 			<li data-role="list-divider">みんなのスタ☆me</li>
 			<li><a href="${f:url('/list')}" data-ajax="false">見る</a></li>
+			<%--
 			<li data-role="list-divider">開発用</li>
 			<li><a href="${f:url('/devel')}" data-ajax="false">開発用ページ</a></li>
 			<li><a href="${f:url('/jsonList')}" data-ajax="false">アップロードされたデータ</a><li>
+			 --%>
 		</ul>
 	</div>
 </div>

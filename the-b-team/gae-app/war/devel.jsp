@@ -27,5 +27,18 @@
 		</tr>
 	</table>
 </form>
+<h2>サムネイル情報の差異作成</h2>
+<form action="${f:url('/m/refleshImage')}" method="post">
+	<table>
+		<tr>
+			<td>ImageId</td>
+			<td><input type="text" name="imageId"/></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit"/></td>
+		</tr>
+	</table>
+</form>
 </body>
 </html>

@@ -9,27 +9,32 @@
 <script type="text/javascript">
 <!--
 $(function() {
-	$("<script>")
-    .attr("type", "text/javascript")
-    .attr("src", "${f:url('/jsonpList?func=loadImages')}")
-    .appendTo($("head"));
+	startLoad();
 });
-function loadImages(datas, requestCode) {
+function loadImages(datas, hasMore, requestCode) {
 	var imagesGrid = $("#imagesGrid");
+	var lastData;
 	for (var i=0;i<datas.length;i++) {
 		var data = datas[i];
+		lastData = data;
 		var tag = $("<div>")
 			.addClass("ui-block-c");
 		var img = $("<div>");
 		{
+			var href = $("<a>")
+				.attr("data-ajax", "false")
+				.attr("href","${f:url('/i/')}" + data.imageId);
 			$("<img>")
 				.css("width", "95%")
-				.attr("src","${f:url('/i/')}" + data.imageId)
-				.appendTo(img);
+				.css("height", "95%")
+				.attr("src","${f:url('/t/')}" + data.imageId)
+				.appendTo(href);
+			href.appendTo(img);
 			img.appendTo(tag);
 		}
 		var text = $("<div>");
 		{
+			text.addClass("imageTitle");
 			text.css("position", "relative");
 			if (data.title != null) {
 				text.text(data.title);
@@ -43,8 +48,37 @@ function loadImages(datas, requestCode) {
 		tag.height(tag.width());
 		text.css("left", 0);
 		text.css("top", -text.height());
-		
 	}
+	if (lastData && hasMore) {
+		var tag = $("<div>")
+			.addClass("ui-block-c");
+		var button = $("<button>")
+			.css("width", "95%")
+			.css("height", "95%")
+			.text("続きを見る")
+			.click(loadMore)
+			.appendTo(tag);
+		button.attr("updatedAt", lastData.updatedAt);
+		tag.appendTo(imagesGrid);
+		tag.height(tag.width());
+	}
+}
+function loadMore() {
+	$(this).parent().remove();
+	var updatedAt = $(this).attr("updatedAt");
+	if (updatedAt) {
+		startLoad(updatedAt);
+	}
+}
+function startLoad(lastUpdatedAt) {
+	var url = "${f:url('/jsonpList?func=loadImages')}";
+	if (lastUpdatedAt) {
+		url = url + "&lastUpdatedAt=" + lastUpdatedAt;
+	}
+	$("<script>")
+    .attr("type", "text/javascript")
+    .attr("src", url)
+    .appendTo($("head"));
 }
 //-->
 </script>
@@ -61,8 +95,13 @@ function loadImages(datas, requestCode) {
 	</div>
 
 	<div data-role="content">
-		<div class="ui-grid-c" id="imagesGrid">
-		</div><!-- /grid-a -->
+		<ul data-role="listview" data-inset="true">
+			<li data-role="list-divider">みんなのスタ☆me</li>
+			<li>
+				<div class="ui-grid-c" id="imagesGrid">
+				</div><!-- /grid-a -->
+			</li>
+		</ul>
 	</div>
 </div>
 

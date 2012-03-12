@@ -1,17 +1,21 @@
 package net.cattaka.slim3.sutame;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 
 import net.cattaka.slim3.sutame.meta.ImageModelMeta;
 import net.cattaka.slim3.sutame.meta.ImageSummaryModelMeta;
 import net.cattaka.slim3.sutame.model.ImageModel;
 import net.cattaka.slim3.sutame.model.ImageSummaryModel;
+import net.cattaka.slim3.sutame.model.ImageThumbnailModel;
 import net.cattaka.slim3.sutame.service.ImageService;
 
 import org.slim3.controller.Navigation;
-
-import com.sun.imageio.plugins.common.ImageUtil;
+import org.slim3.controller.validator.Errors;
+import org.slim3.controller.validator.Validators;
+import org.slim3.util.StringUtil;
 
 import scenic3.ScenicPage;
 import scenic3.annotation.ActionPath;
@@ -40,19 +44,57 @@ public class FrontPage extends ScenicPage {
             imageModel = mImageService.getImage(imageId);
         }
         if (imageModel != null) {
-            response.setContentType(imageModel.getContentType());
+            if (imageModel.getContentType() != null) {
+                response.addHeader("Content-Type", imageModel.getContentType());
+            } else {
+                response.addHeader("Content-Type", "image/png");
+            }
             response.getOutputStream().write(imageModel.getImageData());
             return null;
         } else {
             response.setStatus(404);
-            response.getWriter().append("Not found. id=" + id);
+            response.getWriter().append("Not found. imageId=" + id);
             return null;
         }
     }
-    
+
+    @ActionPath("t/{id}")
+    public Navigation thumbnail(@Var("id") String id) throws IOException {
+        super.request.setAttribute("id", id);
+        Long imageId = null;
+        try {
+            imageId = new Long(id);
+        } catch (NumberFormatException e) {
+            // ignore
+        }
+        
+        ImageThumbnailModel imageModel = null;
+        if (imageId != null) {
+            imageModel = mImageService.getImageThumbnail(imageId);
+        }
+        if (imageModel != null) {
+            response.addHeader("Content-Type", imageModel.getContentType());
+            response.getOutputStream().write(imageModel.getImageData());
+            return null;
+        } else {
+            response.setStatus(404);
+            response.getWriter().append("Not found. imageId=" + id);
+            return null;
+        }
+    }
+
     @ActionPath("jsonList")
     public Navigation jsonList() throws IOException {
-        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels();
+        Validators v = new Validators(request);
+        v.add("lastUpdatedAt", v.longType());
+        if (!doValidate(v)) {
+            return null;
+        }
+        
+        String lastUpdatedAtStr = param("lastUpdatedAt");
+        Date lastUpdatedAt = (!StringUtil.isEmpty(lastUpdatedAtStr)) ? new Date(Long.parseLong(lastUpdatedAtStr)) : null;
+
+        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels(lastUpdatedAt);
         
         response.setContentType(StameConstants.CONTENT_TYPE);
         
@@ -64,16 +106,28 @@ public class FrontPage extends ScenicPage {
 
     @ActionPath("jsonpList")
     public Navigation jsonpList() throws IOException {
+        Validators v = new Validators(request);
+        v.add("func", v.required());
+        v.add("lastUpdatedAt", v.longType());
+        if (!doValidate(v)) {
+            return null;
+        }
+        
+        String lastUpdatedAtStr = param("lastUpdatedAt");
+        Date lastUpdatedAt = (!StringUtil.isEmpty(lastUpdatedAtStr)) ? new Date(Long.parseLong(lastUpdatedAtStr)) : null;
+
         String func = param("func");
         String requestCode = param("requestCode");
         
         response.setContentType(StameConstants.CONTENT_TYPE);
         
-        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels();
+        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels(lastUpdatedAt);
         String json = imageSummaryModelMeta.modelsToJson(imageSummaryModels);
         response.getWriter().append(func);
         response.getWriter().append('(');
         response.getWriter().append(json);
+        response.getWriter().append(',');
+        response.getWriter().append(String.valueOf(imageSummaryModels.size() == StameConstants.THUMBNAIL_NUM));
         response.getWriter().append(',');
         if (requestCode != null) {
             response.getWriter().append("\"" + requestCode+ "\"");
@@ -98,5 +152,22 @@ public class FrontPage extends ScenicPage {
     @ActionPath("list")
     public Navigation list() {
         return forward("/list.jsp");
+    }
+
+    private boolean doValidate(Validators v) throws IOException {
+        if (v.validate()) {
+            // OK
+            return true;
+        } else {
+            // 入力値エラー
+            Errors errors = v.getErrors();
+            response.setStatus(400);
+            PrintWriter writer = response.getWriter();
+            for (String msg :errors.values()) {
+                writer.write(msg);
+                writer.write('\n');
+            }
+            return false;
+        }
     }
 }
