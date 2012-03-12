@@ -697,19 +697,21 @@ public class PreviewActivity extends Activity {
 						}
 
 						// 指定された画像をJPEGで書きだす
-						String imageFilePath = DECOME_OUTPUT_DIR + "/" + decoName + ".jpg";
-						File imageFile = new File(imageFilePath);
-						try {
-							Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-									bitmap.getConfig());
-							Canvas canvas = new Canvas(outBitmap);
-							canvas.drawColor(Color.WHITE);
-							canvas.drawBitmap(bitmap, 0, 0, null);
-							
-							FileOutputStream fos = new FileOutputStream(imageFile);
-							outBitmap.compress(CompressFormat.JPEG, 100, fos);
-							fos.close();
-							
+                        String imageFilePath = DECOME_OUTPUT_DIR + "/" + decoName + ".png";
+                        File imageFile = new File(imageFilePath);
+                        try {
+                            FileOutputStream fos = new FileOutputStream(imageFile);
+                            bitmap.compress(CompressFormat.PNG, 100, fos);
+                            fos.close();
+                            ContentResolver contentresolver = mContext.getContentResolver();
+                            ContentValues contentvalues = new ContentValues();
+                            contentvalues.put(Images.Media.MIME_TYPE, "image/png");
+                            contentvalues.put(Images.Media.DATA, imageFile.getPath());
+                            contentvalues.put(Images.Media.TITLE, imageFile.getName());
+                            contentvalues.put(Images.Media.DISPLAY_NAME, decoName);
+                            contentresolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentvalues);
+                            success = true;
+
 							MultipartEntity entity = new MultipartEntity();
 							FileBody fileBody = new FileBody(new File(imageFilePath));
 							System.out.println("MIME type: " + fileBody.getMimeType());
