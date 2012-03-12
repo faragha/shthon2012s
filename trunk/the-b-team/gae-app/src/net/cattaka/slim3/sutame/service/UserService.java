@@ -8,6 +8,8 @@ import net.cattaka.slim3.sutame.model.UserModel;
 
 import org.slim3.datastore.Datastore;
 
+import com.google.appengine.api.datastore.Key;
+
 
 public class UserService {
     private UserModelMeta userModelMeta = new UserModelMeta();
@@ -24,7 +26,11 @@ public class UserService {
             return registerUser(username);
         }
     }
-    
+
+    public UserModel getUser(Key userKey) {
+        return Datastore.get(UserModel.class, userKey);
+    }
+
     public UserModel registerUser(String username) {
         if (Datastore.putUniqueValue(StameConstants.UQ_USERNAME, username)) {
             UserModel userModel = new UserModel();

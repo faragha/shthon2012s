@@ -37,6 +37,7 @@ public class ManagePage extends ScenicPage {
         if (fileItem != null && fileItem.getData() != null && fileItem.getData().length > 0) {
             imageModel = new ImageModel();
             imageModel.setImageData(fileItem.getData());
+            imageModel.setContentType(imageModel.getContentType());
             imageModel.setTitle(title);
             
             UserModel userModel = mUserService.getGuestUser();
@@ -52,6 +53,26 @@ public class ManagePage extends ScenicPage {
         } else {
             response.setStatus(500);
             response.getWriter().write("file is not attached or bad file.");
+            return null;
+        }
+    }
+
+    @ActionPath("refleshImage")
+    public Navigation refleshImage()  throws IOException {
+        String id = param("imageId");
+        Long imageId = null;
+        try {
+            imageId = new Long(id);
+        } catch (NumberFormatException e) {
+            // ignore
+        }
+        
+        if (mImageService.refleshImage(imageId)) {
+            response.getWriter().append("succeed");
+            return null;
+        } else {
+            response.setStatus(404);
+            response.getWriter().append("failed. imageId=" + id);
             return null;
         }
     }
