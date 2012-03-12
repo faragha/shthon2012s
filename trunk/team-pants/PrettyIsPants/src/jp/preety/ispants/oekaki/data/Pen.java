@@ -1,6 +1,7 @@
 package jp.preety.ispants.oekaki.data;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.eaglesakura.lib.android.game.graphics.Color;
 
@@ -103,7 +104,8 @@ public class Pen {
      * @return スタンプのリソースID
      */
     public int getStampResId(Context context) {
-        int resId = context.getResources().getIdentifier(stampName,"drawable",context.getPackageName());
+        Resources res = context.getResources();
+        int resId = res.getIdentifier(stampName,"drawable",context.getPackageName());
         return resId;
     }
 
@@ -114,6 +116,16 @@ public class Pen {
     public void setFrameData(String frameName) {
         this.frameName = frameName;
         type = Type.Frame;
+    }
+
+    /**
+     * フォトフレームのリソースIDを返す
+     * @return スタンプのリソースID
+     */
+    public int getFrameResId(Context context) {
+        Resources res = context.getResources();
+        int resId = res.getIdentifier(frameName,"drawable",context.getPackageName());
+        return resId;
     }
 
     /**
