@@ -79,6 +79,10 @@ public class OekakiActivity extends BluetoothActivity {
      */
     AlertDialog mStampDialog;
     /**
+     * フレーム用ダイアログ
+     */
+    AlertDialog mFrameDialog;
+    /**
      * 美白用ダイアログ
      */
     AlertDialog mWhiteningDialog;
@@ -107,6 +111,13 @@ public class OekakiActivity extends BluetoothActivity {
     };
 
     /**
+     * フレームリソース配列
+     */
+    private Integer[] mFrameResources = {
+            R.drawable.frame01, R.drawable.frame02, R.drawable.frame03,
+    };
+
+    /**
      * 選択されている色配列Index
      */
     Integer mSelectedColor = 7;
@@ -118,6 +129,10 @@ public class OekakiActivity extends BluetoothActivity {
      * 選択されているスタンプ配列Index
      */
     Integer mSelectedStamp = 0;
+    /**
+     * 選択されているフレーム配列Index
+     */
+    Integer mSelectedFrame = 0;
 
     /**
      * 色リソースマッピング用
@@ -125,6 +140,7 @@ public class OekakiActivity extends BluetoothActivity {
     Map<Integer, Integer> mColorMap = new HashMap<Integer, Integer>();
     Map<Integer, Float> mNibMap = new HashMap<Integer, Float>();
     Map<Integer, String> mStampMap = new HashMap<Integer, String>();
+    Map<Integer, String> mFrameMap = new HashMap<Integer, String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,6 +161,13 @@ public class OekakiActivity extends BluetoothActivity {
                 @Override
                 public void onClick(View v) {
                     mStampDialog.show();
+                }
+            });
+
+            findViewById(R.id.oekaki_frame_btn).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mFrameDialog.show();
                 }
             });
 
@@ -309,6 +332,10 @@ public class OekakiActivity extends BluetoothActivity {
         mStampMap.put(R.drawable.hell, "hell");
         mStampMap.put(R.drawable.king, "king");
         mStampMap.put(R.drawable.hart, "hart");
+
+        mFrameMap.put(R.drawable.frame01, "frame01");
+        mFrameMap.put(R.drawable.frame02, "frame02");
+        mFrameMap.put(R.drawable.frame03, "frame03");
     }
 
     private void makeDialog() {
@@ -381,6 +408,29 @@ public class OekakiActivity extends BluetoothActivity {
         builder = new AlertDialog.Builder(this);
         builder.setView(layout);
         mStampDialog = builder.create();
+
+        // 以下、フレーム用ダイアログ
+        layout = inflater.inflate(R.layout.frame_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        GridView frameGrid = (GridView) layout.findViewById(R.id.frame_grid);
+
+        frameGrid.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                mFrameDialog.dismiss();
+                mSelectedFrame = position;
+
+                String frameName = mFrameMap.get(mFrameResources[mSelectedFrame]);
+                Pen pen = new Pen();
+                pen.setFrameData(frameName);
+                render.getDocument().setPen(pen);
+            }
+        });
+
+        ImageAdapter frameAdapter = new ImageAdapter(mFrameResources, mSelectedFrame, false);
+        frameGrid.setAdapter(frameAdapter);
+        builder = new AlertDialog.Builder(this);
+        builder.setView(layout);
+        mFrameDialog = builder.create();
 
         // 以下、美白用ダイアログ
         layout = inflater.inflate(R.layout.whitening_dialog, (ViewGroup) findViewById(R.id.layout_root));
