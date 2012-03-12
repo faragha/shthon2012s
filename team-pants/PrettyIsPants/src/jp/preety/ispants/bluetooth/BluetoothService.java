@@ -519,7 +519,7 @@ public class BluetoothService {
                  * sendBuffer[buffer.length + i] = space[i]; }
                  */
                 String remine = str;
-                while (!remine.isEmpty()) {
+                while (!remine.equals("")) {
                     String sendStr = "";
                     if(remine.length() < 1024) {
                         sendStr = remine;
