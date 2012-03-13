@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scaleType="centerInside"
+        android:background="@drawable/bg_bottom"
         android:src="@drawable/bg_bottom"
         android:adjustViewBounds="true"
         android:layout_marginTop="30dip"
