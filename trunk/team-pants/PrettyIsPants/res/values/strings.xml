@@ -2,6 +2,8 @@
 <resources>
     <string name="hello">Hello World, TopActivity!</string>
     <string name="app_name">プリ♡シェア</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
     <!-- main -->
     <string name="main_btn_take_photo">写真を撮ってラクガキ</string>
     <string name="main_btn_pick_photo">写真を選んでラクガキ</string>
@@ -20,4 +22,6 @@
     <string name="bluetooth_not_enabled">BluetoothがONにしてもらえませんでした。</string>
     <string name="connecting">接続します。</string>
     <string name="device_not_found">接続できるデバイスがありません</string>
+    <!-- confirm -->
+    <string name="confirm_graffiti">この画像でラクガキをはじめますか？</string>
 </resources>
