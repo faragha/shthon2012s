@@ -5,6 +5,7 @@
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <!-- main -->
+    <string name="main_logo_description">ロゴ</string>
     <string name="main_btn_take_photo">写真を撮ってラクガキ</string>
     <string name="main_btn_pick_photo">写真を選んでラクガキ</string>
     <string name="main_btn_join">トモダチのラクガキに参加</string>
@@ -24,4 +25,6 @@
     <string name="device_not_found">接続できるデバイスがありません</string>
     <!-- confirm -->
     <string name="confirm_graffiti">この画像でラクガキをはじめますか？</string>
+    <!-- complete -->
+    <string name="save_complete">保存したよ</string>
 </resources>
