@@ -23,4 +23,23 @@
 
     <style name="MyLightTheme_ScrollBar"></style>
 
+    <style name="wrap_wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="match_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="wrap_match">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="TopBtnPortrait" parent="@style/wrap_wrap">
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="TopLace">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">42px</item>
+    </style>
 </resources>
