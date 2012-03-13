@@ -34,7 +34,7 @@ import android.util.Xml;
 
 public class CreateImageAsyncTask extends AsyncTask<String, String, Boolean> {
 
-	private final String url = "https://shthon2012s.appspot.com/collection";
+	private final String fromApp = "&form=App";
 	Context parent;
 
 	private CreateImageAsyncTaskCallback callback;
@@ -70,7 +70,7 @@ public class CreateImageAsyncTask extends AsyncTask<String, String, Boolean> {
 	protected Boolean doInBackground(String... url) {
 
 		// ここでダウンロードする
-		String accessUrl = url[0];
+		String accessUrl = url[0] + fromApp;
 
 		int responseCode = 0;
 		final int BUFFER_SIZE = 1024 * 50;
