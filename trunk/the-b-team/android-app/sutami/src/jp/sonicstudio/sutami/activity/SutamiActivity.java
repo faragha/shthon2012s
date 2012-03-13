@@ -297,21 +297,21 @@ public class SutamiActivity extends Activity {
         View imageBottom = findViewById(R.id.image_bottom);
         float scale = (float)imageBottom.getWidth() / (float)bg.getMinimumWidth();
 
-        int topOffset = -imageBottom.getHeight() / 4;
+        int topOffset = imageBottom.getTop() + imageBottom.getHeight() / 2;
         int rabittPos = (int)(imageBottom.getWidth() * 0.2);
         int catPos = (int)(imageBottom.getWidth() * 0.8);
         imageBottom.bringToFront();
         imageRabbit.layout(//
                 rabittPos, // Left
-                topOffset + (int)(imageBottom.getTop()), // Top
+                topOffset - (int)(rabbit.getMinimumHeight() * scale), // Top
                 rabittPos + (int)(rabbit.getMinimumWidth() * scale), // Right
-                topOffset + (int)(imageBottom.getTop() + rabbit.getMinimumHeight() * scale) // Bottom
+                topOffset // Bottom
         );
         imageCat.layout(//
                 catPos - (int)(cat.getMinimumWidth() * scale), // // Left
-                topOffset + (int)(imageBottom.getTop()), // Top
+                topOffset - (int)(cat.getMinimumHeight() * scale), // Top
                 catPos, // Right
-                topOffset + (int)(imageBottom.getTop() + cat.getMinimumHeight() * scale) // Bottom
+                topOffset // Bottom
         );
     }
 }
