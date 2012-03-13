@@ -22,10 +22,12 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -337,18 +339,18 @@ public class OekakiActivity extends BluetoothActivity {
         mNibMap.put(R.drawable.bold03, 12.0f);
         mNibMap.put(R.drawable.bold04, 16.0f);
 
-        mStampMap.put(R.drawable.ribon, "ribon");
-        mStampMap.put(R.drawable.kirakira, "kirakira");
-        mStampMap.put(R.drawable.flower, "flower");
-        mStampMap.put(R.drawable.cat, "cat");
-        mStampMap.put(R.drawable.rose, "rose");
-        mStampMap.put(R.drawable.hell, "hell");
-        mStampMap.put(R.drawable.king, "king");
-        mStampMap.put(R.drawable.hart, "hart");
+        mStampMap.put(R.drawable.ribon, "ribon_nodpi");
+        mStampMap.put(R.drawable.kirakira, "kirakira_nodpi");
+        mStampMap.put(R.drawable.flower, "flower_nodpi");
+        mStampMap.put(R.drawable.cat, "cat_nodpi");
+        mStampMap.put(R.drawable.rose, "rose_nodpi");
+        mStampMap.put(R.drawable.hell, "hell_nodpi");
+        mStampMap.put(R.drawable.king, "king_nodpi");
+        mStampMap.put(R.drawable.hart, "hart_nodpi");
 
-        mFrameMap.put(R.drawable.frame01, "frame01");
-        mFrameMap.put(R.drawable.frame02, "frame02");
-        mFrameMap.put(R.drawable.frame03, "frame03");
+        mFrameMap.put(R.drawable.frame01, "frame01_nodpi");
+        mFrameMap.put(R.drawable.frame02, "frame02_nodpi");
+        mFrameMap.put(R.drawable.frame03, "frame03_nodpi");
     }
 
     private void makeDialog() {
@@ -512,8 +514,8 @@ public class OekakiActivity extends BluetoothActivity {
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(OekakiActivity.this);
-                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setLayoutParams(new GridView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(8, 8, 8, 8);
             } else {
                 imageView = (ImageView) convertView;
