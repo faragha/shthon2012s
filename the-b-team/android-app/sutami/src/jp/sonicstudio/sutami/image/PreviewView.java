@@ -305,7 +305,7 @@ public class PreviewView extends View {
     
     
     // 画像の最大の長さ
-    private static final int IMAGE_MAX_LENGTH = 70;
+    private static final int IMAGE_MAX_LENGTH = 140;
     
     public Bitmap getSelectImage(){
 	
@@ -349,6 +349,10 @@ public class PreviewView extends View {
             scale = (float)IMAGE_MAX_LENGTH / width;
         } else {
             scale = (float)IMAGE_MAX_LENGTH / height;
+        }
+        
+        if(scale > 1){
+            scale = 1;
         }
 
 	    return Bitmap.createScaledBitmap(outputBitmap, (int)(width*scale), (int)(height*scale), false);
