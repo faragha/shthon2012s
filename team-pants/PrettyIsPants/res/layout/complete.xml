@@ -1,43 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/match_match"
     android:background="@drawable/tiled_bk"
     android:orientation="vertical" >
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="42px"
-        android:background="@drawable/tiled_lace_top" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" />
-
-    <!-- はいボタン -->
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/hozondekitayo" />
-
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/top_btn_bk" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="42px"
-        android:background="@drawable/tiled_lace_bottom" />
-
+    <View style="@style/LaceHeader" />
+    <LinearLayout style="@style/match_weight1"
+        android:orientation="vertical"
+        android:gravity="center_vertical" >
+        <!-- はいボタン -->
+        <ImageView
+            style="@style/wrap_wrap"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/save_complete"
+            android:src="@drawable/hozondekitayo" />
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_gravity="center_horizontal"
+            style="@style/wrap_wrap"
+            android:background="@drawable/top_btn_bk" />
+    </LinearLayout>
+    <View style="@style/LaceFooter" />
 </LinearLayout>
