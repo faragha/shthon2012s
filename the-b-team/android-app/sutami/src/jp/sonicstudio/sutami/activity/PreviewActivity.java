@@ -431,6 +431,7 @@ public class PreviewActivity extends Activity {
         private ProgressDialog mProgressDialog;
         private String decoName;
 		private final String STAMP_OUTPUT_DIR = "/mnt/sdcard/sutami";
+		private String imageFilePath;
 
         /**
          * コンストラクタ
@@ -441,6 +442,7 @@ public class PreviewActivity extends Activity {
         public SaveImageTask(Context context, boolean isShare) {
             mContext = context;
             mIsShare = isShare;
+            imageFilePath = "";
         }
 
         @Override
@@ -462,7 +464,7 @@ public class PreviewActivity extends Activity {
             if (params.length > 0) {
                 if (params[0] != null) {
                     if (params[0] instanceof Bitmap) {
-                    	String imageFilePath = STAMP_OUTPUT_DIR + "/" + decoName + ".png";
+                    	imageFilePath = STAMP_OUTPUT_DIR + "/" + decoName + ".png";
                         Bitmap bitmap = params[0];
                         // このアプリケーションの外部ストレージ内での保存ルートパスのディレクトリが存在しなければ作成する
                         File file = new File(STAMP_OUTPUT_DIR);
@@ -527,11 +529,13 @@ public class PreviewActivity extends Activity {
          * インテント経由でテンポラリ画像を共有する
          */
         private void shareImage() {
-            Uri uri = Uri.fromFile(new File(getTemporallyImagePath()));
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image/png");
-            intent.putExtra(Intent.EXTRA_STREAM, uri);
-            startActivity(Intent.createChooser(intent, null));
+        	if (!imageFilePath.equals("")) {
+	            Uri uri = Uri.fromFile(new File(imageFilePath));
+	            Intent intent = new Intent(Intent.ACTION_SEND);
+	            intent.setType("image/png");
+	            intent.putExtra(Intent.EXTRA_STREAM, uri);
+	            startActivity(Intent.createChooser(intent, null));
+        	}
         }
 
     };
