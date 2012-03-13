@@ -27,7 +27,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -64,8 +63,6 @@ public class PreviewActivity extends Activity {
     /** デバッグ用 */
     private static final String TAG = "PreviewActivity";
 
-    /** MediaScanner 対象外にするためのファイル名 */
-    private static final String NOMEDIA_FILE_NAME = ".nomedia";
     /** テンポラリ画像ファイル名 */
     private static final String TMP_IMAGE_FILE_NAME = "stamp.png";
 
@@ -195,18 +192,6 @@ public class PreviewActivity extends Activity {
     };
     
     /**
-     * 戻るボタンクリックリスナー
-     */
-    private View.OnClickListener mBackOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // アクティビティーをキャンセルで終了する
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-    };
-
-    /**
      * 保存ボタンクリックリスナー
      */
     private View.OnClickListener mSaveOnClickListener = new View.OnClickListener() {
@@ -221,10 +206,8 @@ public class PreviewActivity extends Activity {
 		 * デコメを作成して保存する。
 		 */
 		private void makeDecome() {
-			String decomeName = "deco";
 			SaveDecomeTask saveDecomeTask = new SaveDecomeTask(PreviewActivity.this, false);
 			saveDecomeTask.setDecoName(decoNameEditText.getText().toString());
-			//saveDecomeTask.execute(mDstBitmap);
 			saveDecomeTask.execute(mPreviewView.getSelectImage());
 		}
     };
@@ -247,7 +230,6 @@ public class PreviewActivity extends Activity {
         @Override
         public void onClick(View v) {
             // 画像をアップロードする
-			String decomeName = "deco";
         	UploadDecomeTask uploadDecomeTask = new UploadDecomeTask(PreviewActivity.this);
 			uploadDecomeTask.setDecoName(decoNameEditText.getText().toString());
         	//uploadDecomeTask.execute(mDstBitmap);
