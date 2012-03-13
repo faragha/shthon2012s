@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 
@@ -51,6 +52,8 @@ public class SutamiActivity extends Activity {
         findViewById(R.id.button_taka_a_picture).setOnClickListener(mTakeAPictureOnClickListener);
         findViewById(R.id.button_pick_a_picture).setOnClickListener(
                 mPickAPictureFromGarallyOnClickListener);
+        findViewById(R.id.image_cat).setOnClickListener(mImageOnClickListener);
+        findViewById(R.id.image_rabbit).setOnClickListener(mImageOnClickListener);
         myCtx = this;
     }
 
@@ -102,6 +105,32 @@ public class SutamiActivity extends Activity {
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, REQUEST_GET_CONTENT);
+        }
+    };
+    private View.OnClickListener mImageOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.image_rabbit) {
+                if (v.getAnimation() != null) {
+                    v.getAnimation().cancel();
+                }
+                CycleInterpolator interpolator = new CycleInterpolator(2);
+                Animation anim = new RotateAnimation(0, 10, v.getWidth()/3, v.getHeight());
+                anim.setInterpolator(interpolator);
+                anim.setDuration(2000);
+                anim.setRepeatMode(Animation.REVERSE);
+                v.startAnimation(anim);
+            } else if (v.getId() == R.id.image_cat) {
+                if (v.getAnimation() != null) {
+                    v.getAnimation().cancel();
+                }
+                CycleInterpolator interpolator = new CycleInterpolator(2);
+                Animation anim = new RotateAnimation(0, -10, (v.getWidth()*2) / 3, v.getHeight());
+                anim.setInterpolator(interpolator);
+                anim.setDuration(2000);
+                anim.setRepeatMode(Animation.REVERSE);
+                v.startAnimation(anim);
+            }
         }
     };
 
@@ -236,6 +265,9 @@ public class SutamiActivity extends Activity {
             imageCat.setVisibility(View.INVISIBLE);
             textTitleDescription.setVisibility(View.INVISIBLE);
             mHandler.sendEmptyMessage(MESSAGE_START_ANIMATION_0);
+
+            imageRabbit.clearAnimation();
+            imageCat.clearAnimation();
         }
     }
 
