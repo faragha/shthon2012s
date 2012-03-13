@@ -26,6 +26,7 @@ public class ActCamera extends Activity {
 	private AutoFocusPreview view;
 	private RelativeLayout RLpreviewWrap;
 	private Button bt_camera;
+	private boolean bTaked = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,11 @@ public class ActCamera extends Activity {
 	}
 
 	protected void TakeIt() {
-		view.autoFocus();
+
+	    if(!bTaked){
+	        view.autoFocus();
+	        bTaked = true;
+	    }
 	}
 
 	public void CompleteTakePicture() {
