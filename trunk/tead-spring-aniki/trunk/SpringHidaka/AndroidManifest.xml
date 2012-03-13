@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="shthon2012s.springhidaka"
+    package="shthon2012s.springaniki"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -49,9 +49,7 @@
                 </category>
                 <category android:name="android.intent.category.BROWSABLE">
                 </category>
-                <data android:scheme="https" android:host="shthon2012s.appspot.com" >
-                </data>
-                <data android:scheme="https" android:host="shthon2012s.appspot.com" android:pathPrefix="/collection" >
+                <data android:scheme="https" android:host="springaniki.appspot.com" android:pathPrefix="/collection" >
                 </data>
             </intent-filter>
         </activity>
