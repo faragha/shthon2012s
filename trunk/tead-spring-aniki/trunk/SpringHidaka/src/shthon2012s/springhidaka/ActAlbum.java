@@ -12,8 +12,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -113,9 +116,18 @@ public class ActAlbum extends Activity {
 		public View getView(int i, View convertView, ViewGroup viewgroup) {
 			ImageView imageView;
 			if (convertView == null) {
-				// imageViewを作成
-				imageView = new ImageView(mContext);
-				imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
+
+				DisplayMetrics metrics = new DisplayMetrics();
+				WindowManager windowManager = getWindowManager();
+				Display display = windowManager.getDefaultDisplay();
+				display.getMetrics(metrics);
+
+				int imageSize  = (int) (metrics.scaledDensity * 100);
+
+                // imageViewを作成
+                imageView = new ImageView(mContext);
+
+				imageView.setLayoutParams(new GridView.LayoutParams(imageSize, imageSize));
 				imageView.setAdjustViewBounds(true);
 				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				imageView.setPadding(8, 8, 8, 8);
