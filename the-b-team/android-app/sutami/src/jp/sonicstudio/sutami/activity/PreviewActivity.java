@@ -86,6 +86,7 @@ public class PreviewActivity extends Activity {
     private Bitmap mDstBitmap;
 
     private int mThreshold = StampMaker.THRESHOLD_LEVEL_3;
+    private SeekBar mSeekBarThreshold;
     private EditText decoNameEditText;
 
     @Override
@@ -96,11 +97,18 @@ public class PreviewActivity extends Activity {
         setContentView(R.layout.preview);
         // プレビュービュー初期化
         mPreviewView = (PreviewView) findViewById(R.id.previewview);
+        
+        // 閾値を下げる、上げるボタン
+        Button buttonDecThreshHold = (Button) findViewById(R.id.button_dec_threshold);
+        buttonDecThreshHold.setOnClickListener(mDecThreshHoldOnClickListener);
+        Button buttonIncThreshHold = (Button) findViewById(R.id.button_inc_threshold);
+        buttonIncThreshHold.setOnClickListener(mIncThreshHoldOnClickListener);
+        
         // シークバー初期化
-        SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
-        seekBar.setMax(MAX_LEVEL);
-        seekBar.setProgress(DEFAULT_LEVEL);
-        seekBar.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
+        mSeekBarThreshold = (SeekBar) findViewById(R.id.seekbar);
+        mSeekBarThreshold.setMax(MAX_LEVEL);
+        mSeekBarThreshold.setProgress(DEFAULT_LEVEL);
+        mSeekBarThreshold.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         // デコメ名エディットを初期化
         decoNameEditText = (EditText) findViewById(R.id.decoName);
 
@@ -160,6 +168,32 @@ public class PreviewActivity extends Activity {
         }
     };
 
+    /**
+     * 閾値を下げるボタンクリックリスナー
+     */
+    private View.OnClickListener mDecThreshHoldOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if ((mSeekBarThreshold.getProgress() - 1) >= 0) {
+                mSeekBarThreshold.incrementProgressBy(-1);
+                mOnSeekBarChangeListener.onStopTrackingTouch(mSeekBarThreshold);
+            }
+        }
+    };
+
+    /**
+     * 閾値を上げるボタンクリックリスナー
+     */
+    private View.OnClickListener mIncThreshHoldOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if ((mSeekBarThreshold.getProgress() + 1) <= mSeekBarThreshold.getMax()) {
+                mSeekBarThreshold.incrementProgressBy(1);
+                mOnSeekBarChangeListener.onStopTrackingTouch(mSeekBarThreshold);
+            }
+        }
+    };
+    
     /**
      * 戻るボタンクリックリスナー
      */
