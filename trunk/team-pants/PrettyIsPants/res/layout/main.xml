@@ -3,39 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tiled_bk" >
-
     <!-- 修飾画像:上のレース -->
-
     <View
         android:layout_width="match_parent"
         android:layout_height="42px"
         android:layout_gravity="top"
         android:background="@drawable/tiled_lace_top" />
-
     <!-- 修飾画像:下のレース -->
-
     <View
         android:layout_width="match_parent"
         android:layout_height="42px"
         android:layout_gravity="bottom"
         android:background="@drawable/tiled_lace_bottom" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fadingEdgeLength="40dip" >
-
         <!-- メインロゴとボタン -->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical" >
-
             <!-- メインロゴ -->
-
             <ImageView
                 android:id="@+id/img_logo"
                 android:layout_width="wrap_content"
@@ -43,7 +34,6 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/main_logo" />
             <!-- ボタン：写真を撮ってラクガキ -->
-
             <Button
                 android:id="@+id/btn_take_photo"
                 android:layout_width="wrap_content"
@@ -51,7 +41,6 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/take_photo_btn_bk" />
             <!-- ボタン：写真を選んでラクガキ -->
-
             <Button
                 android:id="@+id/btn_pick_photo"
                 android:layout_width="wrap_content"
@@ -59,7 +48,6 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/pick_photo_btn_bk" />
             <!-- ボタン：トモダチのラクガキに参加 -->
-
             <Button
                 android:id="@+id/btn_join"
                 android:layout_width="wrap_content"
@@ -68,5 +56,4 @@
                 android:background="@drawable/join_btn_bk" />
         </LinearLayout>
     </ScrollView>
-
 </FrameLayout>
