@@ -6,42 +6,37 @@
     android:orientation="vertical"
     android:background="@drawable/pen"
     >
-    <View
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        />
+
     <GridView
         android:id="@+id/color_grid"
-        android:layout_width="200dp"
-        android:layout_height="110dp"
-        android:numColumns="4"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:columnWidth="40dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
+        android:layout_width="180dp"
+        android:layout_height="88dp"
         android:layout_marginLeft="90dp"
-        />
-    <View
-        android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_marginTop="54dp"
+        android:columnWidth="26dp"
+        android:gravity="center"
+        android:numColumns="4"
+        android:horizontalSpacing="6dp"
+        android:verticalSpacing="4dp"
+        android:stretchMode="columnWidth"
         />
     <GridView
         android:id="@+id/nib_grid"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:numColumns="4"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:columnWidth="40dp"
-        android:stretchMode="columnWidth"
+        android:layout_width="180dp"
+        android:layout_height="66dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="34dp"
+        android:columnWidth="26dp"
         android:gravity="center"
-        android:layout_marginLeft="80dp"
+        android:numColumns="4"
+        android:verticalSpacing="6dp"
+        android:horizontalSpacing="6dp"
+        android:stretchMode="columnWidth"
         />
     <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="6dp"
         android:gravity="center"
         >
         <Button
