@@ -3,7 +3,7 @@ package shthon2012s.springhidaka.Utils;
 import android.util.Log;
 
 public class DBG {
-	public static final boolean debug_flg = true;
+	public static final boolean debug_flg = false;
 
 	public static void LogOut(int lv, String keystr, String str) {
 		/*
