@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-
     <style name="MyLightTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:buttonStyle">@style/MyLightTheme_Button</item>
         <item name="android:listViewStyle">@style/MyLightTheme_ListView</item>
         <item name="android:listViewWhiteStyle">@style/MyLightTheme_ListViewWhite</item>
         <item name="android:scrollbarThumbVertical">@drawable/scrollbar_fg</item>
     </style>
-
-    <style name="MyLightTheme_Button" parent="@android:style/Widget.Button">
-        <!-- <item name="android:background">@drawable/base_btn_bk</item> -->
-
+    <style name="MyLightTheme_Button" parent="@android:style/Widget.Button">        <!-- <item name="android:background">@drawable/base_btn_bk</item> -->
     </style>
-
     <style name="MyLightTheme_ListView" parent="@android:style/Widget.ListView">
         <item name="android:background">@drawable/tiled_bk</item>
     </style>
-
     <style name="MyLightTheme_ListViewWhite" parent="@android:style/Widget.ListView.White">
         <item name="android:background">@drawable/tiled_bk</item>
     </style>
-
     <style name="MyLightTheme_ScrollBar"></style>
-
     <style name="wrap_wrap">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,11 +27,34 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+    <style name="match_match">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
     <style name="TopBtnPortrait" parent="@style/wrap_wrap">
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
     <style name="TopLace">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">42px</item>
+    </style>
+    <style name="weight1_wrap">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="wrap_weight1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="match_weight1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="OekakiBtn" parent="@style/weight1_wrap">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/oekaki_base_btn_bk</item>
     </style>
 </resources>
