@@ -1,3 +1,4 @@
+
 package jp.preety.ispants.oekaki;
 
 import java.io.File;
@@ -39,8 +40,8 @@ import com.eaglesakura.lib.android.game.util.LogUtil;
 
 /**
  * お絵かき用のActivity
+ * 
  * @author TAKESHI YAMASHITA
- *
  */
 public class OekakiActivity extends BluetoothActivity {
 
@@ -50,15 +51,15 @@ public class OekakiActivity extends BluetoothActivity {
     public static final String INTENT_IMAGE_URI = "INTENT_IMAGE_URI";
 
     /**
-     * bluetoothで受け取った画像のURI。
-     * こっちに格納される場合がある。
+     * bluetoothで受け取った画像のURI。 こっちに格納される場合がある。
      */
     public static final String INTENT_IMAGE_RESP = "INTENT_IMAGE_RESP";
 
     /**
      * キャッシュファイルの保存先
      */
-    private static final File CACHE_FILE = new File(Environment.getExternalStorageDirectory(), ".pants.cache");
+    private static final File CACHE_FILE = new File(Environment.getExternalStorageDirectory(),
+            ".pants.cache");
 
     /**
      * 他の端末から画像ポストのメッセージが来た。
@@ -74,14 +75,17 @@ public class OekakiActivity extends BluetoothActivity {
      * ペン用ダイアログ
      */
     AlertDialog mPenDialog;
+
     /**
      * スタンプ用ダイアログ
      */
     AlertDialog mStampDialog;
+
     /**
      * フレーム用ダイアログ
      */
     AlertDialog mFrameDialog;
+
     /**
      * 美白用ダイアログ
      */
@@ -91,8 +95,9 @@ public class OekakiActivity extends BluetoothActivity {
      * 色リソース配列
      */
     private Integer[] mColorResources = {
-            R.drawable.color_yellow, R.drawable.color_orange, R.drawable.color_green, R.drawable.color_black,
-            R.drawable.color_blue, R.drawable.color_pink, R.drawable.color_red, R.drawable.color_white,
+            R.drawable.color_yellow, R.drawable.color_orange, R.drawable.color_green,
+            R.drawable.color_black, R.drawable.color_blue, R.drawable.color_pink,
+            R.drawable.color_red, R.drawable.color_white,
     };
 
     /**
@@ -121,14 +126,17 @@ public class OekakiActivity extends BluetoothActivity {
      * 選択されている色配列Index
      */
     Integer mSelectedColor = 7;
+
     /**
      * 選択されている太さ配列Index
      */
     Integer mSelectedNib = 0;
+
     /**
      * 選択されているスタンプ配列Index
      */
     Integer mSelectedStamp = 0;
+
     /**
      * 選択されているフレーム配列Index
      */
@@ -138,8 +146,11 @@ public class OekakiActivity extends BluetoothActivity {
      * 色リソースマッピング用
      */
     Map<Integer, Integer> mColorMap = new HashMap<Integer, Integer>();
+
     Map<Integer, Float> mNibMap = new HashMap<Integer, Float>();
+
     Map<Integer, String> mStampMap = new HashMap<Integer, String>();
+
     Map<Integer, String> mFrameMap = new HashMap<Integer, String>();
 
     @Override
@@ -182,12 +193,13 @@ public class OekakiActivity extends BluetoothActivity {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new Builder(OekakiActivity.this);
-                    builder.setMessage("画像を保存して終了しますか？").setPositiveButton("保存", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startCapture();
-                        }
-                    }).show();
+                    builder.setMessage("画像を保存して終了しますか？")
+                            .setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startCapture();
+                                }
+                            }).show();
                 }
             });
         }
@@ -196,8 +208,7 @@ public class OekakiActivity extends BluetoothActivity {
     }
 
     /**
-     * 画像のキャプチャを行う。
-     * 処理自体は非同期で裏で行われるから、終わったらdismissの必要がある。
+     * 画像のキャプチャを行う。 処理自体は非同期で裏で行われるから、終わったらdismissの必要がある。
      */
     public void startCapture() {
         final ProgressDialog dialog = new ProgressDialog(this);
@@ -214,7 +225,8 @@ public class OekakiActivity extends BluetoothActivity {
                     public void run() {
                         dialog.dismiss();
                         Intent intent = new Intent(OekakiActivity.this, CompleteActivity.class);
-                        intent.putExtra(CompleteActivity.INTENT_IMAGE_URI, Uri.fromFile(path).toString());
+                        intent.putExtra(CompleteActivity.INTENT_IMAGE_URI, Uri.fromFile(path)
+                                .toString());
                         startActivity(intent);
                         finish();
                     }
@@ -237,9 +249,10 @@ public class OekakiActivity extends BluetoothActivity {
 
     /**
      * サーバー
+     * 
      * @return
      */
-    private boolean isImageOrner() {
+    private boolean isImageOwner() {
         return getIntent().getStringExtra(INTENT_IMAGE_URI) != null;
     }
 
@@ -272,7 +285,7 @@ public class OekakiActivity extends BluetoothActivity {
 
         // 画像を送ってくれっていうメッセージを受けた
         if (MESSAGE_REQUEST_IMAGE.equals(message)) {
-            if (!isImageOrner()) {
+            if (!isImageOwner()) {
                 // 画像所有者じゃなければ何もしない
                 return;
             }
@@ -342,7 +355,8 @@ public class OekakiActivity extends BluetoothActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // 以下、ペン用ダイアログ
-        View layout = inflater.inflate(R.layout.pen_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        View layout = inflater.inflate(R.layout.pen_dialog,
+                (ViewGroup) findViewById(R.id.layout_root));
 
         GridView colorGrid = (GridView) layout.findViewById(R.id.color_grid);
         GridView nibGrid = (GridView) layout.findViewById(R.id.nib_grid);
@@ -354,7 +368,8 @@ public class OekakiActivity extends BluetoothActivity {
                 int colorCode = mColorMap.get(mColorResources[mSelectedColor]);
                 float nibSize = mNibMap.get(mNibResources[mSelectedNib]);
                 Pen pen = new Pen();
-                pen.setTegakiData(nibSize, Color.red(colorCode), Color.green(colorCode), Color.blue(colorCode));
+                pen.setTegakiData(nibSize, Color.red(colorCode), Color.green(colorCode),
+                        Color.blue(colorCode));
                 render.getDocument().setPen(pen);
             }
         });
@@ -387,7 +402,8 @@ public class OekakiActivity extends BluetoothActivity {
         mPenDialog = builder.create();
 
         // 以下、スタンプ用ダイアログ
-        layout = inflater.inflate(R.layout.stamp_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        layout = inflater
+                .inflate(R.layout.stamp_dialog, (ViewGroup) findViewById(R.id.layout_root));
         GridView stampGrid = (GridView) layout.findViewById(R.id.stamp_grid);
 
         stampGrid.setOnItemClickListener(new OnItemClickListener() {
@@ -410,7 +426,8 @@ public class OekakiActivity extends BluetoothActivity {
         mStampDialog = builder.create();
 
         // 以下、フレーム用ダイアログ
-        layout = inflater.inflate(R.layout.frame_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        layout = inflater
+                .inflate(R.layout.frame_dialog, (ViewGroup) findViewById(R.id.layout_root));
         GridView frameGrid = (GridView) layout.findViewById(R.id.frame_grid);
 
         frameGrid.setOnItemClickListener(new OnItemClickListener() {
@@ -433,7 +450,8 @@ public class OekakiActivity extends BluetoothActivity {
         mFrameDialog = builder.create();
 
         // 以下、美白用ダイアログ
-        layout = inflater.inflate(R.layout.whitening_dialog, (ViewGroup) findViewById(R.id.layout_root));
+        layout = inflater.inflate(R.layout.whitening_dialog,
+                (ViewGroup) findViewById(R.id.layout_root));
         SeekBar seekBar = (SeekBar) layout.findViewById(R.id.seekbar);
         seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -447,7 +465,7 @@ public class OekakiActivity extends BluetoothActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //! TODO ここに美白設定を追加
+                // ! TODO ここに美白設定を追加
                 {
                     Pen pen = new Pen();
                     pen.setBihakuData(seekBar.getProgress());
@@ -463,7 +481,9 @@ public class OekakiActivity extends BluetoothActivity {
 
     class ImageAdapter extends BaseAdapter {
         private Integer[] mIdList;
+
         private Integer mSelected;
+
         private boolean mIsBg;
 
         public ImageAdapter(Integer[] idList, Integer selected, boolean isBg) {
@@ -521,7 +541,7 @@ public class OekakiActivity extends BluetoothActivity {
         super.onBluetoothConnectComplete();
         // 制御メッセージを送付済みだったら
         if (!sendedRequestImage) {
-            if (!isImageOrner()) {
+            if (!isImageOwner()) {
                 sendedRequestImage = true;
                 sendToOtherDevice(MESSAGE_REQUEST_IMAGE);
             }
