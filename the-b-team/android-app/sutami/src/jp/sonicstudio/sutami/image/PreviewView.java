@@ -304,38 +304,55 @@ public class PreviewView extends View {
 	return false;
     }
     
+    
+    // 画像の最大の長さ
+    private static final int IMAGE_MAX_LENGTH = 70;
+    
     public Bitmap getSelectImage(){
 	
+	Bitmap outputBitmap;
+	
 	if(!mShowRectFlag){
-	    return mBitmap;
+	    outputBitmap = mBitmap;
+	}else{
 
+	    // TODO 以下の内容はコピーが含まれているので後で見直し。
+
+            Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            // アスペクト比を保ってビューにフィットする拡大縮小率を計算
+            float scaleWidth = (float) mViewWidth / mBitmap.getWidth();
+            float scaleHeight = (float) mViewHeight / mBitmap.getHeight();
+            float scale = Math.min(scaleWidth, scaleHeight);
+            // ビュー内でセンタリングするためのオフセットを計算
+            int offsetX = (mViewWidth - (int) (scale * mBitmap.getWidth())) / 2;
+            int offsetY = (mViewHeight - (int) (scale * mBitmap.getHeight())) / 2;
+            // ビットマップを描画
+            Paint paint = new Paint();
+            Matrix matrix = new Matrix();
+            matrix.setScale(scale, scale);
+
+            canvas.save();
+            canvas.translate(offsetX, offsetY);
+            canvas.drawBitmap(mBitmap, matrix, paint);
+            canvas.restore();
+
+            outputBitmap = Bitmap.createBitmap(bitmap, (int) mRectf.left, (int) mRectf.top,
+                    (int) mRectf.width(), (int) mRectf.height());
 	}
-        
-        Log.d("me","Select x="  +  mRectf.left +" y=" + mRectf.top + "xx="+mRectf.right +" yy=" + mRectf.bottom);
-	Log.d("me","mBitmap w=" + mBitmap.getWidth() + " h=" + mBitmap.getHeight());        
-        Log.d("me","Width="  +  getWidth() +" height=" + getHeight());
-        
-        
-        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        // アスペクト比を保ってビューにフィットする拡大縮小率を計算
-        float scaleWidth = (float) mViewWidth / mBitmap.getWidth();
-        float scaleHeight = (float) mViewHeight / mBitmap.getHeight();
-        float scale = Math.min(scaleWidth, scaleHeight);
-        // ビュー内でセンタリングするためのオフセットを計算
-        int offsetX = (mViewWidth - (int) (scale * mBitmap.getWidth())) / 2;
-        int offsetY = (mViewHeight - (int) (scale * mBitmap.getHeight())) / 2;
-        // ビットマップを描画
-        Paint paint = new Paint();
-        Matrix matrix = new Matrix();
-        matrix.setScale(scale, scale);
-        
-        canvas.save();
-        canvas.translate(offsetX, offsetY);
-        canvas.drawBitmap(mBitmap, matrix, paint);
-        canvas.restore();
-        
-	return Bitmap.createBitmap(bitmap, (int)mRectf.left, (int)mRectf.top, (int)mRectf.width(), (int)mRectf.height());
+	
+	// Bitmap画像のサイズ縮小
+	    int width = outputBitmap.getWidth();
+	    int height = outputBitmap.getHeight();
+	    
+        float scale = 1;
+        if (width > height) {
+            scale = (float)IMAGE_MAX_LENGTH / width;
+        } else {
+            scale = (float)IMAGE_MAX_LENGTH / height;
+        }
+
+	    return Bitmap.createScaledBitmap(outputBitmap, (int)(width*scale), (int)(height*scale), false);
     }
     
 }
