@@ -38,9 +38,10 @@
             android:screenOrientation="portrait" >
         </activity>
          <activity
-            android:label="@string/app_name"
+            android:label="@string/app_picture"
             android:name=".ActPicture"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW">
                 </action>
@@ -50,7 +51,8 @@
                 </category>
                 <data android:scheme="https" android:host="shthon2012s.appspot.com" >
                 </data>
-
+                <data android:scheme="https" android:host="shthon2012s.appspot.com" android:pathPrefix="/collection" >
+                </data>
             </intent-filter>
         </activity>
         <activity

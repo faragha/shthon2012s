@@ -37,6 +37,8 @@ public class ActPicture extends Activity implements CreateImageAsyncTaskCallback
 
     private ImageView mImage;
 
+    private Bitmap bmo;
+
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,14 +49,6 @@ public class ActPicture extends Activity implements CreateImageAsyncTaskCallback
 		//毎回やっておく
 		Utils.createDrawbleCollection();
 
-		Button bt_show = (Button) findViewById(R.id.bt_show);
-        bt_show.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                GoAlbum();
-            }
-        });
-
-
 		if(Intent.ACTION_VIEW.equals(getIntent().getAction())){
 		    //暗黙的インテントで呼び出されたとき（インテントフィルタを想定）
 			String imageUrl = getIntent().getDataString();
@@ -62,10 +56,26 @@ public class ActPicture extends Activity implements CreateImageAsyncTaskCallback
     		CreateImageAsyncTask get = new CreateImageAsyncTask(this, this);
     		get.execute( imageUrl );
 
+            Button bt_show = (Button) findViewById(R.id.bt_show);
+            bt_show.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    GoAlbum();
+                    finish();
+                }
+            });
+
 		}else{
 			// 画像のフルパスを取得するよ
 			String imagePath = this.getIntent().getStringExtra("filepath");
 			Display(imagePath);
+
+            Button bt_show = (Button) findViewById(R.id.bt_show);
+            bt_show.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
 		}
 
 		mFilepath = new String();
@@ -108,8 +118,6 @@ public class ActPicture extends Activity implements CreateImageAsyncTaskCallback
     private void Overlay(String imagePath) {
 
         Bitmap bmo;
-        Bitmap photo;
-
         int resId;
 
         BitmapFactory.Options opt = new BitmapFactory.Options();
@@ -148,26 +156,15 @@ public class ActPicture extends Activity implements CreateImageAsyncTaskCallback
     }
 
     private void Display(String imagePath) {
-
-        Bitmap bmo;
-        int resId;
-
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.outHeight = 500;
         opt.outWidth = 500;
         opt.inJustDecodeBounds = false;
 
-        resId = Utils.getDrawableFrameId();
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), resId);
-        bm = bm.copy(Bitmap.Config.ARGB_8888, true);
-
-        Canvas mCanvas = new Canvas(bm);
-
         bmo = BitmapFactory.decodeFile(imagePath, opt);
-        mCanvas.drawBitmap(bmo, 0, 0, null);
 
         mImage = (ImageView) findViewById(R.id.imageView1);
-        mImage.setImageBitmap(bm);
+        mImage.setImageBitmap(bmo);
 
     }
 
