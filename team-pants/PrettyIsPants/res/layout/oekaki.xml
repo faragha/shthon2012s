@@ -24,25 +24,28 @@
         style="@style/match_wrap"
         android:orientation="horizontal" >
         <!-- ペン -->
-        <Button
+        <ImageButton
             android:id="@+id/oekaki_pen_btn"
             style="@style/OekakiBtn"
-            android:drawableLeft="@drawable/btn_pen" />
+            android:contentDescription="@string/oekaki_btn_pen"
+            android:src="@drawable/btn_pen" />
         <!-- スタンプ -->
-        <Button
+        <ImageButton
             android:id="@+id/oekaki_stamp_btn"
             style="@style/OekakiBtn"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/btn_stamp" />
+            android:contentDescription="@string/oekaki_btn_stamp"
+            android:src="@drawable/btn_stamp" />
         <!-- フレーム -->
-        <Button
+        <ImageButton
             android:id="@+id/oekaki_frame_btn"
             style="@style/OekakiBtn"
-            android:drawableRight="@drawable/btn_frame" />
+            android:contentDescription="@string/oekaki_btn_frame"
+            android:src="@drawable/btn_frame" />
         <!-- 美白 -->
-        <Button
+        <ImageButton
             android:id="@+id/oekaki_white_btn"
             style="@style/OekakiBtn"
-            android:drawableRight="@drawable/btn_white" />
+            android:contentDescription="@string/oekaki_btn_white"
+            android:src="@drawable/btn_white" />
     </LinearLayout>
 </LinearLayout>
