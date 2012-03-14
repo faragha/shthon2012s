@@ -1,5 +1,5 @@
 
-package jp.sonicstudio.sutami.image;
+package me.suta.android.sutame.image;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
