@@ -1,5 +1,5 @@
 
-package jp.sonicstudio.sutami.activity;
+package me.suta.android.sutame.activity;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import me.suta.android.sutame.image.PreviewView;
+import me.suta.android.sutame.image.StampMaker;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -17,9 +20,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import jp.sonicstudio.sutami.R;
-import jp.sonicstudio.sutami.image.PreviewView;
-import jp.sonicstudio.sutami.image.StampMaker;
+import me.suta.android.sutame.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;

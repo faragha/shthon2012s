@@ -1,7 +1,7 @@
 
-package jp.sonicstudio.sutami.activity;
+package me.suta.android.sutame.activity;
 
-import jp.sonicstudio.sutami.R;
+import me.suta.android.sutame.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;

@@ -10,7 +10,7 @@
         android:layout_weight="1"
         android:background="@drawable/canvas_border" >
 
-        <jp.sonicstudio.sutami.image.PreviewView
+        <me.suta.android.sutame.image.PreviewView
             android:id="@+id/previewview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

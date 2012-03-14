@@ -1,7 +1,7 @@
 
-package jp.sonicstudio.sutami.image;
+package me.suta.android.sutame.image;
 
-import jp.sonicstudio.sutami.R;
+import me.suta.android.sutame.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
