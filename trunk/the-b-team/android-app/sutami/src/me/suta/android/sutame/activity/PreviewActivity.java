@@ -255,6 +255,19 @@ public class PreviewActivity extends Activity {
 
     /**
      * <p>
+     * 外部ストレージのパスを取得する。<br>
+     * 通常は、Android 2.1以下で/sdcard、Android 2.2以降で/mnt/sdcardを返す。<br>
+     * ※最後に/は含まれない
+     * </p>
+     * 
+     * @return　外部ストレージのパス文字列。
+     */
+    private String getExternalStoragePath() {
+        return Environment.getExternalStorageDirectory().getPath().toString();
+    }
+    
+    /**
+     * <p>
      * このアプリケーションの外部ストレージ内での保存ルートパスを取得する。<br>
      * 例） /sdcard/jp.sonicstudio.sutami
      * </p>
@@ -263,12 +276,11 @@ public class PreviewActivity extends Activity {
      */
     private String getAppExternalStoragePath() {
         ApplicationInfo ai = getApplicationInfo();
-        String path = Environment.getExternalStorageDirectory().getPath()
-                .toString()
+        String path = getExternalStoragePath()
                 + File.separator + ai.packageName;
         return path;
     }
-
+    
     /**
      * <p>
      * テンポラリ画像パス。<br>
@@ -306,7 +318,7 @@ public class PreviewActivity extends Activity {
                             if (mSrcBitmap == null) {
                                 Uri uri = (Uri) params[0];
                                 // 回転状態を取得する
-                                String tmpFileDir = "/mnt/sdcard/sutami/";
+                                String tmpFileDir = getExternalStoragePath() + File.separator + "sutami" + File.separator;
                                 String tmpFilePath = tmpFileDir + "/__tmp__.jpg";
                                 File file = new File(tmpFileDir);
                                 if (!file.exists()) {
@@ -447,7 +459,7 @@ public class PreviewActivity extends Activity {
         private boolean mIsShare;
         private ProgressDialog mProgressDialog;
         private String decoName;
-		private final String STAMP_OUTPUT_DIR = "/mnt/sdcard/sutami";
+		private final String STAMP_OUTPUT_DIR = getExternalStoragePath() + File.separator + "sutami";
 		private String imageFilePath;
 
         /**
@@ -565,7 +577,7 @@ public class PreviewActivity extends Activity {
 		private Context mContext;
 		private boolean mIsShare;
 		private ProgressDialog mProgressDialog;
-		private final String DECOME_OUTPUT_DIR = "/mnt/sdcard/download";
+		private final String DECOME_OUTPUT_DIR = getExternalStoragePath() + File.separator + "download";
 		private String decoName;
 
 		/**
@@ -678,7 +690,7 @@ public class PreviewActivity extends Activity {
 
 		private Context mContext;
 		private ProgressDialog mProgressDialog;
-		private final String DECOME_OUTPUT_DIR = "/mnt/sdcard/_tmp_decome";
+		private final String DECOME_OUTPUT_DIR = getExternalStoragePath() + File.separator + "_tmp_decome";
 		private String decoName;
 
 		/**
