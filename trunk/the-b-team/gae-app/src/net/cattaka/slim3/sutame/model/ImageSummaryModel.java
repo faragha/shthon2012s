@@ -38,6 +38,8 @@ public class ImageSummaryModel implements Serializable {
 
     private String contentType;
     
+    private Boolean deleted;
+
     /**
      * Returns the key.
      *
@@ -152,6 +154,14 @@ public class ImageSummaryModel implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
 }
