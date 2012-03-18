@@ -58,6 +58,7 @@ public class ImageService {
                 imageModel.setKey(imageKey);
                 imageModel.setImageId(imageId);
                 imageModel.setUserKey(userModel.getKey());
+                imageModel.setDeleted(false);
                 Datastore.put(imageModel);;
             }
             registerRelatedData(imageModel, userModel, resizedImage);
@@ -98,6 +99,7 @@ public class ImageService {
             itModel.setTitle(imageModel.getTitle());
             itModel.setContentType("image/"+resizedImage.getFormat().name());
             itModel.setImageData(resizedImage.getImageData());
+            itModel.setDeleted(false);
             Datastore.put(itModel);
         }
         {
@@ -106,6 +108,7 @@ public class ImageService {
             imageSummaryModel.setImageId(imageModel.getImageId());
             imageSummaryModel.setTitle(imageModel.getTitle());
             imageSummaryModel.setContentType("image/"+resizedImage.getFormat().name());
+            imageSummaryModel.setDeleted(false);
             Datastore.put(imageSummaryModel);
         }
         return true;
@@ -137,11 +140,12 @@ public class ImageService {
         return result;
     }
     public List<ImageSummaryModel> getImageSummaryModels(Date lastCreatedAt) {
-        ModelQuery<ImageSummaryModel> query = Datastore.query(ImageSummaryModel.class);
+        ModelQuery<ImageSummaryModel> query = Datastore.query(ImageSummaryModel.class)
+                .filter(imageSummaryModelMeta.deleted.equal(false));
         if (lastCreatedAt != null) {
-            query = query.filter(imageSummaryModelMeta.updatedAt.lessThan(lastCreatedAt));
+            query = query.filter(imageSummaryModelMeta.createdAt.lessThan(lastCreatedAt));
         }
-        query = query.sort(imageSummaryModelMeta.updatedAt.desc);
+        query = query.sort(imageSummaryModelMeta.createdAt.desc);
         return query.limit(StameConstants.THUMBNAIL_NUM).asList();
     }
 }

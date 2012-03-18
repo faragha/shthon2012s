@@ -86,15 +86,15 @@ public class FrontPage extends ScenicPage {
     @ActionPath("jsonList")
     public Navigation jsonList() throws IOException {
         Validators v = new Validators(request);
-        v.add("lastUpdatedAt", v.longType());
+        v.add("lastCreatedAt", v.longType());
         if (!doValidate(v)) {
             return null;
         }
         
-        String lastUpdatedAtStr = param("lastUpdatedAt");
-        Date lastUpdatedAt = (!StringUtil.isEmpty(lastUpdatedAtStr)) ? new Date(Long.parseLong(lastUpdatedAtStr)) : null;
+        String lastCreatedAtStr = param("lastCreatedAt");
+        Date lastCreatedAt = (!StringUtil.isEmpty(lastCreatedAtStr)) ? new Date(Long.parseLong(lastCreatedAtStr)) : null;
 
-        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels(lastUpdatedAt);
+        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels(lastCreatedAt);
         
         response.setContentType(StameConstants.CONTENT_TYPE);
         
@@ -108,20 +108,20 @@ public class FrontPage extends ScenicPage {
     public Navigation jsonpList() throws IOException {
         Validators v = new Validators(request);
         v.add("func", v.required());
-        v.add("lastUpdatedAt", v.longType());
+        v.add("lastCreatedAt", v.longType());
         if (!doValidate(v)) {
             return null;
         }
         
-        String lastUpdatedAtStr = param("lastUpdatedAt");
-        Date lastUpdatedAt = (!StringUtil.isEmpty(lastUpdatedAtStr)) ? new Date(Long.parseLong(lastUpdatedAtStr)) : null;
+        String lastCreatedAtStr = param("lastCreatedAt");
+        Date lastCreatedAt = (!StringUtil.isEmpty(lastCreatedAtStr)) ? new Date(Long.parseLong(lastCreatedAtStr)) : null;
 
         String func = param("func");
         String requestCode = param("requestCode");
         
         response.setContentType(StameConstants.CONTENT_TYPE);
         
-        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels(lastUpdatedAt);
+        List<ImageSummaryModel> imageSummaryModels = mImageService.getImageSummaryModels(lastCreatedAt);
         String json = imageSummaryModelMeta.modelsToJson(imageSummaryModels);
         response.getWriter().append(func);
         response.getWriter().append('(');

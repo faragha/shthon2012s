@@ -11,7 +11,7 @@ import org.slim3.datastore.Model;
 import org.slim3.datastore.ModificationDate;
 
 @Model(schemaVersion = 1)
-public class ImageModel implements Serializable {
+public class DeleteRequestModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,8 +22,8 @@ public class ImageModel implements Serializable {
     private Long version;
 
     private Long imageId;
-    
-    private Key userKey;
+
+    private String comment;
 
     @Attribute(listener = CreationDate.class)
     private Date createdAt;
@@ -31,15 +31,6 @@ public class ImageModel implements Serializable {
     @Attribute(listener = ModificationDate.class)
     private Date updatedAt;
 
-    private String title;
-    
-    private String contentType;
-    
-    @Attribute(lob=true)
-    private byte[] imageData;
-    
-    private Boolean deleted;
-    
     /**
      * Returns the key.
      *
@@ -97,7 +88,7 @@ public class ImageModel implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ImageModel other = (ImageModel) obj;
+        DeleteRequestModel other = (DeleteRequestModel) obj;
         if (key == null) {
             if (other.key != null) {
                 return false;
@@ -116,36 +107,12 @@ public class ImageModel implements Serializable {
         this.imageId = imageId;
     }
 
-    public Key getUserKey() {
-        return userKey;
+    public String getComment() {
+        return comment;
     }
 
-    public void setUserKey(Key userKey) {
-        this.userKey = userKey;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Date getCreatedAt() {
@@ -163,13 +130,4 @@ public class ImageModel implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
 }
