@@ -32,5 +32,8 @@
         <activity
             android:name=".bluetooth.BluetoothListPickerActivity"
             android:screenOrientation="portrait" />
+        <activity 
+            android:name=".bluetooth.nopair.DiscoveryActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
