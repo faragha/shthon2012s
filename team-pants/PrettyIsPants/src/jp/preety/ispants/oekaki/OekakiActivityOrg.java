@@ -9,7 +9,7 @@ import java.util.Map;
 
 import jp.preety.ispants.CompleteActivity;
 import jp.preety.ispants.R;
-import jp.preety.ispants.bluetooth.nopair.NoneSecureBluetoothActivity2;
+import jp.preety.ispants.bluetooth.BluetoothActivity;
 import jp.preety.ispants.oekaki.data.Data;
 import jp.preety.ispants.oekaki.data.Pen;
 import net.arnx.jsonic.JSON;
@@ -44,8 +44,7 @@ import com.eaglesakura.lib.android.game.util.LogUtil;
  * 
  * @author TAKESHI YAMASHITA
  */
-// public class OekakiActivity extends BluetoothActivity {
-public class OekakiActivity extends NoneSecureBluetoothActivity2 {
+public class OekakiActivityOrg extends BluetoothActivity {
 
     /**
      * 画像の保存先を伝える
@@ -194,7 +193,7 @@ public class OekakiActivity extends NoneSecureBluetoothActivity2 {
             findViewById(R.id.oekaki_finish_btn).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new Builder(OekakiActivity.this);
+                    AlertDialog.Builder builder = new Builder(OekakiActivityOrg.this);
                     builder.setMessage("画像を保存して終了しますか？")
                             .setPositiveButton("保存", new DialogInterface.OnClickListener() {
                                 @Override
@@ -206,7 +205,8 @@ public class OekakiActivity extends NoneSecureBluetoothActivity2 {
             });
         }
         LogUtil.setOutput(true);
-        render = new OekakiRender(this);
+        // TODO
+        // render = new OekakiRender(this);
     }
 
     /**
@@ -226,7 +226,7 @@ public class OekakiActivity extends NoneSecureBluetoothActivity2 {
                     @Override
                     public void run() {
                         dialog.dismiss();
-                        Intent intent = new Intent(OekakiActivity.this, CompleteActivity.class);
+                        Intent intent = new Intent(OekakiActivityOrg.this, CompleteActivity.class);
                         intent.putExtra(CompleteActivity.INTENT_IMAGE_URI, Uri.fromFile(path)
                                 .toString());
                         startActivity(intent);
@@ -513,7 +513,7 @@ public class OekakiActivity extends NoneSecureBluetoothActivity2 {
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
             if (convertView == null) {
-                imageView = new ImageView(OekakiActivity.this);
+                imageView = new ImageView(OekakiActivityOrg.this);
                 imageView.setLayoutParams(new GridView.LayoutParams(LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT));
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
