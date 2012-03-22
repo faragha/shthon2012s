@@ -13,15 +13,13 @@
     <!-- 画像 -->
     <ImageView
         android:id="@+id/img_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/match_match"
         android:layout_centerInParent="true"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true" />
     <!-- ボタン部分 -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/match_wrap"
         android:layout_alignParentBottom="true"
         android:background="#66000000"
         android:orientation="horizontal" >
